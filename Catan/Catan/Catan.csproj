@@ -41,6 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\MapObjectType.cs" />
+    <Compile Include="Common\ResourceType.cs" />
+    <Compile Include="GameObjects\Boat.cs" />
+    <Compile Include="GameObjects\Harbour.cs" />
+    <Compile Include="GameObjects\LineObject.cs" />
+    <Compile Include="GameObjects\MapObject.cs" />
+    <Compile Include="GameObjects\NodeObject.cs" />
+    <Compile Include="GameObjects\Road.cs" />
+    <Compile Include="GameObjects\Settlement.cs" />
+    <Compile Include="GameObjects\Town.cs" />
+    <Compile Include="GameObjects\Unit.cs" />
+    <Compile Include="GameObjects\Village.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
