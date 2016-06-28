@@ -65,6 +65,11 @@
   <ItemGroup>
     <Compile Include="Common\MapObjectType.cs" />
     <Compile Include="Common\ResourceType.cs" />
+    <Compile Include="Dices\Dice.cs" />
+    <Compile Include="Exceptions\AgentActionException.cs" />
+    <Compile Include="Exceptions\IllegalActionException.cs" />
+    <Compile Include="Exceptions\IllegalBuildPositionException.cs" />
+    <Compile Include="Exceptions\NoMoreCardsException.cs" />
     <Compile Include="GameObjects\Boat.cs" />
     <Compile Include="GameObjects\Harbour.cs" />
     <Compile Include="GameObjects\LineObject.cs" />
