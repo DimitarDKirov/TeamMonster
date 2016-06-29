@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Catan.GameObjects
 {
-    public abstract class Settlement:NodeObject
+    public abstract class Settlement : NodeObject
     {
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Catan.GameObjects
 {
-    public class Boat:LineObject
+    public class Boat : LineObject
     {
 
         public override void Build()

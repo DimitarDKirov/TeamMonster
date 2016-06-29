@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Catan.GameObjects
 {
-    public class Town:Settlement
+    public class Town : Settlement
     {
 
         // methods

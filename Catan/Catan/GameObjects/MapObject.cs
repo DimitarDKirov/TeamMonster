@@ -14,9 +14,9 @@ namespace Catan.GameObjects
     {
 
         protected byte playerID;    // 0..4
-        protected bool isActive;
+        protected bool isActive;    // whether the object has been used through the current turn
         private Rectangle rectangle;
-        private Texture2D texture;// whether the object has been used through the current turn
+        private Texture2D texture;
 
         //constructor(s)
 
@@ -32,7 +32,7 @@ namespace Catan.GameObjects
             this.IsActive = true;
         }
 
-        protected MapObject(byte playerID, ContentManager content, string texture, int x, int y, int width, int height) 
+        protected MapObject(byte playerID, ContentManager content, string texture, int x, int y, int width, int height)
         {
             this.PlayerID = playerID;
             this.IsActive = true;
@@ -40,7 +40,7 @@ namespace Catan.GameObjects
             this.Rectangle = new Rectangle(x, y, width, height);
             this.LocationX = x;
             this.LocationY = y;
-            
+
         }
 
         // properties
@@ -92,7 +92,7 @@ namespace Catan.GameObjects
         }
 
         public int LocationX { get; private set; }
-        public int LocationY { get; private set;}
+        public int LocationY { get; private set; }
 
         // methods
         public abstract void Build();

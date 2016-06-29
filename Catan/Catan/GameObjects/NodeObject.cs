@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Catan.GameObjects
 {
-    public abstract class NodeObject:MapObject
+    public abstract class NodeObject : MapObject
     {
         protected uint positionX;
         protected uint positionY;

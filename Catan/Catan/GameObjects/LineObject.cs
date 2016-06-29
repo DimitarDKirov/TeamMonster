@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Catan.GameObjects
 {
-    public abstract class LineObject:MapObject
+    public abstract class LineObject : MapObject
     {
     }
 }

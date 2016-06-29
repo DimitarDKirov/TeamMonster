@@ -8,7 +8,7 @@ using Catan.Common;
 
 namespace Catan.GameObjects
 {
-    public class Harbour:LineObject
+    public class Harbour : LineObject
     {
         private ResourceType tradingResource;
 

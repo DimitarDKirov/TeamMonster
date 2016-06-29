@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Catan.GameObjects
 {
-    public class Road:LineObject
+    public class Road : LineObject
     {
 
         // methods
