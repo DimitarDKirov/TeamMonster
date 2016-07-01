@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\MapObjectType.cs" />
+    <Compile Include="Common\Player.cs" />
     <Compile Include="Common\ResourceType.cs" />
     <Compile Include="GameClass.cs" />
     <Compile Include="GameObjects\Boat.cs" />
