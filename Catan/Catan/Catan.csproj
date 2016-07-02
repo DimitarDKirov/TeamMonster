@@ -41,11 +41,7 @@
     <Compile Include="Common\MapObjectType.cs" />
     <Compile Include="Common\Player.cs" />
     <Compile Include="Common\ResourceType.cs" />
-    <Compile Include="Dices\Dice.cs" />
-    <Compile Include="Exceptions\AgentActionException.cs" />
-    <Compile Include="Exceptions\IllegalActionException.cs" />
-    <Compile Include="Exceptions\IllegalBuildPositionException.cs" />
-    <Compile Include="Exceptions\NoMoreCardsException.cs" />
+    <Compile Include="Constants\UserInterfaceConstants.cs" />
     <Compile Include="GameClass.cs" />
     <Compile Include="GameObjects\Boat.cs" />
     <Compile Include="GameObjects\Harbour.cs" />
@@ -57,7 +53,13 @@
     <Compile Include="GameObjects\Town.cs" />
     <Compile Include="GameObjects\Unit.cs" />
     <Compile Include="GameObjects\Village.cs" />
-    <Compile Include="Interfaces\IDrawable.cs" />
+    <Compile Include="Interfaces\IDrawableCustom.cs" />
+    <Compile Include="Menu\Decorator.cs" />
+    <Compile Include="Menu\Frame.cs" />
+    <Compile Include="Menu\FrontMenu.cs" />
+    <Compile Include="Menu\MenuChecker.cs" />
+    <Compile Include="Menu\SelectableItem.cs" />
+    <Compile Include="Menu\UserInterfaceElement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -74,7 +76,9 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Content\Arial.spritefont" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

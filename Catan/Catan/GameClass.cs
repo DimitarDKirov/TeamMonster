@@ -1,6 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Catan.Constants;
+using Catan.Menu;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace Catan
 {
@@ -9,13 +13,27 @@ namespace Catan
     /// </summary>
     public class GameClass : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private KeyboardState oldKBState;
+        private SpriteFont gameFont; //to be used later
+        private Texture2D frameTexture;
 
-        public GameClass()
+
+        private MenuChecker menus;
+        private UserInterfaceElement mainMenu;
+        private List<UserInterfaceElement> UIElements;
+
+        public GameClass() : base()
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            this.graphics = new GraphicsDeviceManager(this);
+            this.Content.RootDirectory = "Content"; //directory for images
+            this.graphics.PreferredBackBufferWidth = UserInterfaceConstants.windowWidth;
+            this.graphics.PreferredBackBufferWidth = UserInterfaceConstants.windowHeight;
+            this.IsMouseVisible = true;
+
+            this.UIElements = new List<UserInterfaceElement>();
+            this.menus.openCount = 0;
         }
 
         /// <summary>
@@ -26,7 +44,11 @@ namespace Catan
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+          this.Services.AddService(typeof(GraphicsDeviceManager), this.graphics);
+          this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
+          this.Services.AddService(typeof(SpriteBatch), this.spriteBatch);
+
+          this.oldKBState = Keyboard.GetState();
 
             base.Initialize();
         }
@@ -39,6 +61,19 @@ namespace Catan
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+         
+          
+          this.gameFont = this.Content.Load<SpriteFont>("Arial");
+          this.frameTexture = this.Content.Load<Texture2D>("Frame"); //TODO: Check
+
+            FrontMenu startMenu = new FrontMenu(this, "Catan Game", menus.OnOpen, menus.OnClose);
+            startMenu.Initialize();
+            startMenu.LoadContent();
+            startMenu.Items.Add(new SelectableItem<string>("New Game", this.OnPlay));
+            startMenu.Items.Add(new SelectableItem<string>("Exit", this.OnExit));
+            this.mainMenu = new Frame(startMenu, this.frameTexture, Color.Red);
+            this.UIElements.Add(this.mainMenu);
 
             // TODO: use this.Content to load your game content here
         }
@@ -61,6 +96,17 @@ namespace Catan
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            this.mainMenu.Show();
+
+           for (int index = 0; index < this.UIElements.Count; index++)
+           {
+               this.UIElements[index].Update(gameTime);
+           }
+
+           if (this.menus.AllClosed)
+           {
+
+           }
 
             // TODO: Add your update logic here
 
@@ -74,10 +120,32 @@ namespace Catan
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            this.spriteBatch.Begin();
 
+            for (int index = 0; index < this.UIElements.Count; index++)
+            {
+                this.UIElements[index].Draw(this.spriteBatch);
+            }
+
+            this.spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        protected void OnExit(object menuItem, EventArgs e = null)
+        {
+            this.Exit();
+        }
+
+        /// <summary>
+        /// Continue the game
+        /// </summary>
+        /// <param name="menuItem">Menu item</param>
+        /// <param name="e">Not used</param>
+        protected void OnPlay(object menuItem, EventArgs e = null)
+        { 
+        
         }
     }
 }
