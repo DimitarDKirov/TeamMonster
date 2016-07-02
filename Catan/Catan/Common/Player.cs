@@ -1,4 +1,5 @@
-﻿using Catan.GameObjects;
+﻿using Catan.DevelopmentCards;
+using Catan.GameObjects;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace Catan.Common
         private IList<Village> villages;
         private IList<Town> towns;
         private IList<Harbour> harbours;
-        //private IList<DevelopmentCard> devCardsPossesed;
+        private IList<DevelopmentCard> devCardsPossesed;
+        private int points;
 
         public Player(string userName, Color color)
         {
@@ -26,49 +28,66 @@ namespace Catan.Common
             this.Villages = new List<Village>();
             this.Towns = new List<Town>();
             this.Harbours = new List<Harbour>();
-            //this.DevCardsPossedsed = new List<DevelopmentCard>();
+            this.DevCardsPossedsed = new List<DevelopmentCard>(3);
+            this.points = 0;
         }
 
         public string UserName
         {
-            get { return userName; }
-            set { userName = value; }
+            get { return this.userName; }
+            set { this.userName = value; }
         }
 
         public Color Color
         {
-            get { return color; }
-            set { color = value; }
+            get { return this.color; }
+            set { this.color = value; }
         }
 
         public IList<Unit> Units
         {
-            get { return units; }
-            set { units = value; }
+            get { return this.units; }
+            set { this.units = value; }
         }
 
         public IList<Village> Villages
         {
-            get { return villages; }
-            set { villages = value; }
+            get { return this.villages; }
+            set { this.villages = value; }
         }
 
         public IList<Town> Towns
         {
-            get { return towns; }
-            set { towns = value; }
+            get { return this.towns; }
+            set { this.towns = value; }
         }
 
         public IList<Harbour> Harbours
         {
-            get { return harbours; }
-            set { harbours = value; }
+            get { return this.harbours; }
+            set { this.harbours = value; }
         }
 
-        //public IList<DevelopmentCard> DevCardsPossedsed
-        //{
-        //    get { return devCardsPossesed; }
-        //    set { devCardsPossesed = value; }
-        //}
+        public IList<DevelopmentCard> DevCardsPossedsed
+        {
+            get { return this.devCardsPossesed; }
+            set { this.devCardsPossesed = value; }
+        }
+
+        public int Points
+        {
+            get { return this.points; }
+            private set { this.points = value; }
+        }
+
+        public void AddPoints(int points)
+        {
+            this.Points += points;
+        }
+
+        public void RemovePoints(int points)
+        {
+            this.Points -= points;
+        }
     }
 }

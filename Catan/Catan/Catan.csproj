@@ -44,6 +44,10 @@
     <Compile Include="Common\ResourceType.cs" />
     <Compile Include="Common\TerrainType.cs" />
     <Compile Include="Constants\UserInterfaceConstants.cs" />
+    <Compile Include="DevelopmentCards\DevelopmentCard.cs" />
+    <Compile Include="DevelopmentCards\KnightCard.cs" />
+    <Compile Include="DevelopmentCards\ProgressCard.cs" />
+    <Compile Include="DevelopmentCards\VictoryPointCard.cs" />
     <Compile Include="Dices\Dice.cs" />
     <Compile Include="Exceptions\AgentActionException.cs" />
     <Compile Include="Exceptions\IllegalActionException.cs" />
