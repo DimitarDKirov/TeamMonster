@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace Catan.Common
 {
-    public enum ResourceType
+    public enum LandType
     {
-        None,
-        Iron,
-        Brick,
-        Lumber,
-        Grain,
-        Wool
+        Mainland,
+        Sea,
+        Shore
     }
 }

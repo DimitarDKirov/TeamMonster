@@ -11,8 +11,9 @@ namespace Catan.GameObjects
 
         public override bool CheckTerrainCompatability()
         {
-            // TODO: Implement this method
-            throw new NotImplementedException();
+            /*return (MapObject.CheckPointOnLand(this.StartPointX, this.StartPointY) &&
+                    MapObject.CheckPointOnLand(this.EndPointX, this.EndPointY));*/
+            return true;
         }
 
         // methods

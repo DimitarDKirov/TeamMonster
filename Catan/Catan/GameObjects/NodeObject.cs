@@ -65,5 +65,9 @@ namespace Catan.GameObjects
                 this.nodeY = value;
             }
         }
+
+        // methods
+
+
     }
 }
