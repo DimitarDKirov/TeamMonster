@@ -12,12 +12,13 @@ namespace Catan.Dices
 
         public int SecondDice { get; private set; }
 
-        public void Roll()
+        public int Roll()
         {
             //get a random number object we can the use to determine the die face
             Random rand = new Random();
-            FirstDice = rand.Next(1, 6);
-            SecondDice = rand.Next(1, 6);
+            this.FirstDice = rand.Next(1, 6);
+            this.SecondDice = rand.Next(1, 6);
+            return this.FirstDice + this.SecondDice;
         }
     }
 }
