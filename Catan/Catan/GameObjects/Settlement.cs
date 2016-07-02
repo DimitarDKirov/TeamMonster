@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Catan.Common;
 
 namespace Catan.GameObjects
 {
@@ -15,8 +16,8 @@ namespace Catan.GameObjects
 
         public override bool CheckTerrainCompatability()
         {
-            // TODO: Implement this method
-            throw new NotImplementedException();
+           LandType land = MapObject.CheckLandType(this.NodeX, this.NodeY);
+           return (land == LandType.Mainland || land == LandType.Shore);
         }
     }
 
