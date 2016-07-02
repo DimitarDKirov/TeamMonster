@@ -11,14 +11,12 @@ namespace Catan.DevelopmentCards
     {
         private bool isPlayed;
 
-        private Player  owner;
+        private Player owner;
 
-        public Player Owner
+        public DevelopmentCard()
         {
-            get { return owner; }
-            set { owner = value; }
+            this.IsPlayed = false;
         }
-
 
         public bool IsPlayed
         {
@@ -26,9 +24,17 @@ namespace Catan.DevelopmentCards
             set { this.isPlayed = value; }
         }
 
+        public Player Owner
+        {
+            get { return owner; }
+            set { owner = value; }
+        }
+
         public virtual void Activate()
         {
+            //TODO activated card should be removed from palyr's array in PLayer class
             this.owner.DevCardsPossedsed.Remove(this);
+            this.isPlayed = true;
         }
 
     }
