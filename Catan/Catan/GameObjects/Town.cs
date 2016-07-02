@@ -9,11 +9,14 @@ namespace Catan.GameObjects
     public class Town : Settlement
     {
 
+       
+
         // methods
         public override void Build()
         {
 
         }
+
         public override void Destroy()
         {
 

@@ -13,6 +13,12 @@ namespace Catan.GameObjects
         private ResourceType tradingResource;
 
 
+        public override bool CheckTerrainCompatability()
+        {
+            // TODO: Implement this method
+            throw new NotImplementedException();
+        }
+
         // properties
         public ResourceType TradingResource
         {

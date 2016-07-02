@@ -9,10 +9,16 @@ namespace Catan.GameObjects
     public class Boat : LineObject
     {
 
+        public override bool CheckTerrainCompatability()
+        {
+            // TODO: Implement this method
+            throw new NotImplementedException();
+        }
+
         public override void Build()
         {
-
         }
+
         public override void Destroy()
         {
 

@@ -13,5 +13,12 @@ namespace Catan.GameObjects
         // constructors
 
 
+        public override bool CheckTerrainCompatability()
+        {
+            // TODO: Implement this method
+            throw new NotImplementedException();
+        }
     }
+
+
 }

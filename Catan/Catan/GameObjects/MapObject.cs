@@ -9,10 +9,16 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
 namespace Catan.GameObjects
-{
+{    
     public abstract class MapObject : Catan.Interfaces.IDrawable
     {
+        //constants
+        protected const uint TOP = 2;
+        protected const uint BOTTOM = 7;
+        protected const uint LEFT = 5;
+        protected const uint RIGHT = 14;
 
+        // fields
         protected byte playerID;    // 0..4
         protected bool isActive;    // whether the object has been used through the current turn
         private Rectangle rectangle;
@@ -97,6 +103,7 @@ namespace Catan.GameObjects
         // methods
         public abstract void Build();
         public abstract void Destroy();
+        public abstract bool CheckTerrainCompatability();
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -112,6 +119,10 @@ namespace Catan.GameObjects
             this.IsActive = false;
         }
 
-
+        protected bool CheckPointOnLand(uint x, uint y)
+        {
+            return (x >= LEFT && x <= RIGHT && y >= TOP && y <= BOTTOM && 
+                    x+y >= 9 && x+y <= 20 );  //TODO: two more checks 
+        }
     }
 }

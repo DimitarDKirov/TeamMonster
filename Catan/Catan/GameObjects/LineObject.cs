@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Catan.GameObjects
+
+using Microsoft.Xna.Framework.Content;namespace Catan.GameObjects
 {
     public abstract class LineObject : MapObject
     {
@@ -21,15 +22,26 @@ namespace Catan.GameObjects
             this.EndPointX = 0;
             this.EndPointY = 0;
         }
-        public LineObject(uint startX, uint startY, uint endX, uint endY):base()
+
+        public LineObject(byte playerID)
+            : this(0, 0, 0, 0, playerID)
+        {
+        }
+        public LineObject(uint startX, uint startY, uint endX, uint endY, byte playerID)
+            : base(playerID)
         {
             this.StartPointX = startX;
             this.StartPointY = startY;
             this.EndPointX = endX;
             this.EndPointY = endY;
         }
-
-        public LineObject(byte playerID, uint startX, uint startY, uint endX, uint endY):base(playerID)
+        public LineObject(byte playerID, ContentManager content, string texture, int x, int y, int width, int height)
+            : this(0, 0, 0, 0, playerID, content, texture, x, y, width, height)
+        {
+        }
+        public LineObject(uint startX, uint startY, uint endX, uint endY,
+                          byte playerID, ContentManager content, string texture, int x, int y, int width, int height)
+                          : base(playerID, content, texture, x, y, width, height)
         {
             this.StartPointX = startX;
             this.StartPointY = startY;
@@ -83,5 +95,11 @@ namespace Catan.GameObjects
             }
         }
         
+        //methods
+
+        public override bool CheckTerrainCompatability()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
