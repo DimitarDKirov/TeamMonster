@@ -9,8 +9,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
 namespace Catan.GameObjects
-{ 
-    public abstract class MapObject : Catan.Interfaces.IDrawable
+{
+    public abstract class MapObject : Catan.Interfaces.IDrawableCustom
     {
         //constants
         protected const uint TOP = 2;
@@ -118,7 +118,6 @@ namespace Catan.GameObjects
         {
             this.IsActive = true;
         }
-
         public void Disable()
         {
             this.IsActive = false;
