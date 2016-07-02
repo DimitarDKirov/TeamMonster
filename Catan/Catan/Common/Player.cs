@@ -15,6 +15,7 @@ namespace Catan.Common
         private IList<Unit> units;
         private IList<Village> villages;
         private IList<Town> towns;
+        private IList<Harbour> harbours;
         //private IList<DevelopmentCard> devCardsPossesed;
 
         public Player(string userName, Color color)
@@ -24,6 +25,7 @@ namespace Catan.Common
             this.Units = new List<Unit>();
             this.Villages = new List<Village>();
             this.Towns = new List<Town>();
+            this.Harbours = new List<Harbour>();
             //this.DevCardsPossedsed = new List<DevelopmentCard>();
         }
 
@@ -57,11 +59,16 @@ namespace Catan.Common
             set { towns = value; }
         }
 
+        public IList<Harbour> Harbours
+        {
+            get { return harbours; }
+            set { harbours = value; }
+        }
+
         //public IList<DevelopmentCard> DevCardsPossedsed
         //{
         //    get { return devCardsPossesed; }
         //    set { devCardsPossesed = value; }
         //}
-
     }
 }
