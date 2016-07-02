@@ -16,7 +16,7 @@ namespace Catan.GameObjects
         protected const uint TOP = 2;
         protected const uint BOTTOM = 7;
         protected const uint LEFT = 5;
-        protected const uint RIGHT = 14;
+        protected const uint RIGHT = 15;
 
         // fields
         protected byte playerID;    // 0..4
@@ -32,6 +32,7 @@ namespace Catan.GameObjects
             this.PlayerID = 0;
             this.IsActive = true;
         }
+
         public MapObject(byte playerID)
         {
             this.PlayerID = playerID;
@@ -46,7 +47,6 @@ namespace Catan.GameObjects
             this.Rectangle = new Rectangle(x, y, width, height);
             this.LocationX = x;
             this.LocationY = y;
-
         }
 
         // properties
@@ -61,6 +61,7 @@ namespace Catan.GameObjects
                 this.playerID = value;
             }
         }
+
         public bool IsActive
         {
             get
@@ -98,11 +99,14 @@ namespace Catan.GameObjects
         }
 
         public int LocationX { get; private set; }
+
         public int LocationY { get; private set; }
 
         // methods
         public abstract void Build();
+
         public abstract void Destroy();
+
         public abstract bool CheckTerrainCompatability();
 
         public void Draw(SpriteBatch spriteBatch)
@@ -122,14 +126,15 @@ namespace Catan.GameObjects
         protected static LandType CheckLandType(uint x, uint y)
         {
             if (x > LEFT && x < RIGHT && y > TOP && y < BOTTOM &&
-                    x + y > 9 && x + y < 20)
+                x + y > (TOP + BOTTOM + 1) && x + y < (LEFT + RIGHT) && x - y < (LEFT + RIGHT) / 2 && x - y > 2)
                 return LandType.Mainland;
-            else
-                if ((x == LEFT && y >= (TOP + BOTTOM) / 2 && y <= (TOP + BOTTOM + 1) / 2))
+            else if (((x == LEFT || x == RIGHT) && y >= (TOP + BOTTOM) / 2 && y <= (TOP + BOTTOM + 1) / 2) ||
+                     ((y == TOP || y == BOTTOM) && x >= LEFT + 2 && x <= RIGHT - 2) ||
+                     (x > LEFT && x <= LEFT + 2 && ((x + y) == (LEFT + RIGHT) / 2 || (x + y) == (LEFT + RIGHT) / 2 - 1 || (x >= y && (x - y) / 2 == 0))) ||
+                     (x >= RIGHT - 2 && x < RIGHT && (((x - y) - (LEFT + RIGHT) / 2) / 2 == 0 || ((x + y) - (LEFT + RIGHT)) / 2 == 0)))
                 return LandType.Shore;
             else
                 return LandType.Sea;
-
         }
     }
 }

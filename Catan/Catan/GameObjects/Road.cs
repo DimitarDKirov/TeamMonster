@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Catan.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,10 @@ namespace Catan.GameObjects
 
         public override bool CheckTerrainCompatability()
         {
-            /*return (MapObject.CheckPointOnLand(this.StartPointX, this.StartPointY) &&
-                    MapObject.CheckPointOnLand(this.EndPointX, this.EndPointY));*/
-            return true;
+            LandType landStartPoint = MapObject.CheckLandType(this.StartPointX, this.StartPointY);
+            LandType landEndPoint = MapObject.CheckLandType(this.EndPointX, this.EndPointY);
+            return ((landStartPoint == LandType.Mainland || landStartPoint == LandType.Shore) &&
+                    (landEndPoint == LandType.Mainland || landEndPoint == LandType.Shore));
         }
 
         // methods

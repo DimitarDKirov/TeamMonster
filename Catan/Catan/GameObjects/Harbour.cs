@@ -15,8 +15,9 @@ namespace Catan.GameObjects
 
         public override bool CheckTerrainCompatability()
         {
-            // TODO: Implement this method
-            throw new NotImplementedException();
+            LandType landStartPoint = MapObject.CheckLandType(this.StartPointX, this.StartPointY);
+            LandType landEndPoint = MapObject.CheckLandType(this.EndPointX, this.EndPointY);
+            return (landStartPoint == LandType.Shore && landEndPoint == LandType.Shore);
         }
 
         // properties
