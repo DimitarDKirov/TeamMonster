@@ -12,12 +12,17 @@ namespace Catan.GameObjects
 {
     public abstract class MapObject : Catan.Interfaces.IDrawableCustom
     {
+        //constants
+        protected const uint TOP = 2;
+        protected const uint BOTTOM = 7;
+        protected const uint LEFT = 5;
+        protected const uint RIGHT = 14;
 
+        // fields
         protected byte playerID;    // 0..4
         protected bool isActive;    // whether the object has been used through the current turn
         private Rectangle rectangle;
         private Texture2D texture;
-
 
         //constructor(s)
 
@@ -98,6 +103,7 @@ namespace Catan.GameObjects
         // methods
         public abstract void Build();
         public abstract void Destroy();
+        public abstract bool CheckTerrainCompatability();
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -113,6 +119,17 @@ namespace Catan.GameObjects
             this.IsActive = false;
         }
 
+        protected static LandType CheckLandType(uint x, uint y)
+        {
+            if (x > LEFT && x < RIGHT && y > TOP && y < BOTTOM &&
+                    x + y > 9 && x + y < 20)
+                return LandType.Mainland;
+            else
+                if ((x == LEFT && y >= (TOP + BOTTOM) / 2 && y <= (TOP + BOTTOM + 1) / 2))
+                return LandType.Shore;
+            else
+                return LandType.Sea;
 
+        }
     }
 }
