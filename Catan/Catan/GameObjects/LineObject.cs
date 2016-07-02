@@ -37,7 +37,7 @@ namespace Catan.GameObjects
             this.EndPointY = endY;
         }
 
-f        //
+        //
 
         // properties
         public uint StartPointX
