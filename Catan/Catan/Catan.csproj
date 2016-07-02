@@ -38,9 +38,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Common\LandType.cs" />
     <Compile Include="Common\MapObjectType.cs" />
     <Compile Include="Common\Player.cs" />
     <Compile Include="Common\ResourceType.cs" />
+    <Compile Include="Common\TerrainType.cs" />
     <Compile Include="GameClass.cs" />
     <Compile Include="GameObjects\Boat.cs" />
     <Compile Include="GameObjects\Harbour.cs" />

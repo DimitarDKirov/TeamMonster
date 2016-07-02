@@ -119,10 +119,17 @@ namespace Catan.GameObjects
             this.IsActive = false;
         }
 
-        protected bool CheckPointOnLand(uint x, uint y)
+        protected static LandType CheckLandType(uint x, uint y)
         {
-            return (x >= LEFT && x <= RIGHT && y >= TOP && y <= BOTTOM && 
-                    x+y >= 9 && x+y <= 20 );  //TODO: two more checks 
+            if (x > LEFT && x < RIGHT && y > TOP && y < BOTTOM &&
+                    x + y > 9 && x + y < 20)
+                return LandType.Mainland;
+            else
+                if ((x==LEFT && y>=(TOP+BOTTOM)/2 && y<= (TOP+BOTTOM+1)/2) )
+                    return LandType.Shore;
+                else
+                    return LandType.Sea;
+                
         }
     }
 }
