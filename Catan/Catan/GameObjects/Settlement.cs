@@ -8,6 +8,10 @@ namespace Catan.GameObjects
 {
     public abstract class Settlement : NodeObject
     {
+        protected uint victoryPoints;
+
+        // constructors
+
 
     }
 }
