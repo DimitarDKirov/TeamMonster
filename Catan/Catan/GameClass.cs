@@ -65,7 +65,7 @@ namespace Catan
          
           
           this.gameFont = this.Content.Load<SpriteFont>("Arial");
-          this.frameTexture = this.Content.Load<Texture2D>("InventoryHighlight"); //TODO: Check
+          this.frameTexture = this.Content.Load<Texture2D>("Frame"); //TODO: Check
 
             FrontMenu startMenu = new FrontMenu(this, "Catan Game", menus.OnOpen, menus.OnClose);
             startMenu.Initialize();

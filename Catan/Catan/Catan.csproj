@@ -78,10 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="brick.png" />
-    <Content Include="Content\InventoryHighlight.png" />
     <Content Include="Icon.ico" />
-    <Content Include="InventoryHighlight.png" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
