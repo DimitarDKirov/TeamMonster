@@ -13,27 +13,29 @@ namespace Catan
     /// </summary>
     public class GameClass : Game
     {
+        private GameState gameState;
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private KeyboardState oldKBState;
-        private SpriteFont gameFont; //to be used later
-        private Texture2D frameTexture;
+        private KeyboardState newKBState;
+        private SpriteFont gameFont;
+        private SpriteFont menuFont;
+        private IList<MenuItem> menuOptions;
+        private int menuIndex;
+        private Texture2D menuBackground;
+        private Rectangle backgroundRect;
 
 
-        private MenuChecker menus;
-        private UserInterfaceElement mainMenu;
-        private List<UserInterfaceElement> UIElements;
-
-        public GameClass() : base()
+        public GameClass()
+            : base()
         {
             this.graphics = new GraphicsDeviceManager(this);
             this.Content.RootDirectory = "Content"; //directory for images
             this.graphics.PreferredBackBufferWidth = UserInterfaceConstants.windowWidth;
-            this.graphics.PreferredBackBufferWidth = UserInterfaceConstants.windowHeight;
-            this.IsMouseVisible = true;
+            this.graphics.PreferredBackBufferHeight = UserInterfaceConstants.windowHeight;
+            this.graphics.ApplyChanges();
 
-            this.UIElements = new List<UserInterfaceElement>();
-            this.menus.openCount = 0;
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -44,11 +46,15 @@ namespace Catan
         /// </summary>
         protected override void Initialize()
         {
-          this.Services.AddService(typeof(GraphicsDeviceManager), this.graphics);
-          this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-          this.Services.AddService(typeof(SpriteBatch), this.spriteBatch);
 
-          this.oldKBState = Keyboard.GetState();
+            this.Services.AddService(typeof(GraphicsDeviceManager), this.graphics);
+            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
+            this.Services.AddService(typeof(SpriteBatch), this.spriteBatch);
+
+            this.gameState = 0;
+
+            this.oldKBState = Keyboard.GetState();
+            this.newKBState = Keyboard.GetState();
 
             base.Initialize();
         }
@@ -62,18 +68,25 @@ namespace Catan
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-         
-          
-          this.gameFont = this.Content.Load<SpriteFont>("Arial");
-          this.frameTexture = this.Content.Load<Texture2D>("Frame"); //TODO: Check
+            //fonts
+            this.gameFont = this.Content.Load<SpriteFont>("Arial");
+            this.menuFont = this.Content.Load<SpriteFont>("ArialMenu");
 
-            FrontMenu startMenu = new FrontMenu(this, "Catan Game", menus.OnOpen, menus.OnClose);
-            startMenu.Initialize();
-            startMenu.LoadContent();
-            startMenu.Items.Add(new SelectableItem<string>("New Game", this.OnPlay));
-            startMenu.Items.Add(new SelectableItem<string>("Exit", this.OnExit));
-            this.mainMenu = new Frame(startMenu, this.frameTexture, Color.Red);
-            this.UIElements.Add(this.mainMenu);
+            //textures
+            this.menuBackground = this.Content.Load<Texture2D>("menubackground");
+
+            //rectangles
+            this.backgroundRect = new Rectangle(0, 0, UserInterfaceConstants.windowWidth, UserInterfaceConstants.windowHeight);
+
+            this.menuOptions = new List<MenuItem>
+          {
+              new MenuItem("New game", new Vector2(UserInterfaceConstants.windowWidth / 2, 270), Color.Crimson, this.Content),
+              new MenuItem("Options", new Vector2(UserInterfaceConstants.windowWidth / 2, 320), Color.Crimson, this.Content),
+              new MenuItem("Exit", new Vector2(UserInterfaceConstants.windowWidth / 2, 370), Color.Crimson, this.Content)
+          };
+
+            this.menuIndex = 1;
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -95,23 +108,59 @@ namespace Catan
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 Exit();
-            this.mainMenu.Show();
+            }
 
-           for (int index = 0; index < this.UIElements.Count; index++)
-           {
-               this.UIElements[index].Update(gameTime);
-           }
+            this.oldKBState = this.newKBState;
+            this.newKBState = Keyboard.GetState();
 
-           if (this.menus.AllClosed)
-           {
+            switch (gameState)
+            {
+                case GameState.Menu:
+                    if (this.newKBState.IsKeyDown(Keys.Enter) && this.oldKBState.IsKeyUp(Keys.Enter))
+                    {
+                        this.gameState = (GameState)menuIndex;
+                    }
+                    if (this.newKBState.IsKeyDown(Keys.Down) && this.oldKBState.IsKeyUp(Keys.Down) && menuIndex <= 2)
+                    {
+                        menuIndex += 1;
+                    }
+                    if (this.newKBState.IsKeyDown(Keys.Up) && this.oldKBState.IsKeyUp(Keys.Up) && menuIndex >= 2)
+                    {
+                        menuIndex -= 1;
+                    }
+                    break;
+                case GameState.InGame:
 
-           }
+                    if (this.newKBState.IsKeyDown(Keys.M) && this.oldKBState.IsKeyUp(Keys.M))
+                    {
+                        this.gameState = GameState.Menu;
+                    }
+
+                    //main game logic here
+
+                    break;
+                case GameState.Options:
+
+                    if (this.newKBState.IsKeyDown(Keys.M) && this.oldKBState.IsKeyUp(Keys.M))
+                    {
+                        this.gameState = GameState.Menu;
+                    }
+
+                    //for now an empty menu
+
+                    break;
+                case GameState.Exit:
+                    Exit();
+                    break;
+            }
 
             // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
+
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -121,31 +170,43 @@ namespace Catan
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             this.spriteBatch.Begin();
-
-            for (int index = 0; index < this.UIElements.Count; index++)
-            {
-                this.UIElements[index].Draw(this.spriteBatch);
-            }
-
-            this.spriteBatch.End();
             // TODO: Add your drawing code here
 
+            switch (this.gameState)
+            {
+                case GameState.Menu:
+
+                    this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
+                    for (int i = 0; i < menuOptions.Count; i += 1)
+                    {
+                        if (i == menuIndex - 1)
+                        {
+                            this.menuOptions[i].UpdateColor(Color.Black);
+                        }
+                        else
+                        {
+                            this.menuOptions[i].UpdateColor(Color.Crimson);
+                        }
+                        this.menuOptions[i].Draw(this.spriteBatch);
+                    }
+                    break;
+                case GameState.InGame:
+                    this.spriteBatch.DrawString(this.menuFont, "In Game", new Vector2(50), Color.White);
+                    break;
+                case GameState.Options:
+                    this.spriteBatch.DrawString(this.menuFont, "Options", new Vector2(50), Color.White);
+                    break;
+                case GameState.Exit:
+                    break;
+                default:
+                    break;
+            }
+
+
+            this.spriteBatch.End();
+
+
             base.Draw(gameTime);
-        }
-
-        protected void OnExit(object menuItem, EventArgs e = null)
-        {
-            this.Exit();
-        }
-
-        /// <summary>
-        /// Continue the game
-        /// </summary>
-        /// <param name="menuItem">Menu item</param>
-        /// <param name="e">Not used</param>
-        protected void OnPlay(object menuItem, EventArgs e = null)
-        { 
-        
         }
     }
 }
