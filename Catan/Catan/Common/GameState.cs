@@ -9,8 +9,8 @@ namespace Catan.Menu
     public enum GameState
     {
         Menu = 0,
-        InGame = 1,
-        Options = 2,
+        NewGame = 1,
+        About = 2,
         Exit = 3
     }
 }

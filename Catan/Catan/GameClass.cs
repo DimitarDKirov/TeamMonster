@@ -23,6 +23,7 @@ namespace Catan
         private IList<MenuItem> menuOptions;
         private int menuIndex;
         private Texture2D menuBackground;
+        private Texture2D aboutBackground;
         private Rectangle backgroundRect;
 
 
@@ -31,8 +32,8 @@ namespace Catan
         {
             this.graphics = new GraphicsDeviceManager(this);
             this.Content.RootDirectory = "Content"; //directory for images
-            this.graphics.PreferredBackBufferWidth = UserInterfaceConstants.windowWidth;
-            this.graphics.PreferredBackBufferHeight = UserInterfaceConstants.windowHeight;
+            this.graphics.PreferredBackBufferWidth = UIConstants.windowWidth;
+            this.graphics.PreferredBackBufferHeight = UIConstants.windowHeight;
             this.graphics.ApplyChanges();
 
             this.IsMouseVisible = true;
@@ -74,15 +75,16 @@ namespace Catan
 
             //textures
             this.menuBackground = this.Content.Load<Texture2D>("menubackground");
+            this.aboutBackground = this.Content.Load<Texture2D>("aboutbackground");
 
             //rectangles
-            this.backgroundRect = new Rectangle(0, 0, UserInterfaceConstants.windowWidth, UserInterfaceConstants.windowHeight);
+            this.backgroundRect = new Rectangle(0, 0, UIConstants.windowWidth, UIConstants.windowHeight);
 
             this.menuOptions = new List<MenuItem>
           {
-              new MenuItem("New game", new Vector2(UserInterfaceConstants.windowWidth / 2, 270), Color.Crimson, this.Content),
-              new MenuItem("Options", new Vector2(UserInterfaceConstants.windowWidth / 2, 320), Color.Crimson, this.Content),
-              new MenuItem("Exit", new Vector2(UserInterfaceConstants.windowWidth / 2, 370), Color.Crimson, this.Content)
+              new MenuItem("New game", new Vector2(UIConstants.windowWidth / 2, 270), Color.Crimson, this.Content),
+              new MenuItem("About", new Vector2(UIConstants.windowWidth / 2, 320), Color.Crimson, this.Content),
+              new MenuItem("Exit", new Vector2(UIConstants.windowWidth / 2, 370), Color.Crimson, this.Content)
           };
 
             this.menuIndex = 1;
@@ -131,7 +133,7 @@ namespace Catan
                         menuIndex -= 1;
                     }
                     break;
-                case GameState.InGame:
+                case GameState.NewGame:
 
                     if (this.newKBState.IsKeyDown(Keys.M) && this.oldKBState.IsKeyUp(Keys.M))
                     {
@@ -141,7 +143,7 @@ namespace Catan
                     //main game logic here
 
                     break;
-                case GameState.Options:
+                case GameState.About:
 
                     if (this.newKBState.IsKeyDown(Keys.M) && this.oldKBState.IsKeyUp(Keys.M))
                     {
@@ -190,13 +192,18 @@ namespace Catan
                         this.menuOptions[i].Draw(this.spriteBatch);
                     }
                     break;
-                case GameState.InGame:
+                case GameState.NewGame:
                     this.spriteBatch.DrawString(this.menuFont, "In Game", new Vector2(50), Color.White);
                     break;
-                case GameState.Options:
-                    this.spriteBatch.DrawString(this.menuFont, "Options", new Vector2(50), Color.White);
+                case GameState.About:
+                    this.spriteBatch.Draw(this.aboutBackground, this.backgroundRect, Color.White);
+                    this.spriteBatch.DrawString(this.menuFont, "About", new Vector2(UIConstants.aboutXOffset, UIConstants.aboutYOffset), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessage, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset * 2)), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageNote, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset/2 * 7)), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageUI, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset/2 * 9)), Color.White);
                     break;
                 case GameState.Exit:
+                    this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
                     break;
                 default:
                     break;
