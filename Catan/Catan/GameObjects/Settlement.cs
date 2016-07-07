@@ -10,10 +10,21 @@ namespace Catan.GameObjects
     public abstract class Settlement : NodeObject
     {
         protected uint victoryPoints;
+        protected bool isHarbour;
 
         // constructors
+        public Settlement()
+        {
+            //TODO isHarbour -> from harbors list coordinates
+        }
 
 
+        // properies
+
+        protected bool IsHarbour
+        {
+            get { return isHarbour; }
+        } 
         public override bool CheckTerrainCompatability()
         {
            LandType land = MapObject.CheckLandType(this.NodeX, this.NodeY);

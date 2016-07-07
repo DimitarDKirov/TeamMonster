@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 namespace Catan.GameObjects
 {
     public abstract class MapObject : Catan.Interfaces.IDrawableCustom
+                                    //, Catan.Interfaces.IClickable
     {
         //constants
         protected const uint TOP = 2;

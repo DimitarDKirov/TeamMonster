@@ -65,6 +65,7 @@
     <Compile Include="GameObjects\Town.cs" />
     <Compile Include="GameObjects\Unit.cs" />
     <Compile Include="GameObjects\Village.cs" />
+    <Compile Include="Interfaces\IClickable.cs" />
     <Compile Include="Interfaces\IDrawableCustom.cs" />
     <Compile Include="Common\GameState.cs" />
     <Compile Include="Menu\MenuItem.cs" />
