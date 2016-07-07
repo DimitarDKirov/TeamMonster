@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Common\HexField.cs" />
     <Compile Include="Common\LandType.cs" />
     <Compile Include="Common\MapObjectType.cs" />
     <Compile Include="Common\Player.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="GameObjects\Town.cs" />
     <Compile Include="GameObjects\Unit.cs" />
     <Compile Include="GameObjects\Village.cs" />
+    <Compile Include="Interfaces\IClickable.cs" />
     <Compile Include="Interfaces\IDrawableCustom.cs" />
     <Compile Include="Common\GameState.cs" />
     <Compile Include="Menu\MenuItem.cs" />
