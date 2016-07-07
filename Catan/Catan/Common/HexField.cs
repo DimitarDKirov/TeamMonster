@@ -1,4 +1,8 @@
 ﻿using Catan.Common;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework;
+using Catan.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,15 +10,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace TeamWorkProjectOOP.HexFields
+namespace Catan.Common
 {
-    public class HexField
+    public class HexField : IClickable, IDrawableCustom
     {
         private TerrainType terrain;
         private ResourceType resourse;
         private uint produceAtNumber;
         private bool isRobbed;
         private bool tradeInAct;
+
+        private Rectangle rectangle;
+        private Texture2D texture;
+
 
         public HexField()
         {
@@ -23,6 +31,8 @@ namespace TeamWorkProjectOOP.HexFields
             this.ProduceAtNumber = produceAtNumber;
             this.IsRobbed = false;
             this.TradeInAct = false;
+            this.Rectangle = rectangle;
+            this.Texture = texture;
         }
 
         public TerrainType Terrain
@@ -53,6 +63,35 @@ namespace TeamWorkProjectOOP.HexFields
         {
             get { return this.tradeInAct; }
             set { this.tradeInAct = value; }
+        }
+
+        public Rectangle Rectangle
+        {
+            get
+            {
+                return this.rectangle;
+            }
+            private set
+            {
+                this.rectangle = value;
+            }
+        }
+
+        public Texture2D Texture
+        {
+            get
+            {
+                return this.texture;
+            }
+            private set
+            {
+                this.texture = value;
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(this.Texture, this.Rectangle, Color.White);
         }
 
     }
