@@ -94,6 +94,31 @@ namespace Catan.Common
             spriteBatch.Draw(this.Texture, this.Rectangle, Color.White);
         }
 
+
+        public uint ScreenX
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public uint ScreenY
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public uint DX
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public uint DY
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool CLickBelongToObject(uint clcikedX, uint clickedY)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
