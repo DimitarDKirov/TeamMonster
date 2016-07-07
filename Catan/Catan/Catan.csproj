@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Common\HexField.cs" />
     <Compile Include="Common\LandType.cs" />
     <Compile Include="Common\MapObjectType.cs" />
     <Compile Include="Common\Player.cs" />
