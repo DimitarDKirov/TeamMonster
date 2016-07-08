@@ -7,6 +7,7 @@ using Catan.Common;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Catan.Interfaces;
 
 namespace Catan.GameObjects
 {
@@ -104,9 +105,9 @@ namespace Catan.GameObjects
         public int LocationY { get; private set; }
 
         // methods
-        public abstract void Build(Player playerOnTurn);
+        public abstract void Build(IPlayer playerOnTurn);
 
-        public abstract void Destroy(Player playerOnTurn);
+        public abstract void Destroy(IPlayer playerOnTurn);
 
         public abstract bool CheckTerrainCompatability();
 

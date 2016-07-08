@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Catan.Common;
+using Catan.Interfaces;
 
 namespace Catan.GameObjects
 {
@@ -34,11 +35,11 @@ namespace Catan.GameObjects
         }
 
         // methods
-        public override void Build()
+        public override void Build(IPlayer playerOnTurn)
         {
 
         }
-        public override void Destroy()
+        public override void Destroy(IPlayer playerOnTurn)
         {
 
         }

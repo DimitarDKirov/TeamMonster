@@ -10,9 +10,9 @@ using System.Text;
 
 namespace Catan.Common
 {
-    class Player : IPlayer
+    public class Player : IPlayer
     {
-        private readonly int id;
+        private readonly byte id;
         private string userName;
         private Color color;
         private IList<Unit> units;
@@ -22,7 +22,7 @@ namespace Catan.Common
         private IList<DevelopmentCard> devCardsPossesed;
         private int points;
         private uint[] resources;
-        private static int serialNumber;
+        private static byte serialNumber;
 
         static Player()
         {
@@ -92,7 +92,7 @@ namespace Catan.Common
             private set { this.points = value; }
         }
 
-        public int Id
+        public byte Id
         {
             get { return this.id; }
         }

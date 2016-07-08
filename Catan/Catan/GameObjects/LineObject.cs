@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Catan.Common;
 using Microsoft.Xna.Framework.Content;
+using Catan.Interfaces;
 
 namespace Catan.GameObjects
 {
@@ -102,14 +103,14 @@ namespace Catan.GameObjects
         }
         
         //methods
-        public virtual void Build(Player playerOnTurn)
+        public override void Build(IPlayer playerOnTurn)
         {
-            if (this.PlayerID != playerOnTurn.UserName && CheckTerrainCompatability())  //TODO replace UserNAme with ID
+            if (this.PlayerID != playerOnTurn.Id && CheckTerrainCompatability()) 
             {
 
             }
         }
-        public virtual void Destroy(Player playerOnTurn)
+        public override void Destroy(IPlayer playerOnTurn)
         {
             // TODO: Implement this method
             throw new NotImplementedException();

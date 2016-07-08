@@ -1,4 +1,5 @@
 ﻿using Catan.Common;
+using Catan.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,12 @@ namespace Catan.GameObjects
         }
 
         // methods
-        public override void Build()
+        public override void Build(IPlayer playerOnTurn)
         {
 
         }
 
-        public override void Destroy()
+        public override void Destroy(IPlayer playerOnTurn)
         {
 
         }

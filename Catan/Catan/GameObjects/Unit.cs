@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Catan.GameObjects
 {
-    class Unit
+    public class Unit
     {
     }
 }

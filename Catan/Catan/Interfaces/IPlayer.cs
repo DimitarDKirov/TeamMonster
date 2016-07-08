@@ -6,12 +6,12 @@ using Catan.Common;
 
 namespace Catan.Interfaces
 {
-    interface IPlayer
+    public interface IPlayer
     {
         Color Color { get; set; }
         IList<DevelopmentCard> DevCardsPossedsed { get; set; }
         IList<Harbour> Harbours { get; set; }
-        int Id { get; }
+        byte Id { get; }
         int Points { get; }
         IList<Town> Towns { get; set; }
         IList<Unit> Units { get; set; }
