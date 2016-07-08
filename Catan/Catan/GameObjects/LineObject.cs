@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-using Microsoft.Xna.Framework.Content;namespace Catan.GameObjects
+using Catan.Common;
+using Microsoft.Xna.Framework.Content;
+
+namespace Catan.GameObjects
 {
-    public abstract class LineObject : MapObject
+    public class LineObject : MapObject
     {
         protected uint startPointX;
         protected uint startPointY;
@@ -51,6 +54,8 @@ using Microsoft.Xna.Framework.Content;namespace Catan.GameObjects
 
         //
 
+
+
         // properties
         public uint StartPointX
         {
@@ -63,6 +68,7 @@ using Microsoft.Xna.Framework.Content;namespace Catan.GameObjects
                 this.startPointX = value;
             }
         }
+
         public uint StartPointY
         {
             get
@@ -96,7 +102,18 @@ using Microsoft.Xna.Framework.Content;namespace Catan.GameObjects
         }
         
         //methods
+        public virtual void Build(Player playerOnTurn)
+        {
+            if (this.PlayerID != playerOnTurn.UserName && CheckTerrainCompatability())  //TODO replace UserNAme with ID
+            {
 
+            }
+        }
+        public virtual void Destroy(Player playerOnTurn)
+        {
+            // TODO: Implement this method
+            throw new NotImplementedException();
+        }
         public override bool CheckTerrainCompatability()
         {
             throw new NotImplementedException();
