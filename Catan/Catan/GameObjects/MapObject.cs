@@ -104,9 +104,9 @@ namespace Catan.GameObjects
         public int LocationY { get; private set; }
 
         // methods
-        public abstract void Build();
+        public abstract void Build(Player playerOnTurn);
 
-        public abstract void Destroy();
+        public abstract void Destroy(Player playerOnTurn);
 
         public abstract bool CheckTerrainCompatability();
 

@@ -1,6 +1,7 @@
 ﻿using Catan.Constants;
 using Catan.Dices;
 using Catan.Menu;
+using Catan.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -29,6 +30,8 @@ namespace Catan
         private Texture2D aboutBackground;
         private Rectangle backgroundRect;
         private Dice dices;
+        public IList<Player> players;
+        public Player playerOnTurn;
 
 
         public GameClass()
@@ -42,6 +45,16 @@ namespace Catan
 
             this.IsMouseVisible = true;
         }
+
+        // properties
+
+        public int Players
+        {
+            get { return Players; }
+            set { Players = value; }
+        }
+        public Player PlayerOnTurn { get; set; }
+
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
