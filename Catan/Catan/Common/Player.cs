@@ -1,5 +1,7 @@
-﻿using Catan.DevelopmentCards;
+﻿using Catan.Constants;
+using Catan.DevelopmentCards;
 using Catan.GameObjects;
+using Catan.Interfaces;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -9,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace Catan.Common
 {
-    class Player
+    class Player : IPlayer
     {
+        private readonly int id;
         private string userName;
         private Color color;
         private IList<Unit> units;
@@ -19,6 +22,13 @@ namespace Catan.Common
         private IList<Harbour> harbours;
         private IList<DevelopmentCard> devCardsPossesed;
         private int points;
+        private uint[] resources;
+        private static int serialNumber;
+
+        static Player()
+        {
+            serialNumber = 0;
+        }
 
         public Player(string userName, Color color)
         {
@@ -30,6 +40,9 @@ namespace Catan.Common
             this.Harbours = new List<Harbour>();
             this.DevCardsPossedsed = new List<DevelopmentCard>(3);
             this.points = 0;
+            this.resources = new uint[CommonConstants.ResourceTypesNumber];
+            serialNumber++;
+            this.id = serialNumber;
         }
 
         public string UserName
@@ -80,6 +93,11 @@ namespace Catan.Common
             private set { this.points = value; }
         }
 
+        public int Id
+        {
+            get { return this.id; }
+        }
+
         public void AddPoints(int points)
         {
             this.Points += points;
@@ -88,6 +106,16 @@ namespace Catan.Common
         public void RemovePoints(int points)
         {
             this.Points -= points;
+        }
+
+        public uint GetResourceValue(ResourceType resource)
+        {
+            return this.resources[(int)resource];
+        }
+
+        public void SetResourceValue(ResourceType resource, uint value)
+        {
+            this.resources[(int)resource] = value;
         }
     }
 }

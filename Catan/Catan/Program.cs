@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Catan.Common;
+using System;
 
 namespace Catan
 {

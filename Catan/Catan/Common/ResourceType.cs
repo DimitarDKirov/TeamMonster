@@ -8,7 +8,7 @@ namespace Catan.Common
 {
     public enum ResourceType
     {
-        None,
+        None0,
         Iron,
         Brick,
         Lumber,
