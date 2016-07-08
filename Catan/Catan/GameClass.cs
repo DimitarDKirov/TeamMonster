@@ -1,4 +1,5 @@
 ﻿using Catan.Constants;
+using Catan.Dices;
 using Catan.Menu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +19,8 @@ namespace Catan
         private SpriteBatch spriteBatch;
         private KeyboardState oldKBState;
         private KeyboardState newKBState;
+        private MouseState newMouseState;
+        private MouseState oldMouseState;
         private SpriteFont gameFont;
         private SpriteFont menuFont;
         private IList<MenuItem> menuOptions;
@@ -25,6 +28,7 @@ namespace Catan
         private Texture2D menuBackground;
         private Texture2D aboutBackground;
         private Rectangle backgroundRect;
+        private Dice dices;
 
 
         public GameClass()
@@ -56,6 +60,9 @@ namespace Catan
 
             this.oldKBState = Keyboard.GetState();
             this.newKBState = Keyboard.GetState();
+            this.oldMouseState = Mouse.GetState();
+            this.newMouseState = Mouse.GetState();
+            
 
             base.Initialize();
         }
@@ -79,6 +86,10 @@ namespace Catan
 
             //rectangles
             this.backgroundRect = new Rectangle(0, 0, UIConstants.windowWidth, UIConstants.windowHeight);
+
+            //objects
+            this.dices = new Dice(this.Content, "dice1", 670, 530, 110, 50);
+            this.dices.Roll();
 
             this.menuOptions = new List<MenuItem>
           {
@@ -116,6 +127,8 @@ namespace Catan
 
             this.oldKBState = this.newKBState;
             this.newKBState = Keyboard.GetState();
+            this.oldMouseState = this.newMouseState;
+            this.newMouseState = Mouse.GetState();
 
             switch (gameState)
             {
@@ -138,6 +151,11 @@ namespace Catan
                     if (this.newKBState.IsKeyDown(Keys.M) && this.oldKBState.IsKeyUp(Keys.M))
                     {
                         this.gameState = GameState.Menu;
+                    }
+
+                    if (this.dices.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                    {
+                        this.dices.Roll();
                     }
 
                     //main game logic here
@@ -193,7 +211,9 @@ namespace Catan
                     }
                     break;
                 case GameState.NewGame:
+                    this.dices.Draw(this.spriteBatch);
                     this.spriteBatch.DrawString(this.menuFont, "In Game", new Vector2(50), Color.White);
+                    
                     break;
                 case GameState.About:
                     this.spriteBatch.Draw(this.aboutBackground, this.backgroundRect, Color.White);
