@@ -39,13 +39,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\HexField.cs" />
-    <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Common\LandType.cs" />
     <Compile Include="Common\MapObjectType.cs" />
     <Compile Include="Common\Player.cs" />
     <Compile Include="Common\ResourceType.cs" />
     <Compile Include="Common\TerrainType.cs" />
-    <Compile Include="Constants\CommonConstants.cs" />
     <Compile Include="Constants\UIConstants.cs" />
     <Compile Include="DevelopmentCards\DevelopmentCard.cs" />
     <Compile Include="DevelopmentCards\KnightCard.cs" />
