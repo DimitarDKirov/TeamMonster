@@ -11,6 +11,13 @@ namespace Catan.GameObjects
     public class Village : Settlement
     {
         private const uint ALLOWED_VILLAGES = 5;
+
+
+
+        // propeties
+        protected override uint Productivity { get { return 1; } }
+
+        // methods
         public override void Build(IPlayer playerOnTurn)
         {
             base.Build(playerOnTurn);  // TODO: try-catch block here or where it is called?
@@ -37,6 +44,11 @@ namespace Catan.GameObjects
         {
             // TODO: Implement this method
             throw new NotImplementedException();
+        }
+
+        public override void Produce(ResourceType resource)
+        {
+            base.Produce(resource);
         }
     }
 }

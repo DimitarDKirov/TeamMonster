@@ -28,11 +28,15 @@ namespace Catan.GameObjects
             get { return isHarbour; }
         }
 
+        protected virtual uint Productivity { get { return 0; } }
         // methods
 
-        public virtual void Produce()
+        public virtual void Produce(ResourceType resource)
         {
-
+            /*
+            IPlayer owner = GameClass.Players[this.playerID];
+            owner.SetResourceValue(resource, (owner.GetResourceValue(resource) + this.Productivity));  //TODO: implement method on Palyer to decerement with amount
+            */
         }
 
         public override void Build(IPlayer playerOnTurn) 

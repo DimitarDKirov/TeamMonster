@@ -13,6 +13,10 @@ namespace Catan.GameObjects
         private const uint ALLOWED_TOWNS = 4;
        
 
+
+        //properties
+        protected override uint Productivity { get { return 2; } }
+
         // methods
         public override void Build(IPlayer playerOnTurn)
         {
@@ -35,6 +39,11 @@ namespace Catan.GameObjects
         public override void Destroy(IPlayer playerOnTurn)
         {
 
+        }
+
+        public override void Produce(ResourceType resource)
+        {
+            base.Produce(resource);           
         }
     }
 }
