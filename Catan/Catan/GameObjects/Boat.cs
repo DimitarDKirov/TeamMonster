@@ -10,7 +10,7 @@ namespace Catan.GameObjects
 {
     public class Boat : LineObject
     {
-
+        private const uint ALLOWED_BOATS = 16;
         public override bool CheckTerrainCompatability()
         {
             LandType landStartPoint = MapObject.CheckLandType(this.StartPointX, this.StartPointY);
@@ -21,6 +21,20 @@ namespace Catan.GameObjects
 
         public override void Build(IPlayer playerOnTurn)
         {
+            base.Build(playerOnTurn);  // TODO: try-catch block here or where it is called?
+            if (playerOnTurn.Villages.Count == ALLOWED_BOATS)
+            {
+                throw new Exception("Maximum number of boats reached!");  //TODO: custom exception
+            }
+            uint woolAvailable = playerOnTurn.GetResourceValue(ResourceType.Wool),
+                 lumberAvailable = playerOnTurn.GetResourceValue(ResourceType.Lumber);
+
+            if (woolAvailable == 0 || lumberAvailable == 0)
+            {
+                throw new Exception("Not enough resources"); //TODO: custom exception
+            }
+            playerOnTurn.SetResourceValue(ResourceType.Wool, --woolAvailable);
+            playerOnTurn.SetResourceValue(ResourceType.Lumber, --lumberAvailable);
         }
 
         public override void Destroy(IPlayer playerOnTurn)

@@ -105,9 +105,9 @@ namespace Catan.GameObjects
         //methods
         public override void Build(IPlayer playerOnTurn)
         {
-            if (this.PlayerID != playerOnTurn.Id && CheckTerrainCompatability()) 
+            if (this.PlayerID != playerOnTurn.Id && CheckTerrainCompatability())
             {
-
+                throw new Exception("Can not build here!");  //TODO to specify an exception
             }
         }
         public override void Destroy(IPlayer playerOnTurn)

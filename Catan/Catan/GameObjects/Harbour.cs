@@ -9,18 +9,12 @@ using Catan.Interfaces;
 
 namespace Catan.GameObjects
 {
-    public class Harbour : LineObject
+    public class Harbour
     {
         private ResourceType tradingResource;
 
 
-        public override bool CheckTerrainCompatability()
-        {
-            LandType landStartPoint = MapObject.CheckLandType(this.StartPointX, this.StartPointY);
-            LandType landEndPoint = MapObject.CheckLandType(this.EndPointX, this.EndPointY);
-            return (landStartPoint == LandType.Shore && landEndPoint == LandType.Shore);
-        }
-
+       
         // properties
         public ResourceType TradingResource
         {
@@ -35,13 +29,6 @@ namespace Catan.GameObjects
         }
 
         // methods
-        public override void Build(IPlayer playerOnTurn)
-        {
-
-        }
-        public override void Destroy(IPlayer playerOnTurn)
-        {
-
-        }
+     
     }
 }

@@ -10,6 +10,7 @@ namespace Catan.GameObjects
 {
     public class Road : LineObject
     {
+        private const uint ALLOWED_ROADS = 15;
 
         public override bool CheckTerrainCompatability()
         {
@@ -22,7 +23,20 @@ namespace Catan.GameObjects
         // methods
         public override void Build(IPlayer playerOnTurn)
         {
+            base.Build(playerOnTurn);  // TODO: try-catch block here or where it is called?
+            if (playerOnTurn.Villages.Count == ALLOWED_ROADS)
+            {
+                throw new Exception("Maximum number of raods reached!");  //TODO: custom exception
+            }
+            uint brickAvailable = playerOnTurn.GetResourceValue(ResourceType.Brick),
+                 lumberAvailable = playerOnTurn.GetResourceValue(ResourceType.Lumber);
 
+            if (brickAvailable == 0 || lumberAvailable == 0)
+            {
+                throw new Exception("Not enough resources"); //TODO: custom exception
+            }
+            playerOnTurn.SetResourceValue(ResourceType.Brick, --brickAvailable);
+            playerOnTurn.SetResourceValue(ResourceType.Lumber, --lumberAvailable);
         }
 
         public override void Destroy(IPlayer playerOnTurn)

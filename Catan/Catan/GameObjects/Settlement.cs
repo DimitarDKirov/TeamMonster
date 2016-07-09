@@ -37,10 +37,10 @@ namespace Catan.GameObjects
 
         public override void Build(IPlayer playerOnTurn) 
         {
-            if (this.PlayerID!=playerOnTurn.Id && CheckTerrainCompatability())  //TODO replace UserNAme with ID
-	        {
-		        
-	        }
+            if (this.PlayerID != playerOnTurn.Id && CheckTerrainCompatability())
+            {
+                throw new Exception("Can not build here!");  //TODO to specify an exception
+            }
         }
 
         public override void Destroy(IPlayer playerOnTurn) { }
