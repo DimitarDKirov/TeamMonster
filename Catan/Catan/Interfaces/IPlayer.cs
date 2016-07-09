@@ -3,11 +3,13 @@ using Catan.DevelopmentCards;
 using Catan.GameObjects;
 using Microsoft.Xna.Framework;
 using Catan.Common;
+using System;
 
 namespace Catan.Interfaces
 {
     public interface IPlayer
     {
+        event EventHandler WinPointsReached;
         Color Color { get; set; }
         IList<DevelopmentCard> DevCardsPossedsed { get; set; }
         IList<Harbour> Harbours { get; set; }

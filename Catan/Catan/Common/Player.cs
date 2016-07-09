@@ -14,6 +14,7 @@ namespace Catan.Common
 {
     public class Player : IPlayer, IDrawableCustom
     {
+
         //Fields
         private readonly byte id;
         private string userName;
@@ -30,6 +31,8 @@ namespace Catan.Common
         private IList<LineObject> lineObjects;
 
         private readonly SpriteFont font;
+
+        public event EventHandler WinPointsReached;
 
         //Constructors
         static Player()
@@ -132,6 +135,10 @@ namespace Catan.Common
         public void AddPoints(int points)
         {
             this.Points += points;
+            if (this.points >= CommonConstants.PointsToWin)
+            {
+                this.OnWinPointsReached();
+            }
         }
 
         public void RemovePoints(int points)
@@ -168,6 +175,12 @@ namespace Catan.Common
             spriteBatch.DrawString(this.font, GetResourceValue(ResourceType.Grain).ToString(), new Vector2(377.6F, 509), Color.SaddleBrown);
         }
 
-
+        protected virtual void OnWinPointsReached()
+        {
+            if (this.WinPointsReached != null)
+            {
+                this.WinPointsReached(this, EventArgs.Empty);
+            }
+        }
     }
 }

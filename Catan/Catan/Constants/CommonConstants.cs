@@ -9,5 +9,6 @@ namespace Catan.Constants
     public class CommonConstants
     {
         public const int ResourceTypesNumber = 6;
+        public const int PointsToWin = 10;
     }
 }
