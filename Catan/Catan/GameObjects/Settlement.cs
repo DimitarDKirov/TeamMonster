@@ -45,7 +45,7 @@ namespace Catan.GameObjects
 
         public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
         {
-            if (this.PlayerID != playerOnTurn.Id && CheckTerrainCompatability())
+            if (this.PlayerID!=0 && CheckTerrainCompatability())
             {
                 throw new Exception("Can not build here!");  //TODO to specify an exception
             }

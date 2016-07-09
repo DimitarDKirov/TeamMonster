@@ -1,5 +1,6 @@
 ﻿using Catan.Common;
 using Catan.Interfaces;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,19 @@ namespace Catan.GameObjects
     public class Road : LineObject
     {
         private const uint ALLOWED_ROADS = 15;
+
+        //constructors
+
+        public Road()
+        {
+
+        }
+        public Road(uint startX, uint startY, uint endX, uint endY,
+                          byte playerID, ContentManager content, string texture, int x, int y, int width, int height)
+                          : base(startX, startY, endX, endY, playerID, content, texture, x, y, width, height) 
+        {
+
+        }
 
         public override bool CheckTerrainCompatability()
         {
