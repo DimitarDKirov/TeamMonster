@@ -5,6 +5,7 @@ using Catan.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
@@ -18,6 +19,7 @@ namespace Catan
         //general
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+        private Song backgroundMusic;
 
         private GameState gameState;
 
@@ -111,6 +113,10 @@ namespace Catan
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // Background music
+            backgroundMusic = Content.Load<Song>("Sounds/FloatingCities");
+            MediaPlayer.Play(backgroundMusic);
 
             //fonts
             this.gameFont = this.Content.Load<SpriteFont>("Arial");

@@ -253,3 +253,9 @@
 /processorParam:TextureFormat=Color
 /build:scoreboard.png
 
+#begin Sounds/FloatingCities.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/FloatingCities.mp3
+
