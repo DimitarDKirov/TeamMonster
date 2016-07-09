@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Additional Resources\grid.jpg" />
     <Content Include="Content\aboutbackground.png" />
     <Content Include="Content\boat.png" />
     <Content Include="Content\dice1.png" />
