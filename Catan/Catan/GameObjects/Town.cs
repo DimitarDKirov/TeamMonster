@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Content;
 
 namespace Catan.GameObjects
 {
@@ -12,15 +13,26 @@ namespace Catan.GameObjects
     {
         private const uint ALLOWED_TOWNS = 4;
        
+        // constructors
+        public Town()
+        {
+
+        }
+         public Town(uint nX, uint nY,
+                           byte playerID, ContentManager content, string texture, int x, int y, int width, int height)
+            : base(nX, nY, playerID, content, texture, x, y, width, height)
+        {
+        }
 
 
         //properties
         protected override uint Productivity { get { return 2; } }
+        public static int VictoryPointsRewarded { get { return 2; } }
 
         // methods
-        public override void Build(IPlayer playerOnTurn)
+        public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
         {
-            base.Build(playerOnTurn);  // TODO: try-catch block here or where it is called?
+            base.Build(playerOnTurn, buildWithDevCard);  // TODO: try-catch block here or where it is called?
             if (playerOnTurn.Towns.Count == ALLOWED_TOWNS)
             {
                 throw new Exception("Maximum number of towns reached!");  //TODO: custom exception
@@ -34,10 +46,12 @@ namespace Catan.GameObjects
             }
             playerOnTurn.AddResourceValue(ResourceType.Iron, -3);
             playerOnTurn.AddResourceValue(ResourceType.Grain, -2);
+            playerOnTurn.AddPoints(VictoryPointsRewarded - Village.VictoryPointsRewarded);
         }
 
         public override void Destroy(IPlayer playerOnTurn)
         {
+            playerOnTurn.AddPoints(-VictoryPointsRewarded + Village.VictoryPointsRewarded);
 
         }
 

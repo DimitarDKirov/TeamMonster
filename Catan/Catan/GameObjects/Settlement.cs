@@ -12,7 +12,6 @@ namespace Catan.GameObjects
 {
     public class Settlement : NodeObject
     {
-        protected uint victoryPoints;
         protected bool isHarbour;
 
         // constructors
@@ -21,21 +20,21 @@ namespace Catan.GameObjects
             //TODO isHarbour -> from harbors list coordinates
         }
 
-       public Settlement(uint nX, uint nY, 
-                          byte playerID, ContentManager content, string texture, int x, int y, int width, int height)
-                        :base(nX, nY, 0, content, texture, x, y, width, height){
+        public Settlement(uint nX, uint nY,
+                           byte playerID, ContentManager content, string texture, int x, int y, int width, int height)
+            : base(nX, nY, 0, content, texture, x, y, width, height)
+        {
+        }
 
-       }
-
-
+        // properties
         protected bool IsHarbour
         {
             get { return isHarbour; }
         }
 
         protected virtual uint Productivity { get { return 0; } }
-        // methods
 
+        // methods
         public virtual void Produce(ResourceType resource)
         {
             /*
@@ -44,7 +43,7 @@ namespace Catan.GameObjects
             */
         }
 
-        public override void Build(IPlayer playerOnTurn) 
+        public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
         {
             if (this.PlayerID != playerOnTurn.Id && CheckTerrainCompatability())
             {
@@ -52,11 +51,13 @@ namespace Catan.GameObjects
             }
         }
 
-        public override void Destroy(IPlayer playerOnTurn) { }
+        public override void Destroy(IPlayer playerOnTurn) 
+        {
+        }
         public override bool CheckTerrainCompatability()
         {
-           LandType land = MapObject.CheckLandType(this.NodeX, this.NodeY);
-           return (land == LandType.Mainland || land == LandType.Shore);
+            LandType land = MapObject.CheckLandType(this.NodeX, this.NodeY);
+            return (land == LandType.Mainland || land == LandType.Shore);
         }
     }
 

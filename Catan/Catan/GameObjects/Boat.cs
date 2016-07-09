@@ -19,22 +19,25 @@ namespace Catan.GameObjects
                     (landEndPoint == LandType.Sea || landEndPoint == LandType.Shore));
         }
 
-        public override void Build(IPlayer playerOnTurn)
+        public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
         {
-            base.Build(playerOnTurn);  // TODO: try-catch block here or where it is called?
+            base.Build(playerOnTurn, buildWithDevCard);  // TODO: try-catch block here or where it is called?
             if (playerOnTurn.Villages.Count == ALLOWED_BOATS)
             {
                 throw new Exception("Maximum number of boats reached!");  //TODO: custom exception
             }
-            uint woolAvailable = playerOnTurn.GetResourceValue(ResourceType.Wool),
-                 lumberAvailable = playerOnTurn.GetResourceValue(ResourceType.Lumber);
-
-            if (woolAvailable == 0 || lumberAvailable == 0)
+            if (!buildWithDevCard)
             {
-                throw new Exception("Not enough resources"); //TODO: custom exception
-            }
-            playerOnTurn.AddResourceValue(ResourceType.Wool, -1);
-            playerOnTurn.AddResourceValue(ResourceType.Lumber, -1);
+                uint woolAvailable = playerOnTurn.GetResourceValue(ResourceType.Wool),
+                lumberAvailable = playerOnTurn.GetResourceValue(ResourceType.Lumber);
+
+                if (woolAvailable == 0 || lumberAvailable == 0)
+                {
+                    throw new Exception("Not enough resources"); //TODO: custom exception
+                }
+                playerOnTurn.AddResourceValue(ResourceType.Wool, -1);
+                playerOnTurn.AddResourceValue(ResourceType.Lumber, -1);
+            }           
         }
 
         public override void Destroy(IPlayer playerOnTurn)
