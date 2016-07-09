@@ -107,7 +107,7 @@ namespace Catan.GameObjects
         {
             if (this.PlayerID != playerOnTurn.Id && this.PlayerID != 0 && CheckTerrainCompatability())
             {
-                throw new Exception("Can not build here!");  //TODO to specify an exception
+                throw new Exceptions.IllegalBuildPositionException("Can not build here!");
             }
         }
         public override void Destroy(IPlayer playerOnTurn)
