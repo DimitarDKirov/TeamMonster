@@ -39,6 +39,7 @@ namespace Catan
         //game related
         private Texture2D gameBackground;
         private Dice dices;
+        private ScoreBoard scoreBoard;
         public IList<Player> players;
         public Player playerOnTurn;
         private Texture2D villageButton;
@@ -131,10 +132,6 @@ namespace Catan
             this.roadRect = new Rectangle(10, 400, 40, 40);
             this.boatRect = new Rectangle(10, 450, 40, 40);
 
-            //objects
-            this.dices = new Dice(this.Content, "dice1", 670, 530, 110, 50);
-            this.dices.Roll();
-
             //Load players
             this.players = new List<Player>{
                 new Player("Player 1", Color.Red, this.Content, 0, 500, 430, 100),
@@ -142,6 +139,11 @@ namespace Catan
                 new Player("Player 3", Color.Green, this.Content, 0, 500, 430, 100),
                 new Player("Player 4", Color.Yellow, this.Content, 0, 500, 430, 100)
             };
+
+            //objects
+            this.dices = new Dice(this.Content, "dice1", 670, 530, 110, 50);
+            this.dices.Roll();
+            this.scoreBoard = new ScoreBoard(this.players, this.Content, "scoreboard", 0, 0, 105, 100);
 
             //FOR TEST ONLY: REMOVE LATER
             this.players[0].SetResourceValue(ResourceType.Grain, 4);
@@ -219,6 +221,8 @@ namespace Catan
                     {
                         this.dices.Roll();
                         this.playerOnTurn = this.players[this.playerOnTurn.Id % 4];
+                        this.playerOnTurn.AddPoints(2);
+                        this.scoreBoard.Update(this.players);
                     }
 
                     //main game logic here
@@ -277,6 +281,7 @@ namespace Catan
                 case GameState.NewGame:
                     this.spriteBatch.Draw(this.gameBackground, this.backgroundRect, Color.White);
                     this.dices.Draw(this.spriteBatch);
+                    this.scoreBoard.Draw(this.spriteBatch);
                     //buttons
                     this.spriteBatch.Draw(this.villageButton, this.villageRect, Color.White);
                     this.spriteBatch.Draw(this.townButton, this.townRect, Color.White);
