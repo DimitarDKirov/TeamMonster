@@ -71,6 +71,7 @@
     <Compile Include="Interfaces\IDrawableCustom.cs" />
     <Compile Include="Common\GameState.cs" />
     <Compile Include="Menu\MenuItem.cs" />
+    <Compile Include="Menu\ScoreBoard.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -93,6 +94,7 @@
     <Content Include="Content\gamebackground.png" />
     <Content Include="Content\menubackground.png" />
     <Content Include="Content\road.png" />
+    <Content Include="Content\scoreboard.png" />
     <Content Include="Content\screenplayer1.png" />
     <Content Include="Content\screenplayer2.png" />
     <Content Include="Content\screenplayer3.png" />
