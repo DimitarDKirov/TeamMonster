@@ -3,6 +3,8 @@ using Catan.DevelopmentCards;
 using Catan.GameObjects;
 using Catan.Interfaces;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +12,9 @@ using System.Text;
 
 namespace Catan.Common
 {
-    public class Player : IPlayer
+    public class Player : IPlayer, IDrawableCustom
     {
+        //Fields
         private readonly byte id;
         private string userName;
         private Color color;
@@ -24,12 +27,13 @@ namespace Catan.Common
         private uint[] resources;
         private static byte serialNumber;
 
+        //Constructors
         static Player()
         {
             serialNumber = 0;
         }
 
-        public Player(string userName, Color color)
+        public Player(string userName, Color color, ContentManager content, int x, int y, int width, int height)
         {
             this.UserName = userName;
             this.Color = color;
@@ -42,8 +46,13 @@ namespace Catan.Common
             this.resources = new uint[CommonConstants.ResourceTypesNumber];
             serialNumber++;
             this.id = serialNumber;
+            //For visualization
+            this.Texture = content.Load<Texture2D>("screenplayer" + this.id);
+            this.Rectangle = new Rectangle(x, y, width, height);
+
         }
 
+        //Properties
         public string UserName
         {
             get { return this.userName; }
@@ -97,6 +106,11 @@ namespace Catan.Common
             get { return this.id; }
         }
 
+        public Rectangle Rectangle { get; private set; }
+
+        public Texture2D Texture { get; private set; }
+
+        //Methods
         public void AddPoints(int points)
         {
             this.Points += points;
@@ -115,6 +129,11 @@ namespace Catan.Common
         public void SetResourceValue(ResourceType resource, uint value)
         {
             this.resources[(int)resource] = value;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(this.Texture, this.Rectangle, Color.White);
         }
     }
 }

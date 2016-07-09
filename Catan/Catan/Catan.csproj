@@ -90,6 +90,10 @@
     <Content Include="Content\dice5.png" />
     <Content Include="Content\dice6.png" />
     <Content Include="Content\menubackground.png" />
+    <Content Include="Content\screenplayer1.png" />
+    <Content Include="Content\screenplayer2.png" />
+    <Content Include="Content\screenplayer3.png" />
+    <Content Include="Content\screenplayer4.png" />
     <Content Include="Content\transperent.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
