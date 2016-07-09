@@ -17,6 +17,8 @@ namespace Catan.Interfaces
         IList<Unit> Units { get; set; }
         string UserName { get; set; }
         IList<Village> Villages { get; set; }
+        IList<LineObject> LineObjects { get; set; }
+        IList<Settlement> Settlements { get; set; }
 
         void AddPoints(int points);
         uint GetResourceValue(ResourceType resource);
