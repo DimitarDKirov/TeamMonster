@@ -26,6 +26,8 @@ namespace Catan.Common
         private int points;
         private uint[] resources;
         private static byte serialNumber;
+        private IList<Settlement> settlements;
+        private IList<LineObject> lineObjects;
 
         //Constructors
         static Player()
@@ -49,7 +51,8 @@ namespace Catan.Common
             //For visualization
             this.Texture = content.Load<Texture2D>("screenplayer" + this.id);
             this.Rectangle = new Rectangle(x, y, width, height);
-
+            this.Settlements = new List<Settlement>();
+            this.LineObjects = new List<LineObject>();
         }
 
         //Properties
@@ -109,6 +112,18 @@ namespace Catan.Common
         public Rectangle Rectangle { get; private set; }
 
         public Texture2D Texture { get; private set; }
+
+        public IList<LineObject> LineObjects
+        {
+            get { return this.lineObjects; }
+            set { this.lineObjects = value; }
+        }
+
+        public IList<Settlement> Settlements
+        {
+            get { return this.settlements; }
+            set { this.settlements = value; }
+        }
 
         //Methods
         public void AddPoints(int points)
