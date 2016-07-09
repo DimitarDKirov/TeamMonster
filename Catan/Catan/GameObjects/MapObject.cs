@@ -105,7 +105,7 @@ namespace Catan.GameObjects
         public int LocationY { get; private set; }
 
         // methods
-        public abstract void Build(IPlayer playerOnTurn);
+        public abstract void Build(IPlayer playerOnTurn, bool buildWithDevCard);
 
         public abstract void Destroy(IPlayer playerOnTurn);
 

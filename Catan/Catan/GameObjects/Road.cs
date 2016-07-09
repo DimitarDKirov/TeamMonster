@@ -21,22 +21,25 @@ namespace Catan.GameObjects
         }
 
         // methods
-        public override void Build(IPlayer playerOnTurn)
+        public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
         {
-            base.Build(playerOnTurn);  // TODO: try-catch block here or where it is called?
+            base.Build(playerOnTurn, buildWithDevCard);  // TODO: try-catch block here or where it is called?
             if (playerOnTurn.Villages.Count == ALLOWED_ROADS)
             {
                 throw new Exception("Maximum number of raods reached!");  //TODO: custom exception
             }
-            uint brickAvailable = playerOnTurn.GetResourceValue(ResourceType.Brick),
-                 lumberAvailable = playerOnTurn.GetResourceValue(ResourceType.Lumber);
-
-            if (brickAvailable == 0 || lumberAvailable == 0)
+            if (!buildWithDevCard)
             {
-                throw new Exception("Not enough resources"); //TODO: custom exception
+                uint brickAvailable = playerOnTurn.GetResourceValue(ResourceType.Brick),
+                lumberAvailable = playerOnTurn.GetResourceValue(ResourceType.Lumber);
+
+                if (brickAvailable == 0 || lumberAvailable == 0)
+                {
+                    throw new Exception("Not enough resources"); //TODO: custom exception
+                }
+                playerOnTurn.AddResourceValue(ResourceType.Brick, -1);
+                playerOnTurn.AddResourceValue(ResourceType.Lumber, -1);
             }
-            playerOnTurn.AddResourceValue(ResourceType.Brick, -1);
-            playerOnTurn.AddResourceValue(ResourceType.Lumber, -1);
         }
 
         public override void Destroy(IPlayer playerOnTurn)

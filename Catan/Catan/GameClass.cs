@@ -9,7 +9,10 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using Catan.GameObjects;
+using Catan.DevelopmentCards;
+
 using Microsoft.Xna.Framework.Content;
+
 
 namespace Catan
 {
@@ -68,8 +71,12 @@ namespace Catan
         private Rectangle townRect;
         private Rectangle roadRect;
         private Rectangle boatRect;
+
         private Settlement[,] settlements;
         private LineObject[,] roadsAndboats;
+
+        private Queue<DevelopmentCard> developmentCards;
+
 
         //other
         private Texture2D aboutBackground;
@@ -91,11 +98,12 @@ namespace Catan
 
         // properties
 
-        public int Players
+        public IList<Player> Players
         {
-            get { return Players; }
-            set { Players = value; }
+            get { return this.players; }
+            set { this.players = value; }
         }
+
         public Player PlayerOnTurn { get; set; }
 
 
@@ -164,6 +172,15 @@ namespace Catan
                 new Player("Player 4", Color.Yellow, this.Content, 0, 500, 430, 100)
             };
 
+            //Load Developemnt cards
+            this.developmentCards = new Queue<DevelopmentCard>(CommonConstants.DevelopmentCardsNumber);
+            this.LoadDevelopmentCardRepository();
+
+            //subscribe to Player wins event
+            foreach (var player in this.players)
+            {
+                player.WinPointsReached += this.PlayerWins;
+            }
             //objects
             this.dices = new Dice(this.Content, "dice1", 670, 530, 110, 50);
             this.dices.Roll();
@@ -364,6 +381,7 @@ namespace Catan
             base.Draw(gameTime);
         }
 
+
         //customMethods
         private static void LoadRoadsAndBoats(LineObject[,] lineObject, ContentManager content)
         {
@@ -516,6 +534,46 @@ namespace Catan
 
         }
 
+
+
+        public DevelopmentCard GetDevelopmentCard()
+        {
+            return this.developmentCards.Dequeue();
+        }
+
+        public void PushDevelopmentCard(DevelopmentCard card)
+        {
+            this.developmentCards.Enqueue(card);
+        }
+
+        private void PlayerWins(object sender, EventArgs args)
+        {
+            this.gameState = GameState.Win;
+        }
+
+        private void LoadDevelopmentCardRepository()
+        {
+            int[] developmentCardsTypesCount = new int[] { 14, 5, 3, 3 };
+            Random rand = new Random();
+            for (int i = 0; i < CommonConstants.DevelopmentCardsNumber; i++)
+            {
+                int cardType = rand.Next(developmentCardsTypesCount.Length);
+                while (developmentCardsTypesCount[cardType] <= 0)
+                {
+                    cardType = (cardType + 1) % developmentCardsTypesCount.Length;
+                }
+                DevelopmentCard card = null;
+                switch (cardType)
+                {
+                    case 0: card = new KnightCard(); break;
+                    case 1: card = new VictoryPointCard(); break;
+                    case 2: card = new RoadBuildCard(); break;
+                    case 3: card = new ResourceGetCard(); break;
+                    default: throw new ArgumentOutOfRangeException("Such development card type does not exist");
+                }
+                this.developmentCards.Enqueue(card);
+            }
+        }
 
     }
 }

@@ -10,5 +10,6 @@ namespace Catan.Constants
     {
         public const int ResourceTypesNumber = 6;
         public const int PointsToWin = 10;
+        public const int DevelopmentCardsNumber = 25;
     }
 }

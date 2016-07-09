@@ -103,7 +103,7 @@ namespace Catan.GameObjects
         }
         
         //methods
-        public override void Build(IPlayer playerOnTurn)
+        public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
         {
             if (this.PlayerID != playerOnTurn.Id && CheckTerrainCompatability())
             {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Content;
 
 namespace Catan.GameObjects
 {
@@ -12,15 +13,26 @@ namespace Catan.GameObjects
     {
         private const uint ALLOWED_VILLAGES = 5;
 
+        // constructors
+        public Village()
+        {
+
+        }
+        public Village(uint nX, uint nY,
+                           byte playerID, ContentManager content, string texture, int x, int y, int width, int height)
+            : base(nX, nY, playerID, content, texture, x, y, width, height)
+        {
+        }
 
 
         // propeties
         protected override uint Productivity { get { return 1; } }
+        public static int VictoryPointsRewarded { get { return 1; } }
 
         // methods
-        public override void Build(IPlayer playerOnTurn)
+        public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
         {
-            base.Build(playerOnTurn);  // TODO: try-catch block here or where it is called?
+            base.Build(playerOnTurn, buildWithDevCard);  // TODO: try-catch block here or where it is called?
             if (playerOnTurn.Villages.Count == ALLOWED_VILLAGES)
             {
                 throw new Exception("Maximum number of Villages reached!");  //TODO: custom exception
@@ -38,12 +50,12 @@ namespace Catan.GameObjects
             playerOnTurn.AddResourceValue(ResourceType.Lumber, -1);
             playerOnTurn.AddResourceValue(ResourceType.Grain, -1);
             playerOnTurn.AddResourceValue(ResourceType.Wool, -1);
+            playerOnTurn.AddPoints(VictoryPointsRewarded);
         }
 
         public override void Destroy(IPlayer playerOnTurn)
         {
-            // TODO: Implement this method
-            throw new NotImplementedException();
+            playerOnTurn.AddPoints(-VictoryPointsRewarded);
         }
 
         public override void Produce(ResourceType resource)
