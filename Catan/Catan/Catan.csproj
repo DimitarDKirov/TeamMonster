@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\HexField.cs" />
+    <Compile Include="DevelopmentCards\IDevelopmentCard.cs" />
     <Compile Include="DevelopmentCards\ResourceGetCard.cs" />
     <Compile Include="DevelopmentCards\RoadBuildCard.cs" />
     <Compile Include="Interfaces\IBuildable.cs" />

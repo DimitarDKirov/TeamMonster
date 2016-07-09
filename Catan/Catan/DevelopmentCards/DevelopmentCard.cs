@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Catan.DevelopmentCards
 {
-    public abstract class DevelopmentCard
+    public abstract class DevelopmentCard : IDevelopmentCard
     {
         private bool isPlayed;
 
