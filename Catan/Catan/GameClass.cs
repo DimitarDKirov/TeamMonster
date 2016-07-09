@@ -104,6 +104,15 @@ namespace Catan
             this.dices = new Dice(this.Content, "dice1", 670, 530, 110, 50);
             this.dices.Roll();
 
+            //Load players
+            this.players = new List<Player>{
+                new Player("Player 1", Color.Red, this.Content, 0, 500, 430, 100),
+                new Player("Player 2", Color.Blue, this.Content, 0, 500, 430, 100),
+                new Player("Player 3", Color.Green, this.Content, 0, 500, 430, 100),
+                new Player("Player 4", Color.Yellow, this.Content, 0, 500, 430, 100)
+            };
+            this.playerOnTurn = this.players[0];
+
             this.menuOptions = new List<MenuItem>
           {
               new MenuItem("New game", new Vector2(UIConstants.windowWidth / 2, 270), Color.Crimson, this.Content),
@@ -166,9 +175,12 @@ namespace Catan
                         this.gameState = GameState.Menu;
                     }
 
+
+
                     if (this.dices.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                     {
                         this.dices.Roll();
+                        this.playerOnTurn = this.players[this.playerOnTurn.Id % 4];
                     }
 
                     //main game logic here
@@ -225,6 +237,7 @@ namespace Catan
                     break;
                 case GameState.NewGame:
                     this.dices.Draw(this.spriteBatch);
+                    this.playerOnTurn.Draw(this.spriteBatch);
                     this.spriteBatch.DrawString(this.menuFont, "In Game", new Vector2(50), Color.White);
                     
                     break;
