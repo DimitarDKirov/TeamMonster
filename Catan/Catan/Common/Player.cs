@@ -29,6 +29,8 @@ namespace Catan.Common
         private IList<Settlement> settlements;
         private IList<LineObject> lineObjects;
 
+        private readonly SpriteFont font;
+
         //Constructors
         static Player()
         {
@@ -53,6 +55,7 @@ namespace Catan.Common
             this.Rectangle = new Rectangle(x, y, width, height);
             this.Settlements = new List<Settlement>();
             this.LineObjects = new List<LineObject>();
+            this.font = content.Load<SpriteFont>("Arial");
         }
 
         //Properties
@@ -148,7 +151,13 @@ namespace Catan.Common
 
         public void Draw(SpriteBatch spriteBatch)
         {
+
             spriteBatch.Draw(this.Texture, this.Rectangle, Color.White);
+            spriteBatch.DrawString(this.font, GetResourceValue(ResourceType.Brick).ToString(), new Vector2(132, 509), Color.Brown);
+            spriteBatch.DrawString(this.font, GetResourceValue(ResourceType.Lumber).ToString(), new Vector2(193, 509), Color.Green);
+            spriteBatch.DrawString(this.font, GetResourceValue(ResourceType.Iron).ToString(), new Vector2(254.3F, 509), Color.Black * 0.3F);
+            spriteBatch.DrawString(this.font, GetResourceValue(ResourceType.Wool).ToString(), new Vector2(316.3F, 509), Color.DarkOliveGreen);
+            spriteBatch.DrawString(this.font, GetResourceValue(ResourceType.Grain).ToString(), new Vector2(377.6F, 509), Color.SaddleBrown);
         }
     }
 }

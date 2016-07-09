@@ -15,23 +15,45 @@ namespace Catan
     /// </summary>
     public class GameClass : Game
     {
-        private GameState gameState;
+        //general
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+
+        private GameState gameState;
+
+        //controllers states
         private KeyboardState oldKBState;
         private KeyboardState newKBState;
         private MouseState newMouseState;
         private MouseState oldMouseState;
+
+        //fonts
         private SpriteFont gameFont;
         private SpriteFont menuFont;
+
+        //menu related
         private IList<MenuItem> menuOptions;
-        private int menuIndex;
         private Texture2D menuBackground;
-        private Texture2D aboutBackground;
-        private Rectangle backgroundRect;
+        private int menuIndex;
+
+        //game related
+        private Texture2D gameBackground;
         private Dice dices;
         public IList<Player> players;
         public Player playerOnTurn;
+        private Texture2D villageButton;
+        private Texture2D townButton;
+        private Texture2D roadButton;
+        private Texture2D boatButton;
+        private Rectangle villageRect;
+        private Rectangle townRect;
+        private Rectangle roadRect;
+        private Rectangle boatRect;
+
+        //other
+        private Texture2D aboutBackground;
+        private Rectangle backgroundRect;
+
 
 
         public GameClass()
@@ -75,7 +97,7 @@ namespace Catan
             this.newKBState = Keyboard.GetState();
             this.oldMouseState = Mouse.GetState();
             this.newMouseState = Mouse.GetState();
-            
+
 
             base.Initialize();
         }
@@ -96,9 +118,18 @@ namespace Catan
             //textures
             this.menuBackground = this.Content.Load<Texture2D>("menubackground");
             this.aboutBackground = this.Content.Load<Texture2D>("aboutbackground");
+            this.gameBackground = this.Content.Load<Texture2D>("gamebackground");
+            this.villageButton = this.Content.Load<Texture2D>("village");
+            this.townButton = this.Content.Load<Texture2D>("town");
+            this.roadButton = this.Content.Load<Texture2D>("road");
+            this.boatButton = this.Content.Load<Texture2D>("boat");
 
             //rectangles
             this.backgroundRect = new Rectangle(0, 0, UIConstants.windowWidth, UIConstants.windowHeight);
+            this.villageRect = new Rectangle(10, 300, 40, 40);
+            this.townRect = new Rectangle(10, 350, 40, 40);
+            this.roadRect = new Rectangle(10, 400, 40, 40);
+            this.boatRect = new Rectangle(10, 450, 40, 40);
 
             //objects
             this.dices = new Dice(this.Content, "dice1", 670, 530, 110, 50);
@@ -111,6 +142,13 @@ namespace Catan
                 new Player("Player 3", Color.Green, this.Content, 0, 500, 430, 100),
                 new Player("Player 4", Color.Yellow, this.Content, 0, 500, 430, 100)
             };
+
+            //FOR TEST ONLY: REMOVE LATER
+            this.players[0].SetResourceValue(ResourceType.Grain, 4);
+            this.players[1].SetResourceValue(ResourceType.Iron, 3);
+            this.players[2].SetResourceValue(ResourceType.Lumber, 2);
+            this.players[3].SetResourceValue(ResourceType.Brick, 8);
+
             this.playerOnTurn = this.players[0];
 
             this.menuOptions = new List<MenuItem>
@@ -184,6 +222,7 @@ namespace Catan
                     }
 
                     //main game logic here
+                    //TODO: make functionality on buttons click
 
                     break;
                 case GameState.About:
@@ -236,17 +275,24 @@ namespace Catan
                     }
                     break;
                 case GameState.NewGame:
+                    this.spriteBatch.Draw(this.gameBackground, this.backgroundRect, Color.White);
                     this.dices.Draw(this.spriteBatch);
+                    //buttons
+                    this.spriteBatch.Draw(this.villageButton, this.villageRect, Color.White);
+                    this.spriteBatch.Draw(this.townButton, this.townRect, Color.White);
+                    this.spriteBatch.Draw(this.roadButton, this.roadRect, Color.White);
+                    this.spriteBatch.Draw(this.boatButton, this.boatRect, Color.White);
+                    //rest
                     this.playerOnTurn.Draw(this.spriteBatch);
-                    this.spriteBatch.DrawString(this.menuFont, "In Game", new Vector2(50), Color.White);
-                    
+                    this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn", new Vector2(270, 10), Color.White);
+
                     break;
                 case GameState.About:
                     this.spriteBatch.Draw(this.aboutBackground, this.backgroundRect, Color.White);
                     this.spriteBatch.DrawString(this.menuFont, "About", new Vector2(UIConstants.aboutXOffset, UIConstants.aboutYOffset), Color.White);
                     this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessage, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset * 2)), Color.White);
-                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageNote, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset/2 * 7)), Color.White);
-                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageUI, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset/2 * 9)), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageNote, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset / 2 * 7)), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageUI, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset / 2 * 9)), Color.White);
                     break;
                 case GameState.Exit:
                     this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
