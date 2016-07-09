@@ -568,6 +568,7 @@ namespace Catan
                 {
                     cardType = (cardType + 1) % developmentCardsTypesCount.Length;
                 }
+                developmentCardsTypesCount[cardType]--;
                 DevelopmentCard card = null;
                 switch (cardType)
                 {
