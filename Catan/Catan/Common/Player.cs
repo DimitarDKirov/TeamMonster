@@ -149,6 +149,14 @@ namespace Catan.Common
             this.resources[(int)resource] = value;
         }
 
+        public void AddResourceValue(ResourceType resource, int value)
+        {
+            uint oldValue = this.GetResourceValue(resource);
+            int newValue = (int)oldValue + value;
+            if (newValue < 0) newValue = 0;
+            this.SetResourceValue(resource, (uint)newValue);
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
 
@@ -159,5 +167,7 @@ namespace Catan.Common
             spriteBatch.DrawString(this.font, GetResourceValue(ResourceType.Wool).ToString(), new Vector2(316.3F, 509), Color.DarkOliveGreen);
             spriteBatch.DrawString(this.font, GetResourceValue(ResourceType.Grain).ToString(), new Vector2(377.6F, 509), Color.SaddleBrown);
         }
+
+
     }
 }

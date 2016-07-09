@@ -24,5 +24,6 @@ namespace Catan.Interfaces
         uint GetResourceValue(ResourceType resource);
         void RemovePoints(int points);
         void SetResourceValue(ResourceType resource, uint value);
+        void AddResourceValue(ResourceType resource, int value);
     }
 }
