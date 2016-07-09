@@ -34,10 +34,10 @@ namespace Catan.GameObjects
             {
                 throw new Exception("Not enough resources"); //TODO: custom exception
             }
-            playerOnTurn.SetResourceValue(ResourceType.Brick, --brickAvailable);
-            playerOnTurn.SetResourceValue(ResourceType.Lumber, --lumberAvailable);
-            playerOnTurn.SetResourceValue(ResourceType.Grain, --grainAvailable);
-            playerOnTurn.SetResourceValue(ResourceType.Wool, --woolAvailable);
+            playerOnTurn.AddResourceValue(ResourceType.Brick, -1);
+            playerOnTurn.AddResourceValue(ResourceType.Lumber, -1);
+            playerOnTurn.AddResourceValue(ResourceType.Grain, -1);
+            playerOnTurn.AddResourceValue(ResourceType.Wool, -1);
         }
 
         public override void Destroy(IPlayer playerOnTurn)

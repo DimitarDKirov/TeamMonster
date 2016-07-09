@@ -32,8 +32,8 @@ namespace Catan.GameObjects
             {
                 throw new Exception("Not enough resources"); //TODO: custom exception
             }
-            playerOnTurn.SetResourceValue(ResourceType.Iron, (ironAvailable-3));
-            playerOnTurn.SetResourceValue(ResourceType.Grain, (grainAvailable-2));
+            playerOnTurn.AddResourceValue(ResourceType.Iron, -3);
+            playerOnTurn.AddResourceValue(ResourceType.Grain, -2);
         }
 
         public override void Destroy(IPlayer playerOnTurn)

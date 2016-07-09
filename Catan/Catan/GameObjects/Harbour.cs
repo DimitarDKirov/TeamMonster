@@ -32,7 +32,7 @@ namespace Catan.GameObjects
 
         public static void Trade(IPlayer playerOnTurn, ResourceType offerredResource, ResourceType targetResource)
         {
-            uint tradeRate=4;
+            int tradeRate=4;
             if (!HarbourExists(playerOnTurn, targetResource))
             {
                 tradeRate = 2;
@@ -47,8 +47,8 @@ namespace Catan.GameObjects
                 throw new Exception("Not enough resources!"); // TOD: custime exception
             }
 
-            playerOnTurn.SetResourceValue(offerredResource, (offeredResourceAvailable-tradeRate));
-            playerOnTurn.SetResourceValue(targetResource, (playerOnTurn.GetResourceValue(targetResource)+1));
+            playerOnTurn.AddResourceValue(offerredResource, -tradeRate);
+            playerOnTurn.AddResourceValue(targetResource, 1);
         }
 
         private static bool HarbourExists(IPlayer playerOnTurn, ResourceType harbourResourceType)

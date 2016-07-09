@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Catan.Common;
 using Catan.Interfaces;
+using Microsoft.Xna.Framework.Content;
+
 
 namespace Catan.GameObjects
 {
@@ -19,8 +21,11 @@ namespace Catan.GameObjects
             //TODO isHarbour -> from harbors list coordinates
         }
 
+       public Settlement(uint nX, uint nY, 
+                          byte playerID, ContentManager content, string texture, int x, int y, int width, int height)
+                        :base(nX, nY, 0, content, texture, x, y, width, height){
 
-        // properies
+       }
 
 
         protected bool IsHarbour
