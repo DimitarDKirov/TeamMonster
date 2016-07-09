@@ -11,11 +11,25 @@ using System.Collections.Generic;
 
 namespace Catan
 {
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
     public class GameClass : Game
     {
+        private static GameClass game;
+
+        public static GameClass Game
+        {
+            get
+            {
+                if (game == null)
+                {
+                    game = new GameClass();
+                }
+                return game;
+            }
+        }
         //general
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
