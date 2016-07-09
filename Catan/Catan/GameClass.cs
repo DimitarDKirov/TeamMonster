@@ -72,9 +72,11 @@ namespace Catan
         private Rectangle townRect;
         private Rectangle roadRect;
         private Rectangle boatRect;
+        private bool isStartRound;
+        private string ErrorMessage;
 
         private Settlement[,] settlements;
-        private LineObject[,] roadsAndboats;
+        private LineObject[,] roadsAndBoats;
 
         private Queue<DevelopmentCard> developmentCards;
 
@@ -145,9 +147,13 @@ namespace Catan
             backgroundMusic = Content.Load<Song>("Sounds/FloatingCities");
             MediaPlayer.Play(backgroundMusic);
 
+            this.ErrorMessage = "ASD";
+
             //fonts
             this.gameFont = this.Content.Load<SpriteFont>("Arial");
             this.menuFont = this.Content.Load<SpriteFont>("ArialMenu");
+
+            this.isStartRound = true;
 
             //textures
             this.menuBackground = this.Content.Load<Texture2D>("menubackground");
@@ -189,11 +195,11 @@ namespace Catan
 
             //
             this.settlements = new Settlement[20, 9];
-            this.roadsAndboats = new LineObject[20, 17];
+            this.roadsAndBoats = new LineObject[20, 17];
 
             //Load Content
             GameClass.LoadSettlements(this.settlements, this.Content);
-            GameClass.LoadRoadsAndBoats(this.roadsAndboats, this.Content);
+            GameClass.LoadroadsAndBoats(this.roadsAndBoats, this.Content);
 
             this.playerOnTurn = this.players[0];
 
@@ -260,13 +266,23 @@ namespace Catan
                         this.gameState = GameState.Menu;
                     }
 
-
+                    if (this.isStartRound)
+                    {
+                        InitGame();
+                    }
+                    
 
                     if (this.dices.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                     {
+
                         this.dices.Roll();
+                        //TODO: Loop over and collect resources
+
+                        //this.playerOnTurn
+
+
                         this.playerOnTurn = this.players[this.playerOnTurn.Id % 4];
-                        this.playerOnTurn.AddPoints(2);
+                        this.playerOnTurn.AddPoints(2);//TEST REMOVE LATER
                         this.scoreBoard.Update(this.players);
                     }
 
@@ -293,6 +309,153 @@ namespace Catan
 
             base.Update(gameTime);
         }
+
+        // FIRST ROUNDS
+        private void InitGame()
+        {
+
+            for (int i = 0; i < 3; i++)
+            {
+                bool isBuilt = false;
+                while (!isBuilt)
+                {
+                    isBuilt = BuildStartVillage(i);
+                }
+
+                isBuilt = false;
+                while (!isBuilt)
+                {
+                    isBuilt = BuildStartVillage(i);
+                }
+
+                isBuilt = false;
+                while (!isBuilt)
+                {
+                    isBuilt = BuildStartRoad(i);
+                }
+
+                isBuilt = false;
+                while (!isBuilt)
+                {
+                    isBuilt = BuildStartRoad(i);
+                }
+            }
+
+            this.isStartRound = false;
+        }
+
+
+        private bool BuildStartVillage(int playerId)
+        {
+            int mouseCoorX = 0;
+            int mouseCoorY = 0;
+            if (this.newMouseState.LeftButton == ButtonState.Pressed
+                       && this.oldMouseState.LeftButton == ButtonState.Released
+                && Mouse.GetState().X > 0 && Mouse.GetState().Y > 0)
+            {
+                mouseCoorX = Mouse.GetState().X;
+                mouseCoorY = Mouse.GetState().Y;
+
+            }
+            for (uint x = 0; x < 20; x++)
+            {
+                for (uint y = 0; y < 9; y++)
+                {
+                    if (settlements[x, y] == null)
+                    {
+                        continue;
+                    }
+                    //if (settlements[x, y].CLickBelongToObject(Mouse.GetState().X, Mouse.GetState().Y)
+                    //    && this.newMouseState.LeftButton == ButtonState.Pressed
+                    //    && this.oldMouseState.LeftButton == ButtonState.Released)
+                    if (settlements[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
+                    {
+                        try
+                        {
+                            settlements[x, y].Build(players[playerId], true);
+                            var tempX = settlements[x, y].ScreenX;
+                            var tempY = settlements[x, y].ScreenY;
+                            Village tempVillage = new Village(x, y, players[playerId].Id, Content, "dice1", tempX, tempY, 20, 20);
+                            settlements[x, y] = tempVillage;
+                            //TODO: Set proper image
+                            players[playerId].Villages.Add(tempVillage);
+                            return true;
+                        }catch(Exceptions.IllegalBuildPositionException ib)
+                        {
+                            this.ErrorMessage = ib.Message;
+                        }
+                        catch (Exception e)
+                        {
+                            //TODO set message to a string and 
+                            
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool BuildStartRoad(int playerId)
+        {
+            int mouseCoorX = 0;
+            int mouseCoorY = 0;
+             if (this.newMouseState.LeftButton == ButtonState.Pressed
+                        && this.oldMouseState.LeftButton == ButtonState.Released
+                 && Mouse.GetState().X > 0 && Mouse.GetState().Y > 0)
+             {
+            mouseCoorX = Mouse.GetState().X;
+            mouseCoorY = Mouse.GetState().Y;
+            
+             }
+            for (uint x = 0; x < 20; x++)
+            {
+                for (uint y = 0; y < 17; y++)
+                {
+                    if (roadsAndBoats[x, y] == null)
+                    {
+                        continue;
+                    }
+                    //if (roadsAndBoats[x, y].CLickBelongToObject(Mouse.GetState().X, Mouse.GetState().Y)
+                    //    && this.newMouseState.LeftButton == ButtonState.Pressed
+                    //    && this.oldMouseState.LeftButton == ButtonState.Released)
+                    
+                       if(roadsAndBoats[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
+                        
+                    {
+                        try
+                        {
+                            roadsAndBoats[x, y].Build(players[playerId], true);
+                            var startTempX = roadsAndBoats[x, y].StartPointX;
+                            var startTempY = roadsAndBoats[x, y].StartPointY;
+                            var endTempX = roadsAndBoats[x, y].EndPointX;
+                            var endTempY = roadsAndBoats[x, y].EndPointY;
+                            var tempX = roadsAndBoats[x, y].ScreenX;
+                            var tempY = roadsAndBoats[x, y].ScreenY;
+
+                            Road tempRoad = new Road(startTempX, startTempY, endTempX, endTempY, players[playerId].Id,
+                                                        Content, "dice2", tempX, tempY, 20, 30); //TODO //TODO: Set proper image
+                            roadsAndBoats[x, y] = tempRoad;
+
+                            players[playerId].LineObjects.Add(tempRoad);
+                            return true;
+                        }
+                        catch (Exceptions.IllegalBuildPositionException ib)
+                        {
+                            this.ErrorMessage = ib.Message;
+                        }
+                        catch (Exception e)
+                        {
+                            //TODO set message to a string and visualize
+                            
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
 
 
         /// <summary>
@@ -335,15 +498,16 @@ namespace Catan
                     //rest
                     this.playerOnTurn.Draw(this.spriteBatch);
                     this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn", new Vector2(270, 10), Color.White);
+                    this.spriteBatch.DrawString(this.menuFont, this.ErrorMessage, new Vector2(270, 50), Color.White);
 
                     //Draw Roads
                     for (int i = 0; i < 20; i++)
                     {
                         for (int j = 0; j < 17; j++)
                         {
-                            if (roadsAndboats[i, j] != null)
+                            if (roadsAndBoats[i, j] != null)
                             {
-                                roadsAndboats[i, j].Draw(this.spriteBatch);
+                                roadsAndBoats[i, j].Draw(this.spriteBatch);
                             }
                         }
                     }
@@ -387,7 +551,7 @@ namespace Catan
 
 
         //customMethods
-        private static void LoadRoadsAndBoats(LineObject[,] lineObject, ContentManager content)
+        private static void LoadroadsAndBoats(LineObject[,] lineObject, ContentManager content)
         {
             lineObject[7, 3] = new LineObject(7, 1, 8, 1, 0, content, "transperent", 290, 110, 20, 30);
             lineObject[8, 3] = new LineObject(8, 1, 9, 1, 0, content, "transperent", 330, 110, 20, 30);
@@ -477,12 +641,12 @@ namespace Catan
         private static void LoadSettlements(Settlement[,] settlement, ContentManager content)
         {
             settlement[7, 1] = new Settlement(7, 1, 0, content, "transperent", 270, 125, 20, 20);
-            settlement[8, 1] = new Settlement(8, 1, 0, content, "transperent", 310, 125, 20, 20);
-            settlement[9, 1] = new Settlement(9, 1, 0, content, "transperent", 350, 105, 20, 20);
-            settlement[10, 1] = new Settlement(10, 1, 0, content, "transperent", 390, 125, 20, 20);
-            settlement[11, 1] = new Settlement(11, 1, 0, content, "transperent", 430, 105, 20, 20);
-            settlement[12, 1] = new Settlement(12, 1, 0, content, "transperent", 470, 125, 20, 20);
-            settlement[13, 1] = new Settlement(13, 1, 0, content, "transperent", 510, 105, 20, 20);
+            settlement[8, 1] = new Settlement(8, 1, 0, content, "transperent", 310, 105, 20, 20);
+            settlement[9, 1] = new Settlement(9, 1, 0, content, "transperent", 350, 125, 20, 20);
+            settlement[10, 1] = new Settlement(10, 1, 0, content, "transperent", 390, 105, 20, 20);
+            settlement[11, 1] = new Settlement(11, 1, 0, content, "transperent", 430, 125, 20, 20);
+            settlement[12, 1] = new Settlement(12, 1, 0, content, "transperent", 470, 105, 20, 20);
+            settlement[13, 1] = new Settlement(13, 1, 0, content, "transperent", 510, 125, 20, 20);
 
             settlement[6, 2] = new Settlement(6, 2, 0, content, "transperent", 230, 195, 20, 20);
             settlement[7, 2] = new Settlement(7, 2, 0, content, "transperent", 270, 175, 20, 20);
@@ -502,9 +666,9 @@ namespace Catan
             settlement[10, 3] = new Settlement(10, 3, 0, content, "transperent", 390, 245, 20, 20);
             settlement[11, 3] = new Settlement(11, 3, 0, content, "transperent", 430, 265, 20, 20);
             settlement[12, 3] = new Settlement(12, 3, 0, content, "transperent", 470, 245, 20, 20);
-            settlement[13, 3] = new Settlement(13, 3, 0, content, "transperent", 510, 245, 20, 20);
-            settlement[14, 3] = new Settlement(14, 3, 0, content, "transperent", 550, 265, 20, 20);
-            settlement[15, 3] = new Settlement(15, 3, 0, content, "transperent", 590, 245, 20, 20);
+            settlement[13, 3] = new Settlement(13, 3, 0, content, "transperent", 510, 265, 20, 20);
+            settlement[14, 3] = new Settlement(14, 3, 0, content, "transperent", 550, 245, 20, 20);
+            settlement[15, 3] = new Settlement(15, 3, 0, content, "transperent", 590, 265, 20, 20);
 
             settlement[5, 4] = new Settlement(5, 4, 0, content, "transperent", 190, 315, 20, 20);
             settlement[6, 4] = new Settlement(6, 4, 0, content, "transperent", 230, 335, 20, 20);
@@ -513,10 +677,10 @@ namespace Catan
             settlement[9, 4] = new Settlement(9, 4, 0, content, "transperent", 350, 315, 20, 20);
             settlement[10, 4] = new Settlement(10, 4, 0, content, "transperent", 390, 335, 20, 20);
             settlement[11, 4] = new Settlement(11, 4, 0, content, "transperent", 430, 315, 20, 20);
-            settlement[12, 4] = new Settlement(12, 4, 0, content, "transperent", 370, 335, 20, 20);
-            settlement[13, 4] = new Settlement(13, 4, 0, content, "transperent", 510, 335, 20, 20);
-            settlement[14, 4] = new Settlement(14, 4, 0, content, "transperent", 540, 335, 20, 20);
-            settlement[15, 4] = new Settlement(15, 4, 0, content, "transperent", 590, 335, 20, 20);
+            settlement[12, 4] = new Settlement(12, 4, 0, content, "transperent", 470, 335, 20, 20);
+            settlement[13, 4] = new Settlement(13, 4, 0, content, "transperent", 510, 315, 20, 20);
+            settlement[14, 4] = new Settlement(14, 4, 0, content, "transperent", 550, 335, 20, 20);
+            settlement[15, 4] = new Settlement(15, 4, 0, content, "transperent", 590, 315, 20, 20);
 
             settlement[6, 5] = new Settlement(6, 5, 0, content, "transperent", 230, 385, 20, 20);
             settlement[7, 5] = new Settlement(7, 5, 0, content, "transperent", 270, 405, 20, 20);
