@@ -12,7 +12,9 @@ using Catan.Interfaces;
 namespace Catan.GameObjects
 {
     public abstract class MapObject : Catan.Interfaces.IDrawableCustom,
-                                     Catan.Interfaces.IClickable
+                                      Catan.Interfaces.IClickable,
+                                      Catan.Interfaces.IBuildable
+
     {
         //constants
         protected const uint TOP = 2;
@@ -106,10 +108,6 @@ namespace Catan.GameObjects
                 this.texture = value;
             }
         }
-
-        public int LocationX { get; private set; }
-
-        public int LocationY { get; private set; }
 
         // methods
         public abstract void Build(IPlayer playerOnTurn, bool buildWithDevCard);
