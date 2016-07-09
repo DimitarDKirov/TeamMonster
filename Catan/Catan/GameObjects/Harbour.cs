@@ -37,7 +37,7 @@ namespace Catan.GameObjects
             {
                 tradeRate = 2;
             }
-            else if (!HarbourExists(playerOnTurn, ResourceType.None0))
+            else if (!HarbourExists(playerOnTurn, ResourceType.None))
             {
                 tradeRate = 3;
             }
