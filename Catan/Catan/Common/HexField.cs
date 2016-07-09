@@ -95,29 +95,34 @@ namespace Catan.Common
         }
 
 
-        public uint ScreenX
+        public int ScreenX
         {
-            get { throw new NotImplementedException(); }
+            get;
+            private set;
         }
 
-        public uint ScreenY
+        public int ScreenY
         {
-            get { throw new NotImplementedException(); }
+            get;
+            private set;
         }
 
         public uint DX
         {
-            get { throw new NotImplementedException(); }
+            get;
+            private set;
         }
 
         public uint DY
         {
-            get { throw new NotImplementedException(); }
+            get;
+            private set;
         }
 
-        public bool CLickBelongToObject(uint clcikedX, uint clickedY)
+        public bool CLickBelongToObject(int clickedX, int clickedY)
         {
-            throw new NotImplementedException();
+            return (this.ScreenX <= clickedX) && (this.ScreenX + this.DX >= clickedX) &&
+                   (this.ScreenY <= clickedY) && (this.ScreenY + this.DY >= clickedY);
         }
     }
 }

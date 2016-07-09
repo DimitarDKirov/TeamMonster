@@ -9,13 +9,13 @@ namespace Catan.Interfaces
 {
     public interface IClickable
     {
-        uint ScreenX { get;}
-        uint ScreenY { get;}
+        int ScreenX { get; }
+        int ScreenY { get; }
 
         uint DX { get; }
 
         uint DY { get; }
-        bool CLickBelongToObject(uint clcikedX, uint clickedY);
+        bool CLickBelongToObject(int clcikedX, int clickedY);
 
     }
 }
