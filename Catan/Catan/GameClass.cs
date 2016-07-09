@@ -12,7 +12,7 @@ using Catan.GameObjects;
 using Catan.DevelopmentCards;
 
 using Microsoft.Xna.Framework.Content;
-
+using Catan.Interfaces;
 
 namespace Catan
 {
@@ -63,6 +63,7 @@ namespace Catan
         private ScoreBoard scoreBoard;
         public IList<Player> players;
         public Player playerOnTurn;
+        public IPlayer winner;
         private Texture2D villageButton;
         private Texture2D townButton;
         private Texture2D roadButton;
@@ -334,7 +335,7 @@ namespace Catan
                     //rest
                     this.playerOnTurn.Draw(this.spriteBatch);
                     this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn", new Vector2(270, 10), Color.White);
-                    
+
                     //Draw Roads
                     for (int i = 0; i < 20; i++)
                     {
@@ -369,6 +370,9 @@ namespace Catan
                     break;
                 case GameState.Exit:
                     this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
+                    break;
+                case GameState.Win:
+                    this.spriteBatch.DrawString(this.menuFont, this.winner.UserName + " WINS!!!", new Vector2(UIConstants.aboutXOffset, UIConstants.aboutYOffset), Color.White);
                     break;
                 default:
                     break;
@@ -548,6 +552,8 @@ namespace Catan
 
         private void PlayerWins(object sender, EventArgs args)
         {
+            IPlayer winner = sender as IPlayer;
+            if (winner != null) this.winner = winner;
             this.gameState = GameState.Win;
         }
 
