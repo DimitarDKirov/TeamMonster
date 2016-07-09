@@ -11,6 +11,7 @@ namespace Catan.Menu
         Menu = 0,
         NewGame = 1,
         About = 2,
-        Exit = 3
+        Exit = 3,
+        Win = 4
     }
 }

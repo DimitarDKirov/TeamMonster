@@ -31,7 +31,7 @@ namespace Catan.Common
         private IList<LineObject> lineObjects;
 
         private readonly SpriteFont font;
-
+        //event raised if a player wins 10 points and wins
         public event EventHandler WinPointsReached;
 
         //Constructors

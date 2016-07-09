@@ -160,6 +160,11 @@ namespace Catan
                 new Player("Player 4", Color.Yellow, this.Content, 0, 500, 430, 100)
             };
 
+            //subscribe to Player wins event
+            foreach (var player in this.players)
+            {
+                player.WinPointsReached += this.PlayerWins;
+            }
             //objects
             this.dices = new Dice(this.Content, "dice1", 670, 530, 110, 50);
             this.dices.Roll();
@@ -184,6 +189,11 @@ namespace Catan
 
 
             // TODO: use this.Content to load your game content here
+        }
+
+        private void Player_WinPointsReached(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -331,6 +341,11 @@ namespace Catan
 
 
             base.Draw(gameTime);
+        }
+
+        private void PlayerWins(object sender, EventArgs args)
+        {
+            this.gameState = GameState.Win;
         }
     }
 }
