@@ -337,39 +337,38 @@ namespace Catan
         }
 
         // FIRST ROUNDS
-        private void InitGame()
-        {
-            var r = this.Players.First(pl => pl.Settlements.Count < 2);
-            for (int i = 0; i < 3; i++)
-            {
-                bool isBuilt = false;
-                while (!isBuilt)
-                {
-                    //isBuilt = BuildStartVillage(i);
-                }
+        //private void InitGame()
+        //{
+        //    var r = this.Players.First(pl => pl.Settlements.Count < 2);
+        //    for (int i = 0; i < 3; i++)
+        //    {
+        //        bool isBuilt = false;
+        //        while (!isBuilt)
+        //        {
+        //            //isBuilt = BuildStartVillage(i);
+        //        }
 
-                isBuilt = false;
-                while (!isBuilt)
-                {
-                    //isBuilt = BuildStartVillage(i);
-                }
+        //        isBuilt = false;
+        //        while (!isBuilt)
+        //        {
+        //            //isBuilt = BuildStartVillage(i);
+        //        }
 
-                isBuilt = false;
-                while (!isBuilt)
-                {
-                    //isBuilt = BuildStartRoad(i);
-                }
+        //        isBuilt = false;
+        //        while (!isBuilt)
+        //        {
+        //            //isBuilt = BuildStartRoad(i);
+        //        }
 
-                isBuilt = false;
-                while (!isBuilt)
-                {
-                    //isBuilt = BuildStartRoad(i);
-                }
-            }
+        //        isBuilt = false;
+        //        while (!isBuilt)
+        //        {
+        //            //isBuilt = BuildStartRoad(i);
+        //        }
+        //    }
 
-            this.isStartRound = false;
-        }
-
+        //    this.isStartRound = false;
+        //}
 
         private bool BuildStartVillage(IPlayer player)
         {
