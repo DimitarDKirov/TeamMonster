@@ -14,6 +14,7 @@ using Catan.DevelopmentCards;
 
 using Microsoft.Xna.Framework.Content;
 using Catan.Interfaces;
+using Catan.Utilities;
 
 namespace Catan
 {
@@ -52,6 +53,8 @@ namespace Catan
         //fonts
         private SpriteFont gameFont;
         private SpriteFont menuFont;
+        private SpriteFont gameMessageFont;
+        private SpriteFont winMessageFont;
 
         //menu related
         private IList<MenuItem> menuOptions;
@@ -60,15 +63,18 @@ namespace Catan
 
         //game related
         private Texture2D gameBackground;
+        private Texture2D winBackground;
         private Dice dices;
         private ScoreBoard scoreBoard;
         public IList<Player> players;
         public Player playerOnTurn;
         public IPlayer winner;
+        private Texture2D develpomentCardButton;
         private Texture2D villageButton;
         private Texture2D townButton;
         private Texture2D roadButton;
         private Texture2D boatButton;
+        private Rectangle develpomentCardRect;
         private Rectangle villageRect;
         private Rectangle townRect;
         private Rectangle roadRect;
@@ -152,6 +158,8 @@ namespace Catan
             //fonts
             this.gameFont = this.Content.Load<SpriteFont>("Arial");
             this.menuFont = this.Content.Load<SpriteFont>("ArialMenu");
+            this.gameMessageFont = this.Content.Load<SpriteFont>("ArialMedium");
+            this.winMessageFont = this.Content.Load<SpriteFont>("ArialWin");
 
             this.isStartRound = true;
 
@@ -159,6 +167,8 @@ namespace Catan
             this.menuBackground = this.Content.Load<Texture2D>("menubackground");
             this.aboutBackground = this.Content.Load<Texture2D>("aboutbackground");
             this.gameBackground = this.Content.Load<Texture2D>("gamebackground");
+            this.winBackground = this.Content.Load<Texture2D>("winbackground");
+            this.develpomentCardButton = this.Content.Load<Texture2D>("developmentcard");
             this.villageButton = this.Content.Load<Texture2D>("village");
             this.townButton = this.Content.Load<Texture2D>("town");
             this.roadButton = this.Content.Load<Texture2D>("road");
@@ -166,6 +176,7 @@ namespace Catan
 
             //rectangles
             this.backgroundRect = new Rectangle(0, 0, UIConstants.windowWidth, UIConstants.windowHeight);
+            this.develpomentCardRect = new Rectangle(10, 250, 40, 40);
             this.villageRect = new Rectangle(10, 300, 40, 40);
             this.townRect = new Rectangle(10, 350, 40, 40);
             this.roadRect = new Rectangle(10, 400, 40, 40);
@@ -191,18 +202,18 @@ namespace Catan
             //objects
             this.dices = new Dice(this.Content, "dice1", 670, 530, 110, 50);
             this.dices.Roll();
-            this.scoreBoard = new ScoreBoard(this.players, this.Content, "scoreboard", 0, 0, 105, 100);
+            this.scoreBoard = new ScoreBoard(this.players, this.Content, "scoreboard", 0, 0, 105, 103);
 
             //
             this.settlements = new Settlement[20, 9];
             this.roadsAndBoats = new LineObject[20, 17];
 
             //Load Content
-            GameClass.LoadSettlements(this.settlements, this.Content);
-            GameClass.LoadroadsAndBoats(this.roadsAndBoats, this.Content);
+            ContentLoader.LoadSettlements(this.settlements, this.Content);
+            ContentLoader.LoadroadsAndBoats(this.roadsAndBoats, this.Content);
 
             this.playerOnTurn = this.players[0];
-            this.statusMessage = "to build villages";
+            this.statusMessage = "Build 2 villages";
             this.menuOptions = new List<MenuItem>
             {
               new MenuItem("New game", new Vector2(UIConstants.windowWidth / 2, 270), Color.Crimson, this.Content),
@@ -278,11 +289,11 @@ namespace Catan
                             this.PlayerOnTurn = player;
                             if (player.Villages.Count < 2)
                             {
-                                this.BuildStartVillage(player);
+                                this.BuildStartVillage(player, true);
                             }
                             else
                             {
-                                this.BuildStartRoad(player);
+                                this.BuildStartRoad(player, true);
                             }
                         }
                         //check which is the next move and which player to do it
@@ -291,30 +302,65 @@ namespace Catan
                             int currentPLayerIndex = this.Players.IndexOf(player);
                             int nextPlayerIndex = (currentPLayerIndex + 1) % this.Players.Count;
                             this.playerOnTurn = this.Players[nextPlayerIndex];
-                            if (currentPLayerIndex == this.Players.Count - 1) this.statusMessage = " to roll dices";
-                            else this.statusMessage = " to build 2 villages";
+                            if (currentPLayerIndex == this.Players.Count - 1)
+                            {
+                                this.statusMessage = "Roll dices";
+                                this.isStartRound = false;
+                            }
+                            else this.statusMessage = "Build 2 villages";
                         }
-                        else if (player.Villages.Count >= 2) this.statusMessage = " to build 2 roads";
+                        else if (player.Villages.Count >= 2) this.statusMessage = "Build 2 roads";
                     }
-
-
-                    if (this.dices.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                    else
                     {
 
-                        this.dices.Roll();
-                        //TODO: Loop over and collect resources
+                        //Buttons for actions
+                        if (this.develpomentCardRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                        {
 
-                        //this.playerOnTurn
+                            //Add functionality
+                            this.statusMessage = "Buy cards";
+                        }
+                        if (this.villageRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                        {
+
+                            this.BuildStartVillage(this.playerOnTurn, false);
+                            this.statusMessage = "Build village";
+                        }
+                        if (this.townRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                        {
+
+                            //Add functionality
+                            this.statusMessage = "Build town";
+                        }
+                        if (this.roadRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                        {
+
+                            this.BuildStartRoad(this.playerOnTurn, false);
+                            this.statusMessage = "Build road";
+                        }
+                        if (this.boatRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                        {
+
+                            //Add functionality
+                            this.statusMessage = "Build boat";
+                        }
 
 
-                        this.playerOnTurn = this.players[this.playerOnTurn.Id % 4];
-                        this.playerOnTurn.AddPoints(2);//TEST REMOVE LATER
-                        this.scoreBoard.Update(this.players);
+                        if (this.dices.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                        {
+
+                            this.dices.Roll();
+                            //TODO: Loop over and collect resources
+
+                            //this.playerOnTurn
+
+
+                            this.playerOnTurn = this.players[this.playerOnTurn.Id % 4];
+                            this.playerOnTurn.AddPoints(2);//TEST REMOVE LATER
+                            this.scoreBoard.Update(this.players);
+                        }
                     }
-
-                    //main game logic here
-                    //TODO: make functionality on buttons click
-
                     break;
                 case GameState.About:
 
@@ -323,54 +369,16 @@ namespace Catan
                         this.gameState = GameState.Menu;
                     }
 
-                    //for now an empty menu
-
                     break;
                 case GameState.Exit:
                     Exit();
                     break;
             }
 
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
-        // FIRST ROUNDS
-        //private void InitGame()
-        //{
-        //    var r = this.Players.First(pl => pl.Settlements.Count < 2);
-        //    for (int i = 0; i < 3; i++)
-        //    {
-        //        bool isBuilt = false;
-        //        while (!isBuilt)
-        //        {
-        //            //isBuilt = BuildStartVillage(i);
-        //        }
-
-        //        isBuilt = false;
-        //        while (!isBuilt)
-        //        {
-        //            //isBuilt = BuildStartVillage(i);
-        //        }
-
-        //        isBuilt = false;
-        //        while (!isBuilt)
-        //        {
-        //            //isBuilt = BuildStartRoad(i);
-        //        }
-
-        //        isBuilt = false;
-        //        while (!isBuilt)
-        //        {
-        //            //isBuilt = BuildStartRoad(i);
-        //        }
-        //    }
-
-        //    this.isStartRound = false;
-        //}
-
-        private bool BuildStartVillage(IPlayer player)
+        private bool BuildStartVillage(IPlayer player, bool buildWithDevCard)
         {
             int mouseCoorX = 0;
             int mouseCoorY = 0;
@@ -390,19 +398,16 @@ namespace Catan
                         {
                             continue;
                         }
-                        //if (settlements[x, y].CLickBelongToObject(Mouse.GetState().X, Mouse.GetState().Y)
-                        //    && this.newMouseState.LeftButton == ButtonState.Pressed
-                        //    && this.oldMouseState.LeftButton == ButtonState.Released)
                         if (settlements[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
                         {
                             try
                             {
-                                settlements[x, y].Build(player, true);
+                                settlements[x, y].Build(player, buildWithDevCard);
                                 var tempX = settlements[x, y].ScreenX;
                                 var tempY = settlements[x, y].ScreenY;
-                                Village tempVillage = new Village(x, y, player.Id, Content, "dice1", tempX, tempY, 20, 20);
+                                var imageString = string.Format("villageplayer" + player.Id);
+                                Village tempVillage = new Village(x, y, player.Id, Content, imageString, tempX, tempY, 20, 20);
                                 settlements[x, y] = tempVillage;
-                                //TODO: Set proper image
                                 player.Villages.Add(tempVillage);
                                 return true;
                             }
@@ -412,7 +417,6 @@ namespace Catan
                             }
                             catch (Exception e)
                             {
-                                //TODO set message to a string and visualize
                                 this.errorMessage = e.Message;
                             }
                         }
@@ -423,7 +427,7 @@ namespace Catan
             return true;
         }
 
-        private bool BuildStartRoad(IPlayer player)
+        private bool BuildStartRoad(IPlayer player, bool buildWithDevCard)
         {
             int mouseCoorX = 0;
             int mouseCoorY = 0;
@@ -443,16 +447,12 @@ namespace Catan
                     {
                         continue;
                     }
-                    //if (roadsAndBoats[x, y].CLickBelongToObject(Mouse.GetState().X, Mouse.GetState().Y)
-                    //    && this.newMouseState.LeftButton == ButtonState.Pressed
-                    //    && this.oldMouseState.LeftButton == ButtonState.Released)
 
                     if (roadsAndBoats[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
-
                     {
                         try
                         {
-                            roadsAndBoats[x, y].Build(player, true);
+                            roadsAndBoats[x, y].Build(player, buildWithDevCard);
                             var startTempX = roadsAndBoats[x, y].StartPointX;
                             var startTempY = roadsAndBoats[x, y].StartPointY;
                             var endTempX = roadsAndBoats[x, y].EndPointX;
@@ -460,8 +460,10 @@ namespace Catan
                             var tempX = roadsAndBoats[x, y].ScreenX;
                             var tempY = roadsAndBoats[x, y].ScreenY;
 
+                            var imageString = DataGenerator.GenerateRoadName(x, y) + player.Id;
+
                             Road tempRoad = new Road(startTempX, startTempY, endTempX, endTempY, player.Id,
-                                                        Content, "dice2", tempX, tempY, 20, 30); //TODO //TODO: Set proper image
+                                                        Content, imageString, tempX, tempY, 20, 30); //TODO //TODO: Set proper image
                             roadsAndBoats[x, y] = tempRoad;
 
                             player.LineObjects.Add(tempRoad);
@@ -473,7 +475,6 @@ namespace Catan
                         }
                         catch (Exception e)
                         {
-                            //TODO set message to a string and visualize
                             this.errorMessage = e.Message;
                         }
                     }
@@ -518,14 +519,16 @@ namespace Catan
                     this.dices.Draw(this.spriteBatch);
                     this.scoreBoard.Draw(this.spriteBatch);
                     //buttons
+                    this.spriteBatch.Draw(this.develpomentCardButton, this.develpomentCardRect, Color.White);
                     this.spriteBatch.Draw(this.villageButton, this.villageRect, Color.White);
                     this.spriteBatch.Draw(this.townButton, this.townRect, Color.White);
                     this.spriteBatch.Draw(this.roadButton, this.roadRect, Color.White);
                     this.spriteBatch.Draw(this.boatButton, this.boatRect, Color.White);
                     //rest
                     this.playerOnTurn.Draw(this.spriteBatch);
-                    this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn " + this.statusMessage, new Vector2(270, 10), Color.White);
-                    this.spriteBatch.DrawString(this.menuFont, this.errorMessage, new Vector2(270, 50), Color.Red);
+                    this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn ", new Vector2(115, 5), Color.White);
+                    this.spriteBatch.DrawString(this.gameMessageFont, this.statusMessage, new Vector2(115, 50), Color.White);
+                    this.spriteBatch.DrawString(this.gameMessageFont, this.errorMessage, new Vector2(115, 80), Color.Red);
 
                     //Draw Roads
                     for (int i = 0; i < 20; i++)
@@ -563,7 +566,8 @@ namespace Catan
                     this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
                     break;
                 case GameState.Win:
-                    this.spriteBatch.DrawString(this.menuFont, this.winner.UserName + " WINS!!!", new Vector2(UIConstants.aboutXOffset, UIConstants.aboutYOffset), Color.White);
+                    this.spriteBatch.Draw(this.winBackground, this.backgroundRect, Color.White);
+                    this.spriteBatch.DrawString(this.winMessageFont, this.winner.UserName + " Wins", new Vector2(UIConstants.windowWidth / 2, 100) - (this.winMessageFont.MeasureString(this.winner.UserName + " WINS")/2), Color.Crimson);
                     break;
                 default:
                     break;
@@ -578,156 +582,9 @@ namespace Catan
 
 
         //customMethods
-        private static void LoadroadsAndBoats(LineObject[,] lineObject, ContentManager content)
-        {
-            lineObject[7, 3] = new LineObject(7, 1, 8, 1, 0, content, "transperent", 290, 110, 20, 30);
-            lineObject[8, 3] = new LineObject(8, 1, 9, 1, 0, content, "transperent", 330, 110, 20, 30);
-            lineObject[9, 3] = new LineObject(9, 1, 10, 1, 0, content, "transperent", 370, 110, 20, 30);
-            lineObject[10, 3] = new LineObject(10, 1, 11, 1, 0, content, "transperent", 410, 110, 20, 30);
-            lineObject[11, 3] = new LineObject(11, 1, 12, 1, 0, content, "transperent", 450, 110, 20, 30);
-            lineObject[12, 3] = new LineObject(12, 1, 13, 1, 0, content, "transperent", 490, 110, 20, 30);
 
-            lineObject[7, 4] = new LineObject(7, 1, 7, 2, 0, content, "transperent", 270, 145, 20, 30);
-            lineObject[9, 4] = new LineObject(9, 1, 9, 2, 0, content, "transperent", 350, 145, 20, 30);
-            lineObject[11, 4] = new LineObject(11, 1, 11, 2, 0, content, "transperent", 430, 145, 20, 30);
-            lineObject[13, 4] = new LineObject(13, 1, 13, 2, 0, content, "transperent", 510, 145, 20, 30);
 
-            lineObject[6, 5] = new LineObject(6, 2, 7, 2, 0, content, "transperent", 250, 180, 20, 30);
-            lineObject[7, 5] = new LineObject(7, 2, 8, 2, 0, content, "transperent", 290, 180, 20, 30);
-            lineObject[8, 5] = new LineObject(8, 2, 9, 2, 0, content, "transperent", 330, 180, 20, 30);
-            lineObject[9, 5] = new LineObject(9, 2, 10, 2, 0, content, "transperent", 370, 180, 20, 30);
-            lineObject[10, 5] = new LineObject(10, 2, 11, 2, 0, content, "transperent", 410, 180, 20, 30);
-            lineObject[11, 5] = new LineObject(11, 2, 12, 2, 0, content, "transperent", 450, 180, 20, 30);
-            lineObject[12, 5] = new LineObject(12, 2, 13, 2, 0, content, "transperent", 490, 180, 20, 30);
-            lineObject[13, 5] = new LineObject(13, 2, 14, 2, 0, content, "transperent", 530, 180, 20, 30);
 
-            lineObject[6, 6] = new LineObject(6, 2, 6, 3, 0, content, "transperent", 230, 215, 20, 30);
-            lineObject[8, 6] = new LineObject(8, 2, 8, 3, 0, content, "transperent", 310, 215, 20, 30);
-            lineObject[10, 6] = new LineObject(10, 2, 10, 3, 0, content, "transperent", 390, 215, 20, 30);
-            lineObject[12, 6] = new LineObject(12, 2, 12, 3, 0, content, "transperent", 470, 215, 20, 30);
-            lineObject[14, 6] = new LineObject(14, 2, 14, 3, 0, content, "transperent", 550, 215, 20, 30);
-
-            lineObject[5, 7] = new LineObject(5, 3, 6, 3, 0, content, "transperent", 210, 250, 20, 30);
-            lineObject[6, 7] = new LineObject(6, 3, 7, 3, 0, content, "transperent", 250, 250, 20, 30);
-            lineObject[7, 7] = new LineObject(7, 3, 8, 3, 0, content, "transperent", 290, 250, 20, 30);
-            lineObject[8, 7] = new LineObject(8, 3, 9, 3, 0, content, "transperent", 330, 250, 20, 30);
-            lineObject[9, 7] = new LineObject(9, 3, 10, 3, 0, content, "transperent", 370, 250, 20, 30);
-            lineObject[10, 7] = new LineObject(10, 3, 11, 3, 0, content, "transperent", 410, 250, 20, 30);
-            lineObject[11, 7] = new LineObject(11, 3, 12, 3, 0, content, "transperent", 450, 250, 20, 30);
-            lineObject[12, 7] = new LineObject(12, 3, 13, 3, 0, content, "transperent", 490, 250, 20, 30);
-            lineObject[13, 7] = new LineObject(13, 3, 14, 3, 0, content, "transperent", 530, 250, 20, 30);
-            lineObject[14, 7] = new LineObject(14, 3, 15, 3, 0, content, "transperent", 570, 250, 20, 30);
-
-            lineObject[5, 8] = new LineObject(5, 3, 5, 4, 0, content, "transperent", 190, 285, 20, 30);
-            lineObject[7, 8] = new LineObject(7, 3, 7, 4, 0, content, "transperent", 270, 285, 20, 30);
-            lineObject[9, 8] = new LineObject(9, 3, 9, 4, 0, content, "transperent", 350, 285, 20, 30);
-            lineObject[11, 8] = new LineObject(11, 3, 11, 4, 0, content, "transperent", 430, 285, 20, 30);
-            lineObject[13, 8] = new LineObject(13, 3, 13, 4, 0, content, "transperent", 510, 285, 20, 30);
-            lineObject[15, 8] = new LineObject(15, 3, 15, 4, 0, content, "transperent", 590, 285, 20, 30);
-
-            lineObject[5, 9] = new LineObject(5, 4, 6, 4, 0, content, "transperent", 210, 320, 20, 30);
-            lineObject[6, 9] = new LineObject(6, 4, 7, 4, 0, content, "transperent", 250, 320, 20, 30);
-            lineObject[7, 9] = new LineObject(7, 4, 8, 4, 0, content, "transperent", 290, 320, 20, 30);
-            lineObject[8, 9] = new LineObject(8, 4, 9, 4, 0, content, "transperent", 330, 320, 20, 30);
-            lineObject[9, 9] = new LineObject(9, 4, 10, 4, 0, content, "transperent", 370, 320, 20, 30);
-            lineObject[10, 9] = new LineObject(10, 4, 11, 4, 0, content, "transperent", 410, 320, 20, 30);
-            lineObject[11, 9] = new LineObject(11, 4, 12, 4, 0, content, "transperent", 450, 320, 20, 30);
-            lineObject[12, 9] = new LineObject(12, 4, 13, 4, 0, content, "transperent", 490, 320, 20, 30);
-            lineObject[13, 9] = new LineObject(13, 4, 14, 4, 0, content, "transperent", 530, 320, 20, 30);
-            lineObject[14, 9] = new LineObject(14, 4, 15, 4, 0, content, "transperent", 570, 320, 20, 30);
-
-            lineObject[6, 10] = new LineObject(6, 4, 6, 5, 0, content, "transperent", 230, 355, 20, 30);
-            lineObject[8, 10] = new LineObject(8, 4, 8, 5, 0, content, "transperent", 310, 355, 20, 30);
-            lineObject[10, 10] = new LineObject(10, 4, 10, 5, 0, content, "transperent", 390, 355, 20, 30);
-            lineObject[12, 10] = new LineObject(12, 4, 12, 5, 0, content, "transperent", 470, 355, 20, 30);
-            lineObject[14, 10] = new LineObject(14, 4, 14, 5, 0, content, "transperent", 550, 355, 20, 30);
-
-            lineObject[6, 11] = new LineObject(6, 5, 7, 5, 0, content, "transperent", 250, 390, 20, 30);
-            lineObject[7, 11] = new LineObject(7, 5, 8, 5, 0, content, "transperent", 290, 390, 20, 30);
-            lineObject[8, 11] = new LineObject(8, 5, 9, 5, 0, content, "transperent", 330, 390, 20, 30);
-            lineObject[9, 11] = new LineObject(9, 5, 10, 5, 0, content, "transperent", 370, 390, 20, 30);
-            lineObject[10, 11] = new LineObject(10, 5, 11, 5, 0, content, "transperent", 410, 390, 20, 30);
-            lineObject[11, 11] = new LineObject(11, 5, 12, 5, 0, content, "transperent", 450, 390, 20, 30);
-            lineObject[12, 11] = new LineObject(12, 5, 13, 5, 0, content, "transperent", 490, 390, 20, 30);
-            lineObject[13, 11] = new LineObject(13, 5, 14, 5, 0, content, "transperent", 530, 390, 20, 30);
-
-            lineObject[7, 12] = new LineObject(7, 5, 9, 6, 0, content, "transperent", 270, 425, 20, 30);
-            lineObject[9, 12] = new LineObject(9, 5, 7, 6, 0, content, "transperent", 350, 425, 20, 30);
-            lineObject[11, 12] = new LineObject(11, 5, 11, 6, 0, content, "transperent", 430, 425, 20, 30);
-            lineObject[13, 12] = new LineObject(13, 5, 13, 6, 0, content, "transperent", 510, 425, 20, 30);
-
-            lineObject[7, 11] = new LineObject(7, 5, 8, 5, 0, content, "transperent", 290, 460, 20, 30);
-            lineObject[8, 11] = new LineObject(8, 5, 9, 5, 0, content, "transperent", 330, 460, 20, 30);
-            lineObject[9, 11] = new LineObject(9, 5, 10, 5, 0, content, "transperent", 370, 460, 20, 30);
-            lineObject[10, 11] = new LineObject(10, 5, 11, 5, 0, content, "transperent", 410, 460, 20, 30);
-            lineObject[11, 11] = new LineObject(11, 5, 12, 5, 0, content, "transperent", 450, 460, 20, 30);
-            lineObject[12, 11] = new LineObject(12, 5, 13, 5, 0, content, "transperent", 490, 460, 20, 30);
-
-        }
-
-        private static void LoadSettlements(Settlement[,] settlement, ContentManager content)
-        {
-            settlement[7, 1] = new Settlement(7, 1, 0, content, "transperent", 270, 125, 20, 20);
-            settlement[8, 1] = new Settlement(8, 1, 0, content, "transperent", 310, 105, 20, 20);
-            settlement[9, 1] = new Settlement(9, 1, 0, content, "transperent", 350, 125, 20, 20);
-            settlement[10, 1] = new Settlement(10, 1, 0, content, "transperent", 390, 105, 20, 20);
-            settlement[11, 1] = new Settlement(11, 1, 0, content, "transperent", 430, 125, 20, 20);
-            settlement[12, 1] = new Settlement(12, 1, 0, content, "transperent", 470, 105, 20, 20);
-            settlement[13, 1] = new Settlement(13, 1, 0, content, "transperent", 510, 125, 20, 20);
-
-            settlement[6, 2] = new Settlement(6, 2, 0, content, "transperent", 230, 195, 20, 20);
-            settlement[7, 2] = new Settlement(7, 2, 0, content, "transperent", 270, 175, 20, 20);
-            settlement[8, 2] = new Settlement(8, 2, 0, content, "transperent", 310, 195, 20, 20);
-            settlement[9, 2] = new Settlement(9, 2, 0, content, "transperent", 350, 175, 20, 20);
-            settlement[10, 2] = new Settlement(10, 2, 0, content, "transperent", 390, 195, 20, 20);
-            settlement[11, 2] = new Settlement(11, 2, 0, content, "transperent", 430, 175, 20, 20);
-            settlement[12, 2] = new Settlement(12, 2, 0, content, "transperent", 470, 195, 20, 20);
-            settlement[13, 2] = new Settlement(13, 2, 0, content, "transperent", 510, 175, 20, 20);
-            settlement[14, 2] = new Settlement(12, 2, 0, content, "transperent", 550, 195, 20, 20);
-
-            settlement[5, 3] = new Settlement(5, 3, 0, content, "transperent", 190, 265, 20, 20);
-            settlement[6, 3] = new Settlement(6, 3, 0, content, "transperent", 230, 245, 20, 20);
-            settlement[7, 3] = new Settlement(7, 3, 0, content, "transperent", 270, 265, 20, 20);
-            settlement[8, 3] = new Settlement(8, 3, 0, content, "transperent", 310, 245, 20, 20);
-            settlement[9, 3] = new Settlement(9, 3, 0, content, "transperent", 350, 265, 20, 20);
-            settlement[10, 3] = new Settlement(10, 3, 0, content, "transperent", 390, 245, 20, 20);
-            settlement[11, 3] = new Settlement(11, 3, 0, content, "transperent", 430, 265, 20, 20);
-            settlement[12, 3] = new Settlement(12, 3, 0, content, "transperent", 470, 245, 20, 20);
-            settlement[13, 3] = new Settlement(13, 3, 0, content, "transperent", 510, 265, 20, 20);
-            settlement[14, 3] = new Settlement(14, 3, 0, content, "transperent", 550, 245, 20, 20);
-            settlement[15, 3] = new Settlement(15, 3, 0, content, "transperent", 590, 265, 20, 20);
-
-            settlement[5, 4] = new Settlement(5, 4, 0, content, "transperent", 190, 315, 20, 20);
-            settlement[6, 4] = new Settlement(6, 4, 0, content, "transperent", 230, 335, 20, 20);
-            settlement[7, 4] = new Settlement(7, 4, 0, content, "transperent", 270, 315, 20, 20);
-            settlement[8, 4] = new Settlement(8, 4, 0, content, "transperent", 310, 335, 20, 20);
-            settlement[9, 4] = new Settlement(9, 4, 0, content, "transperent", 350, 315, 20, 20);
-            settlement[10, 4] = new Settlement(10, 4, 0, content, "transperent", 390, 335, 20, 20);
-            settlement[11, 4] = new Settlement(11, 4, 0, content, "transperent", 430, 315, 20, 20);
-            settlement[12, 4] = new Settlement(12, 4, 0, content, "transperent", 470, 335, 20, 20);
-            settlement[13, 4] = new Settlement(13, 4, 0, content, "transperent", 510, 315, 20, 20);
-            settlement[14, 4] = new Settlement(14, 4, 0, content, "transperent", 550, 335, 20, 20);
-            settlement[15, 4] = new Settlement(15, 4, 0, content, "transperent", 590, 315, 20, 20);
-
-            settlement[6, 5] = new Settlement(6, 5, 0, content, "transperent", 230, 385, 20, 20);
-            settlement[7, 5] = new Settlement(7, 5, 0, content, "transperent", 270, 405, 20, 20);
-            settlement[8, 5] = new Settlement(8, 5, 0, content, "transperent", 310, 385, 20, 20);
-            settlement[9, 5] = new Settlement(9, 5, 0, content, "transperent", 350, 405, 20, 20);
-            settlement[10, 5] = new Settlement(10, 5, 0, content, "transperent", 390, 385, 20, 20);
-            settlement[11, 5] = new Settlement(11, 5, 0, content, "transperent", 430, 405, 20, 20);
-            settlement[12, 5] = new Settlement(12, 5, 0, content, "transperent", 470, 385, 20, 20);
-            settlement[13, 5] = new Settlement(13, 5, 0, content, "transperent", 510, 405, 20, 20);
-            settlement[14, 5] = new Settlement(14, 5, 0, content, "transperent", 550, 385, 20, 20);
-
-            settlement[7, 6] = new Settlement(7, 6, 0, content, "transperent", 270, 455, 20, 20);
-            settlement[8, 6] = new Settlement(8, 6, 0, content, "transperent", 310, 475, 20, 20);
-            settlement[9, 6] = new Settlement(9, 6, 0, content, "transperent", 350, 455, 20, 20);
-            settlement[10, 6] = new Settlement(10, 6, 0, content, "transperent", 390, 475, 20, 20);
-            settlement[11, 6] = new Settlement(11, 6, 0, content, "transperent", 430, 455, 20, 20);
-            settlement[12, 6] = new Settlement(12, 6, 0, content, "transperent", 470, 475, 20, 20);
-            settlement[13, 6] = new Settlement(13, 6, 0, content, "transperent", 510, 475, 20, 20);
-
-        }
 
 
 

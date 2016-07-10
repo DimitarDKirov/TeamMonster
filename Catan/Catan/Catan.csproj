@@ -78,6 +78,8 @@
     <Compile Include="Menu\ScoreBoard.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\ContentLoader.cs" />
+    <Compile Include="Utilities\DataGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -90,6 +92,11 @@
     <Content Include="Additional Resources\grid.jpg" />
     <Content Include="Content\aboutbackground.png" />
     <Content Include="Content\boat.png" />
+    <Content Include="Content\boatplayer1.png" />
+    <Content Include="Content\boatplayer2.png" />
+    <Content Include="Content\boatplayer3.png" />
+    <Content Include="Content\boatplayer4.png" />
+    <Content Include="Content\developmentcard.png" />
     <Content Include="Content\dice1.png" />
     <Content Include="Content\dice2.png" />
     <Content Include="Content\dice3.png" />
@@ -99,6 +106,21 @@
     <Content Include="Content\gamebackground.png" />
     <Content Include="Content\menubackground.png" />
     <Content Include="Content\road.png" />
+    <Content Include="Content\roaddiagonalleft.png" />
+    <Content Include="Content\roaddiagonalleft1.png" />
+    <Content Include="Content\roaddiagonalleft2.png" />
+    <Content Include="Content\roaddiagonalleft3.png" />
+    <Content Include="Content\roaddiagonalleft4.png" />
+    <Content Include="Content\roaddiagonalright.png" />
+    <Content Include="Content\roaddiagonalright1.png" />
+    <Content Include="Content\roaddiagonalright2.png" />
+    <Content Include="Content\roaddiagonalright3.png" />
+    <Content Include="Content\roaddiagonalright4.png" />
+    <Content Include="Content\roadvertical.png" />
+    <Content Include="Content\roadvertical1.png" />
+    <Content Include="Content\roadvertical2.png" />
+    <Content Include="Content\roadvertical3.png" />
+    <Content Include="Content\roadvertical4.png" />
     <Content Include="Content\scoreboard.png" />
     <Content Include="Content\screenplayer1.png" />
     <Content Include="Content\screenplayer2.png" />
@@ -106,8 +128,17 @@
     <Content Include="Content\screenplayer4.png" />
     <Content Include="Content\FloatingCities.mp3" />
     <Content Include="Content\town.png" />
+    <Content Include="Content\townplayer1.png" />
+    <Content Include="Content\townplayer2.png" />
+    <Content Include="Content\townplayer3.png" />
+    <Content Include="Content\townplayer4.png" />
     <Content Include="Content\transperent.png" />
     <Content Include="Content\village.png" />
+    <Content Include="Content\villageplayer1.png" />
+    <Content Include="Content\villageplayer2.png" />
+    <Content Include="Content\villageplayer3.png" />
+    <Content Include="Content\villageplayer4.png" />
+    <Content Include="Content\winbackground.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -115,7 +146,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Arial.spritefont" />
+    <None Include="Content\ArialMedium.spritefont" />
     <None Include="Content\ArialMenu.spritefont" />
+    <None Include="Content\ArialWin.spritefont" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Sounds\" />
