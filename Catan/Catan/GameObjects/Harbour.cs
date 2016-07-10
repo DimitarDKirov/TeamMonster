@@ -5,20 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Catan.Common;
+using Catan.Interfaces;
 
 namespace Catan.GameObjects
 {
-    public class Harbour : LineObject
+    public class Harbour
     {
         private ResourceType tradingResource;
 
 
-        public override bool CheckTerrainCompatability()
-        {
-            LandType landStartPoint = MapObject.CheckLandType(this.StartPointX, this.StartPointY);
-            LandType landEndPoint = MapObject.CheckLandType(this.EndPointX, this.EndPointY);
-            return (landStartPoint == LandType.Shore && landEndPoint == LandType.Shore);
-        }
 
         // properties
         public ResourceType TradingResource
@@ -34,13 +29,36 @@ namespace Catan.GameObjects
         }
 
         // methods
-        public override void Build()
-        {
 
+        public static void Trade(IPlayer playerOnTurn, ResourceType offerredResource, ResourceType targetResource)
+        {
+            int tradeRate=4;
+            if (!HarbourExists(playerOnTurn, targetResource))
+            {
+                tradeRate = 2;
+            }
+            else if (!HarbourExists(playerOnTurn, ResourceType.None))
+            {
+                tradeRate = 3;
+            }
+            uint offeredResourceAvailable = playerOnTurn.GetResourceValue(offerredResource);
+            if (offeredResourceAvailable < tradeRate)
+            {
+                throw new Exception("Not enough resources!"); // TOD: custime exception
+            }
+
+            playerOnTurn.AddResourceValue(offerredResource, -tradeRate);
+            playerOnTurn.AddResourceValue(targetResource, 1);
         }
-        public override void Destroy()
-        {
 
+        private static bool HarbourExists(IPlayer playerOnTurn, ResourceType harbourResourceType)
+        {
+            foreach (var harbour in playerOnTurn.Harbours)
+            {
+                if (harbour.TradingResource == harbourResourceType)
+                    return true;
+            }
+            return false;
         }
     }
 }

@@ -5,9 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-using Microsoft.Xna.Framework.Content;namespace Catan.GameObjects
+using Catan.Common;
+using Microsoft.Xna.Framework.Content;
+using Catan.Interfaces;
+
+namespace Catan.GameObjects
 {
-    public abstract class LineObject : MapObject
+    public class LineObject : MapObject
     {
         protected uint startPointX;
         protected uint startPointY;
@@ -51,6 +55,8 @@ using Microsoft.Xna.Framework.Content;namespace Catan.GameObjects
 
         //
 
+
+
         // properties
         public uint StartPointX
         {
@@ -63,6 +69,7 @@ using Microsoft.Xna.Framework.Content;namespace Catan.GameObjects
                 this.startPointX = value;
             }
         }
+
         public uint StartPointY
         {
             get
@@ -96,7 +103,18 @@ using Microsoft.Xna.Framework.Content;namespace Catan.GameObjects
         }
         
         //methods
-
+        public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
+        {
+            if (this.PlayerID != playerOnTurn.Id && this.PlayerID != 0 && CheckTerrainCompatability())
+            {
+                throw new Exceptions.IllegalBuildPositionException("Can not build here!");
+            }
+        }
+        public override void Destroy(IPlayer playerOnTurn)
+        {
+            // TODO: Implement this method
+            throw new NotImplementedException();
+        }
         public override bool CheckTerrainCompatability()
         {
             throw new NotImplementedException();

@@ -114,13 +114,13 @@ namespace Catan.Common
         }
 
 
-        public uint ScreenX
+        public int ScreenX
         {
             get;
             private set;
         }
 
-        public uint ScreenY
+        public int ScreenY
         {
             get;
             private set;

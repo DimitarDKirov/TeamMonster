@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Catan.Common;
+using System;
 
 namespace Catan
 {
@@ -14,7 +15,7 @@ namespace Catan
         [STAThread]
         static void Main()
         {
-            using (var game = new GameClass())
+            using (var game = GameClass.Game)
                 game.Run();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Catan.Common;
+using Catan.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Catan.DevelopmentCards
 {
-    abstract class DevelopmentCard
+    public abstract class DevelopmentCard : IDevelopmentCard
     {
         private bool isPlayed;
 

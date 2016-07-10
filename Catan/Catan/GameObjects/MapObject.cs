@@ -7,11 +7,14 @@ using Catan.Common;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Catan.Interfaces;
 
 namespace Catan.GameObjects
 {
-    public abstract class MapObject : Catan.Interfaces.IDrawableCustom
-                                    //, Catan.Interfaces.IClickable
+    public abstract class MapObject : Catan.Interfaces.IDrawableCustom,
+                                      Catan.Interfaces.IClickable,
+                                      Catan.Interfaces.IBuildable
+
     {
         //constants
         protected const uint TOP = 2;
@@ -46,8 +49,8 @@ namespace Catan.GameObjects
             this.IsActive = true;
             this.Texture = content.Load<Texture2D>(texture);
             this.Rectangle = new Rectangle(x, y, width, height);
-            this.LocationX = x;
-            this.LocationY = y;
+            this.ScreenX = x;
+            this.ScreenY = y;
         }
 
         // properties
@@ -74,6 +77,13 @@ namespace Catan.GameObjects
                 this.isActive = value;
             }
         }
+        public uint DX { get; private set; }
+
+        public uint DY { get; private set; }
+
+        public int ScreenY { get; private set; }
+
+        public int ScreenX { get; private set;}
 
         public Rectangle Rectangle
         {
@@ -99,14 +109,10 @@ namespace Catan.GameObjects
             }
         }
 
-        public int LocationX { get; private set; }
-
-        public int LocationY { get; private set; }
-
         // methods
-        public abstract void Build();
+        public abstract void Build(IPlayer playerOnTurn, bool buildWithDevCard);
 
-        public abstract void Destroy();
+        public abstract void Destroy(IPlayer playerOnTurn);
 
         public abstract bool CheckTerrainCompatability();
 
@@ -136,6 +142,12 @@ namespace Catan.GameObjects
                 return LandType.Shore;
             else
                 return LandType.Sea;
+        }
+
+        public virtual bool CLickBelongToObject(int clickedX, int clickedY) 
+        {
+            return (this.ScreenX <= clickedX) && (this.ScreenX+this.DX >= clickedX) &&
+                   (this.ScreenY <= clickedY) && (this.ScreenY + this.DY >= clickedY);
         }
     }
 }

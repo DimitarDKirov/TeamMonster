@@ -39,11 +39,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\HexField.cs" />
+    <Compile Include="Interfaces\IDevelopmentCard.cs" />
+    <Compile Include="DevelopmentCards\ResourceGetCard.cs" />
+    <Compile Include="DevelopmentCards\RoadBuildCard.cs" />
+    <Compile Include="Interfaces\IBuildable.cs" />
+    <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Common\LandType.cs" />
     <Compile Include="Common\MapObjectType.cs" />
     <Compile Include="Common\Player.cs" />
     <Compile Include="Common\ResourceType.cs" />
     <Compile Include="Common\TerrainType.cs" />
+    <Compile Include="Constants\CommonConstants.cs" />
     <Compile Include="Constants\UIConstants.cs" />
     <Compile Include="DevelopmentCards\DevelopmentCard.cs" />
     <Compile Include="DevelopmentCards\KnightCard.cs" />
@@ -69,8 +75,11 @@
     <Compile Include="Interfaces\IDrawableCustom.cs" />
     <Compile Include="Common\GameState.cs" />
     <Compile Include="Menu\MenuItem.cs" />
+    <Compile Include="Menu\ScoreBoard.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\ContentLoader.cs" />
+    <Compile Include="Utilities\DataGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -80,8 +89,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Additional Resources\grid.jpg" />
     <Content Include="Content\aboutbackground.png" />
+    <Content Include="Content\boat.png" />
+    <Content Include="Content\boatplayer1.png" />
+    <Content Include="Content\boatplayer2.png" />
+    <Content Include="Content\boatplayer3.png" />
+    <Content Include="Content\boatplayer4.png" />
+    <Content Include="Content\developmentcard.png" />
+    <Content Include="Content\dice1.png" />
+    <Content Include="Content\dice2.png" />
+    <Content Include="Content\dice3.png" />
+    <Content Include="Content\dice4.png" />
+    <Content Include="Content\dice5.png" />
+    <Content Include="Content\dice6.png" />
+    <Content Include="Content\gamebackground.png" />
     <Content Include="Content\menubackground.png" />
+    <Content Include="Content\road.png" />
+    <Content Include="Content\roaddiagonalleft.png" />
+    <Content Include="Content\roaddiagonalleft1.png" />
+    <Content Include="Content\roaddiagonalleft2.png" />
+    <Content Include="Content\roaddiagonalleft3.png" />
+    <Content Include="Content\roaddiagonalleft4.png" />
+    <Content Include="Content\roaddiagonalright.png" />
+    <Content Include="Content\roaddiagonalright1.png" />
+    <Content Include="Content\roaddiagonalright2.png" />
+    <Content Include="Content\roaddiagonalright3.png" />
+    <Content Include="Content\roaddiagonalright4.png" />
+    <Content Include="Content\roadvertical.png" />
+    <Content Include="Content\roadvertical1.png" />
+    <Content Include="Content\roadvertical2.png" />
+    <Content Include="Content\roadvertical3.png" />
+    <Content Include="Content\roadvertical4.png" />
+    <Content Include="Content\scoreboard.png" />
+    <Content Include="Content\screenplayer1.png" />
+    <Content Include="Content\screenplayer2.png" />
+    <Content Include="Content\screenplayer3.png" />
+    <Content Include="Content\screenplayer4.png" />
+    <Content Include="Content\FloatingCities.mp3" />
+    <Content Include="Content\town.png" />
+    <Content Include="Content\townplayer1.png" />
+    <Content Include="Content\townplayer2.png" />
+    <Content Include="Content\townplayer3.png" />
+    <Content Include="Content\townplayer4.png" />
+    <Content Include="Content\transperent.png" />
+    <Content Include="Content\village.png" />
+    <Content Include="Content\villageplayer1.png" />
+    <Content Include="Content\villageplayer2.png" />
+    <Content Include="Content\villageplayer3.png" />
+    <Content Include="Content\villageplayer4.png" />
+    <Content Include="Content\winbackground.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -89,7 +146,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Arial.spritefont" />
+    <None Include="Content\ArialMedium.spritefont" />
     <None Include="Content\ArialMenu.spritefont" />
+    <None Include="Content\ArialWin.spritefont" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Sounds\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
