@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Catan.GameObjects;
 using Catan.DevelopmentCards;
 
@@ -73,7 +74,8 @@ namespace Catan
         private Rectangle roadRect;
         private Rectangle boatRect;
         private bool isStartRound;
-        private string ErrorMessage;
+        private string errorMessage = string.Empty;
+        private string statusMessage = string.Empty;
 
         private Settlement[,] settlements;
         private LineObject[,] roadsAndBoats;
@@ -147,8 +149,6 @@ namespace Catan
             backgroundMusic = Content.Load<Song>("Sounds/FloatingCities");
             MediaPlayer.Play(backgroundMusic);
 
-            this.ErrorMessage = "ASD";
-
             //fonts
             this.gameFont = this.Content.Load<SpriteFont>("Arial");
             this.menuFont = this.Content.Load<SpriteFont>("ArialMenu");
@@ -202,13 +202,13 @@ namespace Catan
             GameClass.LoadroadsAndBoats(this.roadsAndBoats, this.Content);
 
             this.playerOnTurn = this.players[0];
-
+            this.statusMessage = "to build villages";
             this.menuOptions = new List<MenuItem>
-          {
+            {
               new MenuItem("New game", new Vector2(UIConstants.windowWidth / 2, 270), Color.Crimson, this.Content),
               new MenuItem("About", new Vector2(UIConstants.windowWidth / 2, 320), Color.Crimson, this.Content),
               new MenuItem("Exit", new Vector2(UIConstants.windowWidth / 2, 370), Color.Crimson, this.Content)
-          };
+             };
 
             this.menuIndex = 1;
 
@@ -266,11 +266,37 @@ namespace Catan
                         this.gameState = GameState.Menu;
                     }
 
-                    if (this.isStartRound)
+                    if (this.isStartRound && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                     {
-                        InitGame();
+                        var player = this.Players.FirstOrDefault(pl => pl.Villages.Count < 2 || pl.LineObjects.Count < 2);
+                        if (player == null)
+                        {
+                            this.isStartRound = false;
+                        }
+                        else
+                        {
+                            this.PlayerOnTurn = player;
+                            if (player.Villages.Count < 2)
+                            {
+                                this.BuildStartVillage(player);
+                            }
+                            else
+                            {
+                                this.BuildStartRoad(player);
+                            }
+                        }
+                        //check which is the next move and which player to do it
+                        if (player.LineObjects.Count >= 2)
+                        {
+                            int currentPLayerIndex = this.Players.IndexOf(player);
+                            int nextPlayerIndex = (currentPLayerIndex + 1) % this.Players.Count;
+                            this.playerOnTurn = this.Players[nextPlayerIndex];
+                            if (currentPLayerIndex == this.Players.Count - 1) this.statusMessage = " to roll dices";
+                            else this.statusMessage = " to build 2 villages";
+                        }
+                        else if (player.Villages.Count >= 2) this.statusMessage = " to build 2 roads";
                     }
-                    
+
 
                     if (this.dices.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                     {
@@ -313,31 +339,31 @@ namespace Catan
         // FIRST ROUNDS
         private void InitGame()
         {
-
+            var r = this.Players.First(pl => pl.Settlements.Count < 2);
             for (int i = 0; i < 3; i++)
             {
                 bool isBuilt = false;
                 while (!isBuilt)
                 {
-                    isBuilt = BuildStartVillage(i);
+                    //isBuilt = BuildStartVillage(i);
                 }
 
                 isBuilt = false;
                 while (!isBuilt)
                 {
-                    isBuilt = BuildStartVillage(i);
+                    //isBuilt = BuildStartVillage(i);
                 }
 
                 isBuilt = false;
                 while (!isBuilt)
                 {
-                    isBuilt = BuildStartRoad(i);
+                    //isBuilt = BuildStartRoad(i);
                 }
 
                 isBuilt = false;
                 while (!isBuilt)
                 {
-                    isBuilt = BuildStartRoad(i);
+                    //isBuilt = BuildStartRoad(i);
                 }
             }
 
@@ -345,7 +371,60 @@ namespace Catan
         }
 
 
-        private bool BuildStartVillage(int playerId)
+        private bool BuildStartVillage(IPlayer player)
+        {
+            int mouseCoorX = 0;
+            int mouseCoorY = 0;
+            if (this.newMouseState.LeftButton == ButtonState.Pressed
+                       && this.oldMouseState.LeftButton == ButtonState.Released
+                && Mouse.GetState().X > 0 && Mouse.GetState().Y > 0)
+            {
+                mouseCoorX = Mouse.GetState().X;
+                mouseCoorY = Mouse.GetState().Y;
+
+
+                for (uint x = 0; x < 20; x++)
+                {
+                    for (uint y = 0; y < 9; y++)
+                    {
+                        if (settlements[x, y] == null)
+                        {
+                            continue;
+                        }
+                        //if (settlements[x, y].CLickBelongToObject(Mouse.GetState().X, Mouse.GetState().Y)
+                        //    && this.newMouseState.LeftButton == ButtonState.Pressed
+                        //    && this.oldMouseState.LeftButton == ButtonState.Released)
+                        if (settlements[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
+                        {
+                            try
+                            {
+                                settlements[x, y].Build(player, true);
+                                var tempX = settlements[x, y].ScreenX;
+                                var tempY = settlements[x, y].ScreenY;
+                                Village tempVillage = new Village(x, y, player.Id, Content, "dice1", tempX, tempY, 20, 20);
+                                settlements[x, y] = tempVillage;
+                                //TODO: Set proper image
+                                player.Villages.Add(tempVillage);
+                                return true;
+                            }
+                            catch (Exceptions.IllegalBuildPositionException ib)
+                            {
+                                this.errorMessage = ib.Message;
+                            }
+                            catch (Exception e)
+                            {
+                                //TODO set message to a string and visualize
+                                this.errorMessage = e.Message;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool BuildStartRoad(IPlayer player)
         {
             int mouseCoorX = 0;
             int mouseCoorY = 0;
@@ -359,57 +438,6 @@ namespace Catan
             }
             for (uint x = 0; x < 20; x++)
             {
-                for (uint y = 0; y < 9; y++)
-                {
-                    if (settlements[x, y] == null)
-                    {
-                        continue;
-                    }
-                    //if (settlements[x, y].CLickBelongToObject(Mouse.GetState().X, Mouse.GetState().Y)
-                    //    && this.newMouseState.LeftButton == ButtonState.Pressed
-                    //    && this.oldMouseState.LeftButton == ButtonState.Released)
-                    if (settlements[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
-                    {
-                        try
-                        {
-                            settlements[x, y].Build(players[playerId], true);
-                            var tempX = settlements[x, y].ScreenX;
-                            var tempY = settlements[x, y].ScreenY;
-                            Village tempVillage = new Village(x, y, players[playerId].Id, Content, "dice1", tempX, tempY, 20, 20);
-                            settlements[x, y] = tempVillage;
-                            //TODO: Set proper image
-                            players[playerId].Villages.Add(tempVillage);
-                            return true;
-                        }catch(Exceptions.IllegalBuildPositionException ib)
-                        {
-                            this.ErrorMessage = ib.Message;
-                        }
-                        catch (Exception e)
-                        {
-                            //TODO set message to a string and 
-                            
-                        }
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private bool BuildStartRoad(int playerId)
-        {
-            int mouseCoorX = 0;
-            int mouseCoorY = 0;
-             if (this.newMouseState.LeftButton == ButtonState.Pressed
-                        && this.oldMouseState.LeftButton == ButtonState.Released
-                 && Mouse.GetState().X > 0 && Mouse.GetState().Y > 0)
-             {
-            mouseCoorX = Mouse.GetState().X;
-            mouseCoorY = Mouse.GetState().Y;
-            
-             }
-            for (uint x = 0; x < 20; x++)
-            {
                 for (uint y = 0; y < 17; y++)
                 {
                     if (roadsAndBoats[x, y] == null)
@@ -419,13 +447,13 @@ namespace Catan
                     //if (roadsAndBoats[x, y].CLickBelongToObject(Mouse.GetState().X, Mouse.GetState().Y)
                     //    && this.newMouseState.LeftButton == ButtonState.Pressed
                     //    && this.oldMouseState.LeftButton == ButtonState.Released)
-                    
-                       if(roadsAndBoats[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
-                        
+
+                    if (roadsAndBoats[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
+
                     {
                         try
                         {
-                            roadsAndBoats[x, y].Build(players[playerId], true);
+                            roadsAndBoats[x, y].Build(player, true);
                             var startTempX = roadsAndBoats[x, y].StartPointX;
                             var startTempY = roadsAndBoats[x, y].StartPointY;
                             var endTempX = roadsAndBoats[x, y].EndPointX;
@@ -433,21 +461,21 @@ namespace Catan
                             var tempX = roadsAndBoats[x, y].ScreenX;
                             var tempY = roadsAndBoats[x, y].ScreenY;
 
-                            Road tempRoad = new Road(startTempX, startTempY, endTempX, endTempY, players[playerId].Id,
+                            Road tempRoad = new Road(startTempX, startTempY, endTempX, endTempY, player.Id,
                                                         Content, "dice2", tempX, tempY, 20, 30); //TODO //TODO: Set proper image
                             roadsAndBoats[x, y] = tempRoad;
 
-                            players[playerId].LineObjects.Add(tempRoad);
+                            player.LineObjects.Add(tempRoad);
                             return true;
                         }
                         catch (Exceptions.IllegalBuildPositionException ib)
                         {
-                            this.ErrorMessage = ib.Message;
+                            this.errorMessage = ib.Message;
                         }
                         catch (Exception e)
                         {
                             //TODO set message to a string and visualize
-                            
+                            this.errorMessage = e.Message;
                         }
                     }
                 }
@@ -497,8 +525,8 @@ namespace Catan
                     this.spriteBatch.Draw(this.boatButton, this.boatRect, Color.White);
                     //rest
                     this.playerOnTurn.Draw(this.spriteBatch);
-                    this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn", new Vector2(270, 10), Color.White);
-                    this.spriteBatch.DrawString(this.menuFont, this.ErrorMessage, new Vector2(270, 50), Color.White);
+                    this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn " + this.statusMessage, new Vector2(270, 10), Color.White);
+                    this.spriteBatch.DrawString(this.menuFont, this.errorMessage, new Vector2(270, 50), Color.Red);
 
                     //Draw Roads
                     for (int i = 0; i < 20; i++)
@@ -745,6 +773,5 @@ namespace Catan
                 this.developmentCards.Enqueue(card);
             }
         }
-
     }
 }
