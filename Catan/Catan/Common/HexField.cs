@@ -138,7 +138,7 @@ namespace Catan.Common
             private set;
         }
 
-        public bool CLickBelongToObject(uint clickedX, uint clickedY)
+        public bool CLickBelongToObject(int clickedX, int clickedY)
         {
             return (this.ScreenX <= clickedX) && (this.ScreenX + this.DX >= clickedX) &&
                    (this.ScreenY <= clickedY) && (this.ScreenY + this.DY >= clickedY);
