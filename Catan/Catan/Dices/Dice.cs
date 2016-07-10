@@ -16,9 +16,11 @@ namespace Catan.Dices
         {
             //get a random number object we can the use to determine the die face
             Random rand = new Random();
+            int DiceNumber;
             this.FirstDice = rand.Next(1, 6);
             this.SecondDice = rand.Next(1, 6);
-            return this.FirstDice + this.SecondDice;
+            DiceNumber = this.FirstDice + this.SecondDice;
+            return DiceNumber;
         }
     }
 }

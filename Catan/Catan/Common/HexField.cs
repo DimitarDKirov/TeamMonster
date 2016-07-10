@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Catan.GameObjects;
+using Catan.Dices;
 
 
 namespace Catan.Common
@@ -23,6 +25,9 @@ namespace Catan.Common
         private Rectangle rectangle;
         private Texture2D texture;
 
+        private List<NodeObject> nodeObject;
+        private List<LineObject> lineObject;
+        private static Texture2D robberTexture;
 
         public HexField()
         {
@@ -33,6 +38,8 @@ namespace Catan.Common
             this.TradeInAct = false;
             this.Rectangle = rectangle;
             this.Texture = texture;
+            this.NodeObject = nodeObject;
+            this.LineObject = lineObject;
         }
 
         public TerrainType Terrain
@@ -63,6 +70,18 @@ namespace Catan.Common
         {
             get { return this.tradeInAct; }
             set { this.tradeInAct = value; }
+        }
+
+        public List<NodeObject> NodeObject
+        {
+            get { return this.nodeObject; }
+            set { this.nodeObject = value; }
+        }
+
+        public List<LineObject> LineObject
+        {
+            get { return this.lineObject; }
+            set { this.lineObject = value; }
         }
 
         public Rectangle Rectangle
@@ -97,27 +116,32 @@ namespace Catan.Common
 
         public uint ScreenX
         {
-            get { throw new NotImplementedException(); }
+            get;
+            private set;
         }
 
         public uint ScreenY
         {
-            get { throw new NotImplementedException(); }
+            get;
+            private set;
         }
 
         public uint DX
         {
-            get { throw new NotImplementedException(); }
+            get;
+            private set;
         }
 
         public uint DY
         {
-            get { throw new NotImplementedException(); }
+            get;
+            private set;
         }
 
-        public bool CLickBelongToObject(uint clcikedX, uint clickedY)
+        public bool CLickBelongToObject(uint clickedX, uint clickedY)
         {
-            throw new NotImplementedException();
+            return (this.ScreenX <= clickedX) && (this.ScreenX + this.DX >= clickedX) &&
+                   (this.ScreenY <= clickedY) && (this.ScreenY + this.DY >= clickedY);
         }
     }
 }
