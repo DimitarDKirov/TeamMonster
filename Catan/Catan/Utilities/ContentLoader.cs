@@ -1,4 +1,5 @@
-﻿using Catan.Constants;
+﻿using Catan.Common;
+using Catan.Constants;
 using Catan.DevelopmentCards;
 using Catan.GameObjects;
 using Catan.Interfaces;
@@ -20,6 +21,7 @@ namespace Catan.Utilities
 
         public static void LoadSettlements(Settlement[,] settlement, ContentManager content)
         {
+            //20, 9
             settlement[7, 1] = new Settlement(7, 1, 0, content, "transperent", 270, 125, 20, 20);
             settlement[8, 1] = new Settlement(8, 1, 0, content, "transperent", 310, 105, 20, 20);
             settlement[9, 1] = new Settlement(9, 1, 0, content, "transperent", 350, 125, 20, 20);
@@ -83,6 +85,7 @@ namespace Catan.Utilities
 
         public static void LoadroadsAndBoats(LineObject[,] lineObject, ContentManager content)
         {
+            //20, 17
             lineObject[7, 3] = new LineObject(7, 1, 8, 1, 0, content, "transperent", 290, 110, 20, 30);
             lineObject[8, 3] = new LineObject(8, 1, 9, 1, 0, content, "transperent", 330, 110, 20, 30);
             lineObject[9, 3] = new LineObject(9, 1, 10, 1, 0, content, "transperent", 370, 110, 20, 30);
@@ -166,6 +169,72 @@ namespace Catan.Utilities
             lineObject[11, 13] = new LineObject(11, 5, 12, 5, 0, content, "transperent", 450, 460, 20, 30);
             lineObject[12, 13] = new LineObject(12, 5, 13, 5, 0, content, "transperent", 490, 460, 20, 30);
 
+        }
+
+        public static void LoadHexFields(HexField[,] hexFields, LineObject[,] lineObject, Settlement[,] settlement, ContentManager content)
+        {
+            //10, 7
+            hexFields[4, 1] = new HexField(DataGenerator.GenerateHexTerrain(), content, 285, 120, 70, 80,
+                                            new List<NodeObject> { settlement[7, 1], settlement[8, 1], settlement[9, 1], settlement[7, 2], settlement[8, 2], settlement[9, 2]},
+                                            new List<LineObject> { lineObject[7,3], lineObject[8,3], lineObject[7,4], lineObject[9,4], lineObject[7,5], lineObject[8,5]});
+            hexFields[5, 1] = new HexField(DataGenerator.GenerateHexTerrain(), content, 365, 120, 70, 80,
+                                            new List<NodeObject> { settlement[9, 1], settlement[10, 1], settlement[11, 1], settlement[9, 2], settlement[10, 2], settlement[11, 2] },
+                                            new List<LineObject> { lineObject[9, 3], lineObject[10, 3], lineObject[9, 4], lineObject[11, 4], lineObject[9, 5], lineObject[10, 5] });
+            hexFields[6, 1] = new HexField(DataGenerator.GenerateHexTerrain(), content, 445, 120, 70, 80,
+                                            new List<NodeObject> { settlement[11, 1], settlement[12, 1], settlement[13, 1], settlement[11, 2], settlement[12, 2], settlement[13, 2] },
+                                            new List<LineObject> { lineObject[11, 3], lineObject[12, 3], lineObject[11, 4], lineObject[13, 4], lineObject[11, 5], lineObject[12, 5] });
+
+            hexFields[3, 2] = new HexField(DataGenerator.GenerateHexTerrain(), content, 245, 190, 70, 80,
+                                            new List<NodeObject> { settlement[6, 2], settlement[7, 2], settlement[8, 2], settlement[6, 3], settlement[7, 3], settlement[8, 3] },
+                                            new List<LineObject> { lineObject[6, 5], lineObject[7, 5], lineObject[6, 6], lineObject[8, 6], lineObject[6, 7], lineObject[7, 7] });
+            hexFields[4, 2] = new HexField(DataGenerator.GenerateHexTerrain(), content, 325, 190, 70, 80,
+                                            new List<NodeObject> { settlement[8, 2], settlement[9, 2], settlement[10, 2], settlement[8, 3], settlement[9, 3], settlement[10, 3] },
+                                            new List<LineObject> { lineObject[8, 5], lineObject[9, 5], lineObject[8, 6], lineObject[10, 6], lineObject[8, 7], lineObject[9, 7] });
+            hexFields[5, 2] = new HexField(DataGenerator.GenerateHexTerrain(), content, 405, 190, 70, 80,
+                                            new List<NodeObject> { settlement[10, 2], settlement[11, 2], settlement[12, 2], settlement[10, 3], settlement[11, 3], settlement[12, 3] },
+                                            new List<LineObject> { lineObject[10, 5], lineObject[11, 5], lineObject[10, 6], lineObject[12, 6], lineObject[10, 7], lineObject[11, 7] });
+            hexFields[6, 2] = new HexField(DataGenerator.GenerateHexTerrain(), content, 485, 190, 70, 80,
+                                            new List<NodeObject> { settlement[12, 2], settlement[13, 2], settlement[14, 2], settlement[12, 3], settlement[13, 3], settlement[14, 3] },
+                                            new List<LineObject> { lineObject[12, 5], lineObject[13, 5], lineObject[12, 6], lineObject[14, 6], lineObject[12, 7], lineObject[13, 7] });
+
+            hexFields[3, 3] = new HexField(DataGenerator.GenerateHexTerrain(), content, 205, 260, 70, 80,
+                                            new List<NodeObject> { settlement[5, 3], settlement[6, 3], settlement[7, 3], settlement[5, 4], settlement[6, 4], settlement[7, 4] },
+                                            new List<LineObject> { lineObject[5, 7], lineObject[6, 7], lineObject[5, 8], lineObject[7, 8], lineObject[5, 9], lineObject[6, 9] });
+            hexFields[4, 3] = new HexField(DataGenerator.GenerateHexTerrain(), content, 285, 260, 70, 80,
+                                            new List<NodeObject> { settlement[7, 3], settlement[8, 3], settlement[9, 3], settlement[7, 4], settlement[8, 4], settlement[9, 4] },
+                                            new List<LineObject> { lineObject[7, 7], lineObject[8, 7], lineObject[7, 8], lineObject[9, 8], lineObject[7, 9], lineObject[8, 9] });
+            hexFields[5, 3] = new HexField(TerrainType.Desert, content, 365, 260, 70, 80,
+                                            new List<NodeObject> { settlement[9, 3], settlement[10, 3], settlement[11, 3], settlement[9, 4], settlement[10, 4], settlement[11, 4] },
+                                            new List<LineObject> { lineObject[9, 7], lineObject[10, 7], lineObject[9, 8], lineObject[11, 8], lineObject[9, 9], lineObject[10, 9] });
+            hexFields[6, 3] = new HexField(DataGenerator.GenerateHexTerrain(), content, 445, 260, 70, 80,
+                                            new List<NodeObject> { settlement[11, 3], settlement[12, 3], settlement[13, 3], settlement[11, 4], settlement[12, 4], settlement[13, 4] },
+                                            new List<LineObject> { lineObject[11, 7], lineObject[12, 7], lineObject[11, 8], lineObject[13, 8], lineObject[11, 9], lineObject[12, 9] });
+            hexFields[7, 3] = new HexField(DataGenerator.GenerateHexTerrain(), content, 525, 260, 70, 80,
+                                            new List<NodeObject> { settlement[13, 3], settlement[14, 3], settlement[15, 3], settlement[13, 4], settlement[14, 4], settlement[15, 4] },
+                                            new List<LineObject> { lineObject[13, 7], lineObject[14, 7], lineObject[13, 8], lineObject[15, 8], lineObject[13, 9], lineObject[14, 9] });
+
+            hexFields[3, 4] = new HexField(DataGenerator.GenerateHexTerrain(), content, 245, 330, 70, 80,
+                                            new List<NodeObject> { settlement[6, 4], settlement[7, 4], settlement[8, 4], settlement[6, 5], settlement[7, 5], settlement[8, 5] },
+                                            new List<LineObject> { lineObject[6, 9], lineObject[7, 9], lineObject[6, 10], lineObject[8, 10], lineObject[6, 11], lineObject[7, 11] });
+            hexFields[4, 4] = new HexField(DataGenerator.GenerateHexTerrain(), content, 325, 330, 70, 80,
+                                            new List<NodeObject> { settlement[8, 4], settlement[9, 4], settlement[10, 4], settlement[8, 5], settlement[9, 5], settlement[10, 5] },
+                                            new List<LineObject> { lineObject[8, 9], lineObject[9, 9], lineObject[8, 10], lineObject[10, 10], lineObject[8, 11], lineObject[9, 11] });
+            hexFields[5, 4] = new HexField(DataGenerator.GenerateHexTerrain(), content, 405, 330, 70, 80,
+                                            new List<NodeObject> { settlement[10, 4], settlement[11, 4], settlement[12, 4], settlement[10, 5], settlement[11, 5], settlement[12, 5] },
+                                            new List<LineObject> { lineObject[10, 9], lineObject[11, 9], lineObject[10, 10], lineObject[12, 10], lineObject[10, 11], lineObject[11, 11] });
+            hexFields[6, 4] = new HexField(DataGenerator.GenerateHexTerrain(), content, 485, 330, 70, 80,
+                                            new List<NodeObject> { settlement[12, 4], settlement[13, 4], settlement[14, 4], settlement[12, 5], settlement[13, 5], settlement[14, 5] },
+                                            new List<LineObject> { lineObject[12, 9], lineObject[13, 9], lineObject[12, 10], lineObject[14, 10], lineObject[12, 11], lineObject[13, 11] });
+           
+            hexFields[4, 5] = new HexField(DataGenerator.GenerateHexTerrain(), content, 285, 400, 70, 80,
+                                            new List<NodeObject> { settlement[7, 5], settlement[8, 5], settlement[9, 5], settlement[7, 6], settlement[8, 6], settlement[9, 6] },
+                                            new List<LineObject> { lineObject[7, 11], lineObject[8, 11], lineObject[7, 12], lineObject[9, 12], lineObject[7, 13], lineObject[8, 13] });
+            hexFields[5, 5] = new HexField(DataGenerator.GenerateHexTerrain(), content, 365, 400, 70, 80,
+                                            new List<NodeObject> { settlement[8, 5], settlement[9, 5], settlement[10, 5], settlement[8, 6], settlement[9, 6], settlement[10, 6] },
+                                            new List<LineObject> { lineObject[8, 11], lineObject[9, 11], lineObject[8, 12], lineObject[10, 12], lineObject[8, 13], lineObject[9, 13] });
+            hexFields[6, 5] = new HexField(DataGenerator.GenerateHexTerrain(), content, 445, 400, 70, 80,
+                                            new List<NodeObject> { settlement[10, 5], settlement[11, 5], settlement[12, 5], settlement[10, 6], settlement[11, 6], settlement[12, 6] },
+                                            new List<LineObject> { lineObject[10, 11], lineObject[11, 11], lineObject[10, 12], lineObject[12, 12], lineObject[10, 13], lineObject[11, 13] });
         }
 
         public static ICollection<IDevelopmentCard> GenerateDevelopmentCards()

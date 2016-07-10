@@ -85,6 +85,7 @@ namespace Catan
 
         private Settlement[,] settlements;
         private LineObject[,] roadsAndBoats;
+        private HexField[,] hexFields;
 
         private Queue<IDevelopmentCard> developmentCards;
 
@@ -207,10 +208,12 @@ namespace Catan
             //
             this.settlements = new Settlement[20, 9];
             this.roadsAndBoats = new LineObject[20, 17];
+            this.hexFields = new HexField[10, 7];
 
             //Load Content
             ContentLoader.LoadSettlements(this.settlements, this.Content);
             ContentLoader.LoadroadsAndBoats(this.roadsAndBoats, this.Content);
+            ContentLoader.LoadHexFields(this.hexFields, this.roadsAndBoats, this.settlements, this.Content);
 
             this.playerOnTurn = this.players[0];
             this.statusMessage = "Build 2 villages";
@@ -355,11 +358,8 @@ namespace Catan
                             this.dices.Roll();
                             //TODO: Loop over and collect resources
 
-                            //this.playerOnTurn
-
-
                             this.playerOnTurn = this.players[this.playerOnTurn.Id % 4];
-                            this.playerOnTurn.AddPoints(2);//TEST REMOVE LATER
+                            this.playerOnTurn.AddPoints(2);//For testing purposes
                             this.scoreBoard.Update(this.players);
                         }
                     }
@@ -465,7 +465,7 @@ namespace Catan
                             var imageString = DataGenerator.GenerateRoadName(x, y) + player.Id;
 
                             Road tempRoad = new Road(startTempX, startTempY, endTempX, endTempY, player.Id,
-                                                        Content, imageString, tempX, tempY, 20, 30); //TODO //TODO: Set proper image
+                                                        Content, imageString, tempX, tempY, 20, 30);
                             roadsAndBoats[x, y] = tempRoad;
 
                             player.LineObjects.Add(tempRoad);
@@ -485,8 +485,6 @@ namespace Catan
 
             return true;
         }
-
-
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -531,11 +529,23 @@ namespace Catan
                     this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn ", new Vector2(115, 5), Color.White);
                     this.spriteBatch.DrawString(this.gameMessageFont, this.statusMessage, new Vector2(115, 50), Color.White);
                     this.spriteBatch.DrawString(this.gameMessageFont, this.errorMessage, new Vector2(115, 80), Color.Red);
+                    
+                    //Draw Settlements
+                    for (int i = 0; i < hexFields.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < hexFields.GetLength(1); j++)
+                        {
+                            if (hexFields[i, j] != null)
+                            {
+                                hexFields[i, j].Draw(this.spriteBatch);
+                            }
+                        }
+                    }
 
                     //Draw Roads
-                    for (int i = 0; i < 20; i++)
+                    for (int i = 0; i < roadsAndBoats.GetLength(0); i++)
                     {
-                        for (int j = 0; j < 17; j++)
+                        for (int j = 0; j < roadsAndBoats.GetLength(1); j++)
                         {
                             if (roadsAndBoats[i, j] != null)
                             {
@@ -545,9 +555,9 @@ namespace Catan
                     }
 
                     //Draw Settlements
-                    for (int i = 0; i < 20; i++)
+                    for (int i = 0; i < settlements.GetLength(0); i++)
                     {
-                        for (int j = 0; j < 9; j++)
+                        for (int j = 0; j < settlements.GetLength(1); j++)
                         {
                             if (settlements[i, j] != null)
                             {
@@ -582,14 +592,7 @@ namespace Catan
             base.Draw(gameTime);
         }
 
-
         //customMethods
-
-
-
-
-
-
         public IDevelopmentCard GetDevelopmentCard()
         {
             return this.developmentCards.Dequeue();

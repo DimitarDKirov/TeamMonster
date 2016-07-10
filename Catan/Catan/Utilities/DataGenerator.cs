@@ -85,6 +85,51 @@ namespace Catan.Utilities
             return "transperent";
         }
 
+        public static ResourceType GenerateHexResource(TerrainType terrain)
+        {
+            switch (terrain)
+            {
+                case TerrainType.Desert: return ResourceType.None;
+
+                case TerrainType.Fields: return ResourceType.Grain;
+
+                case TerrainType.Forest: return ResourceType.Lumber;
+
+                case TerrainType.Hills: return ResourceType.Brick;
+
+                case TerrainType.Mountains: return ResourceType.Iron;
+
+                case TerrainType.Pasture: return ResourceType.Wool;
+
+                default:
+                    break;
+            }
+
+            return ResourceType.None;
+        }
+
+        public static string GenerateHexTextureName(TerrainType terrain)
+        {
+            switch (terrain)
+            {
+                case TerrainType.Desert: return "desert";
+
+                case TerrainType.Fields: return "field";
+
+                case TerrainType.Forest: return "forest";
+
+                case TerrainType.Hills: return "hill";
+
+                case TerrainType.Mountains: return "mountain";
+
+                case TerrainType.Pasture: return "pasture";
+
+                default:
+                    break;
+            }
+
+            return "desert";
+        }
         public static TerrainType GenerateHexTerrain()
         {
 
@@ -95,8 +140,12 @@ namespace Catan.Utilities
             return randomTerrain;
         }
 
-        public static int GenerateHexProducingNumber()
+        public static int GenerateHexProducingNumber(TerrainType terrain)
         {
+            if (terrain == TerrainType.Desert)
+            {
+                return 7;
+            }
             var tempValue = 7;
             while (true)
             {

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Catan.GameObjects;
 using Catan.Dices;
+using Catan.Utilities;
 
 
 namespace Catan.Common
@@ -24,22 +25,32 @@ namespace Catan.Common
 
         private Rectangle rectangle;
         private Texture2D texture;
+        private SpriteFont font;
 
-        private List<NodeObject> nodeObject;
-        private List<LineObject> lineObject;
+        private IList<NodeObject> nodeObject;
+        private IList<LineObject> lineObject;
         private static Texture2D robberTexture;
 
-        public HexField()
+        public HexField(TerrainType terrain, ContentManager content, int x, int y, int width, int height,              
+                        IList<NodeObject> nodeObject, IList<LineObject> lineObject)
         {
             this.Terrain = terrain;
-            this.Resource = resourse;
-            this.ProduceAtNumber = produceAtNumber;
+            this.Resource = DataGenerator.GenerateHexResource(this.Terrain);
+            this.ProduceAtNumber = (uint)DataGenerator.GenerateHexProducingNumber(this.Terrain);
             this.IsRobbed = false;
             this.TradeInAct = false;
-            this.Rectangle = rectangle;
-            this.Texture = texture;
+
             this.NodeObject = nodeObject;
             this.LineObject = lineObject;
+
+            //Drawable
+            this.Texture = content.Load<Texture2D>(DataGenerator.GenerateHexTextureName(this.Terrain));
+            this.font = content.Load<SpriteFont>("Arial");
+            this.Rectangle = new Rectangle(x, y, width, height);
+            this.ScreenX = x;
+            this.ScreenY = y;
+            this.DX = (uint)width;
+            this.DY = (uint)height;
         }
 
         public TerrainType Terrain
@@ -72,16 +83,16 @@ namespace Catan.Common
             set { this.tradeInAct = value; }
         }
 
-        public List<NodeObject> NodeObject
+        public IList<NodeObject> NodeObject
         {
             get { return this.nodeObject; }
-            set { this.nodeObject = value; }
+            private set { this.nodeObject = value; }
         }
 
-        public List<LineObject> LineObject
+        public IList<LineObject> LineObject
         {
             get { return this.lineObject; }
-            set { this.lineObject = value; }
+            private set { this.lineObject = value; }
         }
 
         public Rectangle Rectangle
@@ -110,7 +121,11 @@ namespace Catan.Common
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            Vector2 textSize = this.font.MeasureString(this.ProduceAtNumber.ToString());
+            Vector2 textCenter = new Vector2(this.ScreenX + 35, this.ScreenY + 40);
+
             spriteBatch.Draw(this.Texture, this.Rectangle, Color.White);
+            spriteBatch.DrawString(this.font, this.ProduceAtNumber.ToString(), textCenter - (textSize / 2), Color.SaddleBrown); 
         }
 
 
@@ -138,7 +153,7 @@ namespace Catan.Common
             private set;
         }
 
-        public bool CLickBelongToObject(uint clickedX, uint clickedY)
+        public bool CLickBelongToObject(int clickedX, int clickedY)
         {
             return (this.ScreenX <= clickedX) && (this.ScreenX + this.DX >= clickedX) &&
                    (this.ScreenY <= clickedY) && (this.ScreenY + this.DY >= clickedY);

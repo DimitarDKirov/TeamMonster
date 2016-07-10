@@ -96,6 +96,7 @@
     <Content Include="Content\boatplayer2.png" />
     <Content Include="Content\boatplayer3.png" />
     <Content Include="Content\boatplayer4.png" />
+    <Content Include="Content\desert.png" />
     <Content Include="Content\developmentcard.png" />
     <Content Include="Content\dice1.png" />
     <Content Include="Content\dice2.png" />
@@ -103,8 +104,13 @@
     <Content Include="Content\dice4.png" />
     <Content Include="Content\dice5.png" />
     <Content Include="Content\dice6.png" />
+    <Content Include="Content\field.png" />
+    <Content Include="Content\forest.png" />
     <Content Include="Content\gamebackground.png" />
+    <Content Include="Content\hill.png" />
     <Content Include="Content\menubackground.png" />
+    <Content Include="Content\mountain.png" />
+    <Content Include="Content\pasture.png" />
     <Content Include="Content\road.png" />
     <Content Include="Content\roaddiagonalleft.png" />
     <Content Include="Content\roaddiagonalleft1.png" />
