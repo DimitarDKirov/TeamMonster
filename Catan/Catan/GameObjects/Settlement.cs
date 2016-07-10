@@ -45,19 +45,47 @@ namespace Catan.GameObjects
 
         public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
         {
-            if (this.PlayerID!=0 && CheckTerrainCompatability())
+            if (this.PlayerID != 0 && CheckTerrainCompatability())
             {
-                throw new Exceptions.IllegalBuildPositionException("Can not build here!");  
+                throw new Exceptions.IllegalBuildPositionException("Can not build here!");
             }
         }
 
-        public override void Destroy(IPlayer playerOnTurn) 
+        public override void Destroy(IPlayer playerOnTurn)
         {
         }
-        public override bool CheckTerrainCompatability()
+        protected override bool CheckTerrainCompatability()
         {
             LandType land = MapObject.CheckLandType(this.NodeX, this.NodeY);
             return (land == LandType.Mainland || land == LandType.Shore);
+        }
+
+        public override bool CheckNeighbours()
+        {
+            uint x = this.NodeX,
+                 y = this.NodeY;
+            if (y % 2 == 1)
+            {
+                if (GameClass.Game.Settlements[x - 1, y] != null && GameClass.Game.Settlements[x - 1, y].PlayerID != 0)
+                { return false; }
+                if (GameClass.Game.Settlements[x + 1, y] != null && GameClass.Game.Settlements[x + 1, y].PlayerID != 0)
+                { return false; }
+                if (x % 2 == 1)
+                {
+                    if (GameClass.Game.Settlements[x, y + 1] != null && GameClass.Game.Settlements[x, y + 1].PlayerID != 0)
+                    { return false; }
+                }
+                else
+                {
+                    if (GameClass.Game.Settlements[x, y - 1] != null && GameClass.Game.Settlements[x, y - 1].PlayerID != 0)
+                    { return false; }
+                }
+            }
+            else
+            {
+
+            }
+            return true;
         }
     }
 

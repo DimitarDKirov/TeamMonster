@@ -114,7 +114,9 @@ namespace Catan.GameObjects
 
         public abstract void Destroy(IPlayer playerOnTurn);
 
-        public abstract bool CheckTerrainCompatability();
+        protected abstract bool CheckTerrainCompatability();
+
+        public abstract bool CheckNeighbours();
 
         public void Draw(SpriteBatch spriteBatch)
         {

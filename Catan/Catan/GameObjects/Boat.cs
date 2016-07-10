@@ -11,7 +11,7 @@ namespace Catan.GameObjects
     public class Boat : LineObject
     {
         private const uint ALLOWED_BOATS = 16;
-        public override bool CheckTerrainCompatability()
+        protected override bool CheckTerrainCompatability()
         {
             LandType landStartPoint = MapObject.CheckLandType(this.StartPointX, this.StartPointY);
             LandType landEndPoint = MapObject.CheckLandType(this.EndPointX, this.EndPointY);

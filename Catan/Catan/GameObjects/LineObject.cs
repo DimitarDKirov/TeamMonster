@@ -56,7 +56,6 @@ namespace Catan.GameObjects
         //
 
 
-
         // properties
         public uint StartPointX
         {
@@ -115,8 +114,13 @@ namespace Catan.GameObjects
             // TODO: Implement this method
             throw new NotImplementedException();
         }
-        public override bool CheckTerrainCompatability()
+        protected override bool CheckTerrainCompatability()
         {
+            throw new NotImplementedException();
+        }
+        public override bool CheckNeighbours()
+        {
+            // TODO: Implement this method
             throw new NotImplementedException();
         }
     }

@@ -115,6 +115,17 @@
             set { this.playerOnTurn = value; }
         }
 
+        public Settlement[,] Settlements
+        {
+            get { return this.settlements; }
+        }
+        public LineObject[,] RoadsAndBoats
+        {
+            get { return this.roadsAndBoats; }
+        }
+
+
+        // methods
         protected override void Initialize()
         {
             this.Services.AddService(typeof(GraphicsDeviceManager), this.graphics);
@@ -265,9 +276,9 @@
                             this.BuildStartRoad(this.PlayerOnTurn, true);
                         }
                         //check which is the next move and which player to do it
-                         playerVillages = this.PlayerOnTurn.Villages.Count;
-                         playerRoads = this.PlayerOnTurn.LineObjects.Count;
-                         if (playerRoads >= 2 && playerVillages >= 2)
+                        playerVillages = this.PlayerOnTurn.Villages.Count;
+                        playerRoads = this.PlayerOnTurn.LineObjects.Count;
+                        if (playerRoads >= 2 && playerVillages >= 2)
                         {
                             int currentPLayerIndex = this.Players.IndexOf(this.PlayerOnTurn);
                             int nextPlayerIndex = (currentPLayerIndex + 1) % this.Players.Count;
@@ -378,7 +389,7 @@
                     this.playerOnTurn.Draw(this.spriteBatch);
                     this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn ", new Vector2(115, 5), Color.White);
                     this.spriteBatch.DrawString(this.gameMessageFont, this.statusMessage, new Vector2(115, 50), Color.White);
-                    this.spriteBatch.DrawString(this.gameMessageFont, this.errorMessage, new Vector2(115, 80), Color.Red);     
+                    this.spriteBatch.DrawString(this.gameMessageFont, this.errorMessage, new Vector2(115, 80), Color.Red);
                     //Draw Settlements
                     for (int i = 0; i < hexFields.GetLength(0); i++)
                     {
