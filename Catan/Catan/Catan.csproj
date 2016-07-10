@@ -55,7 +55,7 @@
     <Compile Include="DevelopmentCards\KnightCard.cs" />
     <Compile Include="DevelopmentCards\ProgressCard.cs" />
     <Compile Include="DevelopmentCards\VictoryPointCard.cs" />
-    <Compile Include="Dices\Dice.cs" />
+    <Compile Include="Common\Dice.cs" />
     <Compile Include="Exceptions\AgentActionException.cs" />
     <Compile Include="Exceptions\IllegalActionException.cs" />
     <Compile Include="Exceptions\IllegalBuildPositionException.cs" />

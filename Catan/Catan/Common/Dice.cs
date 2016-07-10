@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Catan.Dices
+namespace Catan.Common
 {
     public class Dice : IDrawableCustom
     {
@@ -34,11 +34,39 @@ namespace Catan.Dices
         {
             //get a random number object we can the use to determine the die face
             Random rand = new Random();
-            int DiceNumber;
+            int diceNumber;
             this.FirstDice = rand.Next(1, 6);
             this.SecondDice = rand.Next(1, 6);
-            DiceNumber = this.FirstDice + this.SecondDice;
-            return DiceNumber;
+            diceNumber = this.FirstDice + this.SecondDice;
+            if (diceNumber != 7)
+            {
+                CollectResources(diceNumber);
+            }
+            return diceNumber;
+        }
+
+        private void CollectResources(int diceNumber)
+        {
+            if (GameClass.Game.HexFields != null)
+            {
+                foreach (var hexField in GameClass.Game.HexFields)
+                {
+                    if (hexField!=null && hexField.ProduceAtNumber == diceNumber)
+                    {
+                        foreach (var node in hexField.NodeObjects)
+                        {
+                            foreach (var settlement in GameClass.Game.Settlements)
+                            {
+                                if (settlement != null && settlement.PlayerID != 0 &&
+                                    settlement.NodeX == node.NodeX && settlement.NodeY == node.NodeY)
+                                {
+                                    settlement.Produce(hexField.Resource);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
 

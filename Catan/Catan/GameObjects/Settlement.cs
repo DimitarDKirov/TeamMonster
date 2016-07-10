@@ -32,20 +32,18 @@ namespace Catan.GameObjects
             get { return isHarbour; }
         }
 
-        protected virtual uint Productivity { get { return 0; } }
+        protected virtual int Productivity { get { return 0; } }
 
         // methods
         public virtual void Produce(ResourceType resource)
         {
-            /*
-            IPlayer owner = GameClass.Players[this.playerID];
-            owner.SetResourceValue(resource, (owner.GetResourceValue(resource) + this.Productivity));  //TODO: implement method on Palyer to decerement with amount
-            */
+            IPlayer owner = GameClass.Game.players[this.playerID-1];
+            owner.AddResourceValue(resource, this.Productivity);            
         }
 
         public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
         {
-            if (this.PlayerID != 0 && CheckTerrainCompatability())
+            if (this.PlayerID != 0 || !CheckTerrainCompatability() || CheckNeighbours(playerOnTurn))
             {
                 throw new Exceptions.IllegalBuildPositionException("Can not build here!");
             }
@@ -60,32 +58,26 @@ namespace Catan.GameObjects
             return (land == LandType.Mainland || land == LandType.Shore);
         }
 
-        public override bool CheckNeighbours()
+        public override bool CheckNeighbours(IPlayer playerOnTurn)
         {
             uint x = this.NodeX,
                  y = this.NodeY;
-            if (y % 2 == 1)
+
+            if (GameClass.Game.Settlements[x - 1, y] != null && GameClass.Game.Settlements[x - 1, y].PlayerID != 0)
+            { return true; }
+            if (GameClass.Game.Settlements[x + 1, y] != null && GameClass.Game.Settlements[x + 1, y].PlayerID != 0)
+            { return true; }
+            if ((x + y) % 2 == 0)
             {
-                if (GameClass.Game.Settlements[x - 1, y] != null && GameClass.Game.Settlements[x - 1, y].PlayerID != 0)
-                { return false; }
-                if (GameClass.Game.Settlements[x + 1, y] != null && GameClass.Game.Settlements[x + 1, y].PlayerID != 0)
-                { return false; }
-                if (x % 2 == 1)
-                {
-                    if (GameClass.Game.Settlements[x, y + 1] != null && GameClass.Game.Settlements[x, y + 1].PlayerID != 0)
-                    { return false; }
-                }
-                else
-                {
-                    if (GameClass.Game.Settlements[x, y - 1] != null && GameClass.Game.Settlements[x, y - 1].PlayerID != 0)
-                    { return false; }
-                }
+                if (GameClass.Game.Settlements[x, y + 1] != null && GameClass.Game.Settlements[x, y + 1].PlayerID != 0)
+                { return true; }
             }
             else
             {
-
+                if (GameClass.Game.Settlements[x, y - 1] != null && GameClass.Game.Settlements[x, y - 1].PlayerID != 0)
+                { return true; }
             }
-            return true;
+            return false;
         }
     }
 

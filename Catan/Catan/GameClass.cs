@@ -11,7 +11,6 @@
     using Microsoft.Xna.Framework.Media;
 
     using Catan.Constants;
-    using Catan.Dices;
     using Catan.Menu;
     using Catan.Common;
     using Catan.GameObjects;
@@ -123,7 +122,10 @@
         {
             get { return this.roadsAndBoats; }
         }
-
+        public HexField[,] HexFields
+        {
+            get { return this.hexFields; }
+        }
 
         // methods
         protected override void Initialize()
@@ -456,6 +458,7 @@
                 && this.oldMouseState.LeftButton == ButtonState.Released
                 && Mouse.GetState().X > 0 && Mouse.GetState().Y > 0)
             {
+                this.errorMessage = string.Empty;
                 mouseCoorX = Mouse.GetState().X;
                 mouseCoorY = Mouse.GetState().Y;
 
@@ -470,12 +473,12 @@
                         if (settlements[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
                         {
                             try
-                            {
-                                settlements[x, y].Build(player, buildWithDevCard);
+                            {                               
                                 var tempX = settlements[x, y].ScreenX;
                                 var tempY = settlements[x, y].ScreenY;
                                 var imageString = string.Format("villageplayer" + player.Id);
-                                Village tempVillage = new Village(x, y, player.Id, Content, imageString, tempX, tempY, 20, 20);
+                                Village tempVillage = new Village(x, y, 0, Content, imageString, tempX, tempY, 20, 20);
+                                tempVillage.Build(player, buildWithDevCard);
                                 settlements[x, y] = tempVillage;
                                 player.Villages.Add(tempVillage);
                                 return true;
@@ -519,7 +522,6 @@
                     {
                         try
                         {
-                            roadsAndBoats[x, y].Build(player, buildWithDevCard);
                             var startTempX = roadsAndBoats[x, y].StartPointX;
                             var startTempY = roadsAndBoats[x, y].StartPointY;
                             var endTempX = roadsAndBoats[x, y].EndPointX;
@@ -529,8 +531,9 @@
 
                             var imageString = DataGenerator.GenerateRoadName(x, y) + player.Id;
 
-                            Road tempRoad = new Road(startTempX, startTempY, endTempX, endTempY, player.Id,
+                            Road tempRoad = new Road(startTempX, startTempY, endTempX, endTempY, 0,
                                                         Content, imageString, tempX, tempY, 20, 30);
+                            tempRoad.Build(player, buildWithDevCard);
                             roadsAndBoats[x, y] = tempRoad;
 
                             player.LineObjects.Add(tempRoad);

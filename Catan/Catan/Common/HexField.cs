@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Catan.GameObjects;
-using Catan.Dices;
 using Catan.Utilities;
 
 
@@ -40,8 +39,8 @@ namespace Catan.Common
             this.IsRobbed = false;
             this.TradeInAct = false;
 
-            this.NodeObject = nodeObject;
-            this.LineObject = lineObject;
+            this.NodeObjects = nodeObject;
+            this.LineObjects = lineObject;
 
             //Drawable
             this.Texture = content.Load<Texture2D>(DataGenerator.GenerateHexTextureName(this.Terrain));
@@ -83,13 +82,13 @@ namespace Catan.Common
             set { this.tradeInAct = value; }
         }
 
-        public IList<NodeObject> NodeObject
+        public IList<NodeObject> NodeObjects
         {
             get { return this.nodeObject; }
             private set { this.nodeObject = value; }
         }
 
-        public IList<LineObject> LineObject
+        public IList<LineObject> LineObjects
         {
             get { return this.lineObject; }
             private set { this.lineObject = value; }

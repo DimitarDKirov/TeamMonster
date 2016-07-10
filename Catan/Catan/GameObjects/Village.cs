@@ -26,7 +26,7 @@ namespace Catan.GameObjects
 
 
         // propeties
-        protected override uint Productivity { get { return 1; } }
+        protected override int Productivity { get { return 1; } }
         public static int VictoryPointsRewarded { get { return 1; } }
 
         // methods
@@ -41,8 +41,8 @@ namespace Catan.GameObjects
                  lumberAvailable = playerOnTurn.GetResourceValue(ResourceType.Lumber),
                  grainAvailable = playerOnTurn.GetResourceValue(ResourceType.Grain),
                  woolAvailable = playerOnTurn.GetResourceValue(ResourceType.Wool);
-
-            if (brickAvailable == 0 || lumberAvailable == 0 || grainAvailable == 0 || woolAvailable == 0)
+            if (!buildWithDevCard &&
+                    (brickAvailable == 0 || lumberAvailable == 0 || grainAvailable == 0 || woolAvailable == 0))
             {
                 throw new Exception("Not enough resources"); //TODO: custom exception
             }
@@ -51,6 +51,7 @@ namespace Catan.GameObjects
             playerOnTurn.AddResourceValue(ResourceType.Grain, -1);
             playerOnTurn.AddResourceValue(ResourceType.Wool, -1);
             playerOnTurn.AddPoints(VictoryPointsRewarded);
+            this.PlayerID = playerOnTurn.Id;
         }
 
         public override void Destroy(IPlayer playerOnTurn)

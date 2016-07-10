@@ -60,7 +60,7 @@ namespace Catan.GameObjects
             {
                 return this.playerID;
             }
-            private set
+            protected set
             {
                 this.playerID = value;
             }
@@ -116,7 +116,7 @@ namespace Catan.GameObjects
 
         protected abstract bool CheckTerrainCompatability();
 
-        public abstract bool CheckNeighbours();
+        public abstract bool CheckNeighbours(IPlayer playerOnTurn);
 
         public void Draw(SpriteBatch spriteBatch)
         {

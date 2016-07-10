@@ -26,7 +26,7 @@ namespace Catan.GameObjects
 
 
         //properties
-        protected override uint Productivity { get { return 2; } }
+        protected override int Productivity { get { return 2; } }
         public static int VictoryPointsRewarded { get { return 2; } }
 
         // methods
@@ -40,7 +40,7 @@ namespace Catan.GameObjects
             uint ironAvailable = playerOnTurn.GetResourceValue(ResourceType.Iron),
                  grainAvailable = playerOnTurn.GetResourceValue(ResourceType.Grain);
 
-            if (ironAvailable <= 2 || grainAvailable <= 1)
+            if (!buildWithDevCard && (ironAvailable <= 2 || grainAvailable <= 1))
             {
                 throw new Exception("Not enough resources"); //TODO: custom exception
             }

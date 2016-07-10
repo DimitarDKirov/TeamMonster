@@ -104,10 +104,13 @@ namespace Catan.GameObjects
         //methods
         public override void Build(IPlayer playerOnTurn, bool buildWithDevCard)
         {
-            if (this.PlayerID != playerOnTurn.Id && this.PlayerID != 0 && CheckTerrainCompatability())
+            if ((this.PlayerID != playerOnTurn.Id && this.PlayerID != 0) || 
+                !CheckTerrainCompatability() ||
+                !CheckNeighbours(playerOnTurn))
             {
                 throw new Exceptions.IllegalBuildPositionException("Can not build here!");
             }
+            this.PlayerID = playerOnTurn.Id;
         }
         public override void Destroy(IPlayer playerOnTurn)
         {
@@ -118,10 +121,33 @@ namespace Catan.GameObjects
         {
             throw new NotImplementedException();
         }
-        public override bool CheckNeighbours()
+        public override bool CheckNeighbours(IPlayer playerOnTurn)
         {
-            // TODO: Implement this method
-            throw new NotImplementedException();
+            uint x1 = this.StartPointX,
+                 y1 = this.StartPointY,
+                 x2 = this.EndPointX,
+                 y2 = this.EndPointY;
+
+            if ((GameClass.Game.Settlements[x1,y1]!=null && GameClass.Game.Settlements[x1,y1].PlayerID==playerOnTurn.Id)||
+                (GameClass.Game.Settlements[x2,y2]!=null && GameClass.Game.Settlements[x2,y2].PlayerID==playerOnTurn.Id))
+            {
+                return true;
+            }
+
+            foreach (var road  in GameClass.Game.RoadsAndBoats)
+            {
+                if (road !=null &&
+                    ((road.startPointX==x1 && road.startPointY==y1) || 
+                    (road.endPointX == x2 && road.endPointY == y2) ||
+                    (road.startPointX==x2 && road.startPointY==y2) || 
+                    (road.endPointX == x1 && road.endPointY == y1)) &&
+                    (road.startPointX != x1 || road.startPointY != y1 || road.endPointX != x2 && road.endPointY != y2) &&
+                    road.PlayerID == playerOnTurn.Id)
+                {
+                    return true;
+                }
+            }            
+            return false;
         }
     }
 }
