@@ -1,27 +1,24 @@
-﻿using Catan.Constants;
-using Catan.Dices;
-using Catan.Menu;
-using Catan.Common;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Catan.GameObjects;
-using Catan.DevelopmentCards;
-
-using Microsoft.Xna.Framework.Content;
-using Catan.Interfaces;
-using Catan.Utilities;
-
-namespace Catan
+﻿namespace Catan
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+    using Microsoft.Xna.Framework.Media;
+
+    using Catan.Constants;
+    using Catan.Dices;
+    using Catan.Menu;
+    using Catan.Common;
+    using Catan.GameObjects;
+    using Catan.DevelopmentCards;
+    using Catan.Interfaces;
+    using Catan.Utilities;
+
     public class GameClass : Game
     {
         private static GameClass game;
@@ -37,11 +34,11 @@ namespace Catan
                 return game;
             }
         }
+
         //general
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private Song backgroundMusic;
-
         private GameState gameState;
 
         //controllers states
@@ -62,13 +59,12 @@ namespace Catan
         private int menuIndex;
 
         //game related
-        private Texture2D gameBackground;
-        private Texture2D winBackground;
         private Dice dices;
         private ScoreBoard scoreBoard;
         public IList<Player> players;
         public Player playerOnTurn;
         public IPlayer winner;
+        private Texture2D gameBackground;
         private Texture2D develpomentCardButton;
         private Texture2D villageButton;
         private Texture2D townButton;
@@ -89,12 +85,10 @@ namespace Catan
 
         private Queue<IDevelopmentCard> developmentCards;
 
-
         //other
         private Texture2D aboutBackground;
+        private Texture2D winBackground;
         private Rectangle backgroundRect;
-
-
 
         public GameClass()
             : base()
@@ -109,7 +103,6 @@ namespace Catan
         }
 
         // properties
-
         public IList<Player> Players
         {
             get { return this.players; }
@@ -122,15 +115,8 @@ namespace Catan
             set { this.playerOnTurn = value; }
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-
             this.Services.AddService(typeof(GraphicsDeviceManager), this.graphics);
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), this.spriteBatch);
@@ -142,18 +128,13 @@ namespace Catan
             this.oldMouseState = Mouse.GetState();
             this.newMouseState = Mouse.GetState();
 
-
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.isStartRound = true;
 
             // Background music
             backgroundMusic = Content.Load<Song>("Sounds/FloatingCities");
@@ -164,8 +145,6 @@ namespace Catan
             this.menuFont = this.Content.Load<SpriteFont>("ArialMenu");
             this.gameMessageFont = this.Content.Load<SpriteFont>("ArialMedium");
             this.winMessageFont = this.Content.Load<SpriteFont>("ArialWin");
-
-            this.isStartRound = true;
 
             //textures
             this.menuBackground = this.Content.Load<Texture2D>("menubackground");
@@ -203,12 +182,13 @@ namespace Catan
             {
                 player.WinPointsReached += this.PlayerWins;
             }
+
             //objects
             this.dices = new Dice(this.Content, "dice1", 670, 530, 110, 50);
             this.dices.Roll();
             this.scoreBoard = new ScoreBoard(this.players, this.Content, "scoreboard", 0, 0, 105, 103);
 
-            //
+            //Content to be Loaded
             this.settlements = new Settlement[20, 9];
             this.roadsAndBoats = new LineObject[20, 17];
             this.hexFields = new HexField[10, 7];
@@ -228,26 +208,13 @@ namespace Catan
              };
 
             this.menuIndex = 1;
-
-
-            // TODO: use this.Content to load your game content here
         }
 
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -297,11 +264,10 @@ namespace Catan
                             //player must build a road
                             this.BuildStartRoad(this.PlayerOnTurn, true);
                         }
-
                         //check which is the next move and which player to do it
-                        playerVillages = this.PlayerOnTurn.Villages.Count;
-                        playerRoads = this.PlayerOnTurn.LineObjects.Count;
-                        if (playerRoads >= 2 && playerVillages >= 2)
+                         playerVillages = this.PlayerOnTurn.Villages.Count;
+                         playerRoads = this.PlayerOnTurn.LineObjects.Count;
+                         if (playerRoads >= 2 && playerVillages >= 2)
                         {
                             int currentPLayerIndex = this.Players.IndexOf(this.PlayerOnTurn);
                             int nextPlayerIndex = (currentPLayerIndex + 1) % this.Players.Count;
@@ -322,7 +288,6 @@ namespace Catan
                     }
                     else
                     {
-
                         //Buttons for actions
                         if (this.develpomentCardRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                         {
@@ -330,40 +295,31 @@ namespace Catan
                             this.statusMessage = "Buy cards";
                             var developmentCardDrawed = this.GetDevelopmentCard();
                             this.PlayerOnTurn.DevCardsPossedsed.Add(developmentCardDrawed);
-
                         }
                         if (this.villageRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                         {
-
                             this.BuildStartVillage(this.playerOnTurn, false);
                             this.statusMessage = "Build village";
                         }
                         if (this.townRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                         {
-
-                            //Add functionality
+                            //TODO: Add functionality
                             this.statusMessage = "Build town";
                         }
                         if (this.roadRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                         {
-
                             this.BuildStartRoad(this.playerOnTurn, false);
                             this.statusMessage = "Build road";
                         }
                         if (this.boatRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                         {
-
-                            //Add functionality
+                            //TODO: Add functionality
                             this.statusMessage = "Build boat";
                         }
-
-
                         if (this.dices.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                         {
-
                             this.dices.Roll();
                             //TODO: Loop over and collect resources
-
                             this.playerOnTurn = this.players[this.playerOnTurn.Id % 4];
                             this.playerOnTurn.AddPoints(2);//For testing purposes
                             this.scoreBoard.Update(this.players);
@@ -382,21 +338,115 @@ namespace Catan
                     Exit();
                     break;
             }
-
             base.Update(gameTime);
         }
 
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            this.spriteBatch.Begin();
+
+            switch (this.gameState)
+            {
+                case GameState.Menu:
+
+                    this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
+                    for (int i = 0; i < menuOptions.Count; i += 1)
+                    {
+                        if (i == menuIndex - 1)
+                        {
+                            this.menuOptions[i].UpdateColor(Color.Black);
+                        }
+                        else
+                        {
+                            this.menuOptions[i].UpdateColor(Color.Crimson);
+                        }
+                        this.menuOptions[i].Draw(this.spriteBatch);
+                    }
+                    break;
+                case GameState.NewGame:
+                    this.spriteBatch.Draw(this.gameBackground, this.backgroundRect, Color.White);
+                    this.dices.Draw(this.spriteBatch);
+                    this.scoreBoard.Draw(this.spriteBatch);
+                    //Buttons
+                    this.spriteBatch.Draw(this.develpomentCardButton, this.develpomentCardRect, Color.White);
+                    this.spriteBatch.Draw(this.villageButton, this.villageRect, Color.White);
+                    this.spriteBatch.Draw(this.townButton, this.townRect, Color.White);
+                    this.spriteBatch.Draw(this.roadButton, this.roadRect, Color.White);
+                    this.spriteBatch.Draw(this.boatButton, this.boatRect, Color.White);
+                    //Rest
+                    this.playerOnTurn.Draw(this.spriteBatch);
+                    this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn ", new Vector2(115, 5), Color.White);
+                    this.spriteBatch.DrawString(this.gameMessageFont, this.statusMessage, new Vector2(115, 50), Color.White);
+                    this.spriteBatch.DrawString(this.gameMessageFont, this.errorMessage, new Vector2(115, 80), Color.Red);     
+                    //Draw Settlements
+                    for (int i = 0; i < hexFields.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < hexFields.GetLength(1); j++)
+                        {
+                            if (hexFields[i, j] != null)
+                            {
+                                hexFields[i, j].Draw(this.spriteBatch);
+                            }
+                        }
+                    }
+                    //Draw Roads
+                    for (int i = 0; i < roadsAndBoats.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < roadsAndBoats.GetLength(1); j++)
+                        {
+                            if (roadsAndBoats[i, j] != null)
+                            {
+                                roadsAndBoats[i, j].Draw(this.spriteBatch);
+                            }
+                        }
+                    }
+                    //Draw Settlements
+                    for (int i = 0; i < settlements.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < settlements.GetLength(1); j++)
+                        {
+                            if (settlements[i, j] != null)
+                            {
+                                settlements[i, j].Draw(this.spriteBatch);
+                            }
+                        }
+                    }
+                    break;
+                case GameState.About:
+                    this.spriteBatch.Draw(this.aboutBackground, this.backgroundRect, Color.White);
+                    this.spriteBatch.DrawString(this.menuFont, "About", new Vector2(UIConstants.aboutXOffset, UIConstants.aboutYOffset), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessage, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset * 2)), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageNote, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset / 2 * 7)), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageUI, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset / 2 * 9)), Color.White);
+                    break;
+                case GameState.Exit:
+                    this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
+                    break;
+                case GameState.Win:
+                    this.spriteBatch.Draw(this.winBackground, this.backgroundRect, Color.White);
+                    this.spriteBatch.DrawString(this.winMessageFont, this.winner.UserName + " Wins", new Vector2(UIConstants.windowWidth / 2, 100) - (this.winMessageFont.MeasureString(this.winner.UserName + " WINS") / 2), Color.Crimson);
+                    break;
+                default:
+                    break;
+            }
+
+            this.spriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+
+        //customMethods
         private bool BuildStartVillage(IPlayer player, bool buildWithDevCard)
         {
             int mouseCoorX = 0;
             int mouseCoorY = 0;
             if (this.newMouseState.LeftButton == ButtonState.Pressed
-                       && this.oldMouseState.LeftButton == ButtonState.Released
+                && this.oldMouseState.LeftButton == ButtonState.Released
                 && Mouse.GetState().X > 0 && Mouse.GetState().Y > 0)
             {
                 mouseCoorX = Mouse.GetState().X;
                 mouseCoorY = Mouse.GetState().Y;
-
 
                 for (uint x = 0; x < 20; x++)
                 {
@@ -431,7 +481,6 @@ namespace Catan
                     }
                 }
             }
-
             return true;
         }
 
@@ -440,12 +489,11 @@ namespace Catan
             int mouseCoorX = 0;
             int mouseCoorY = 0;
             if (this.newMouseState.LeftButton == ButtonState.Pressed
-                       && this.oldMouseState.LeftButton == ButtonState.Released
+                && this.oldMouseState.LeftButton == ButtonState.Released
                 && Mouse.GetState().X > 0 && Mouse.GetState().Y > 0)
             {
                 mouseCoorX = Mouse.GetState().X;
                 mouseCoorY = Mouse.GetState().Y;
-
             }
             for (uint x = 0; x < 20; x++)
             {
@@ -488,117 +536,8 @@ namespace Catan
                     }
                 }
             }
-
             return true;
         }
-
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            this.spriteBatch.Begin();
-            // TODO: Add your drawing code here
-
-            switch (this.gameState)
-            {
-                case GameState.Menu:
-
-                    this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
-                    for (int i = 0; i < menuOptions.Count; i += 1)
-                    {
-                        if (i == menuIndex - 1)
-                        {
-                            this.menuOptions[i].UpdateColor(Color.Black);
-                        }
-                        else
-                        {
-                            this.menuOptions[i].UpdateColor(Color.Crimson);
-                        }
-                        this.menuOptions[i].Draw(this.spriteBatch);
-                    }
-                    break;
-                case GameState.NewGame:
-                    this.spriteBatch.Draw(this.gameBackground, this.backgroundRect, Color.White);
-                    this.dices.Draw(this.spriteBatch);
-                    this.scoreBoard.Draw(this.spriteBatch);
-                    //buttons
-                    this.spriteBatch.Draw(this.develpomentCardButton, this.develpomentCardRect, Color.White);
-                    this.spriteBatch.Draw(this.villageButton, this.villageRect, Color.White);
-                    this.spriteBatch.Draw(this.townButton, this.townRect, Color.White);
-                    this.spriteBatch.Draw(this.roadButton, this.roadRect, Color.White);
-                    this.spriteBatch.Draw(this.boatButton, this.boatRect, Color.White);
-                    //rest
-                    this.playerOnTurn.Draw(this.spriteBatch);
-                    this.spriteBatch.DrawString(this.menuFont, this.playerOnTurn.UserName + "'s Turn ", new Vector2(115, 5), Color.White);
-                    this.spriteBatch.DrawString(this.gameMessageFont, this.statusMessage, new Vector2(115, 50), Color.White);
-                    this.spriteBatch.DrawString(this.gameMessageFont, this.errorMessage, new Vector2(115, 80), Color.Red);
-                    
-                    //Draw Settlements
-                    for (int i = 0; i < hexFields.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < hexFields.GetLength(1); j++)
-                        {
-                            if (hexFields[i, j] != null)
-                            {
-                                hexFields[i, j].Draw(this.spriteBatch);
-                            }
-                        }
-                    }
-
-                    //Draw Roads
-                    for (int i = 0; i < roadsAndBoats.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < roadsAndBoats.GetLength(1); j++)
-                        {
-                            if (roadsAndBoats[i, j] != null)
-                            {
-                                roadsAndBoats[i, j].Draw(this.spriteBatch);
-                            }
-                        }
-                    }
-
-                    //Draw Settlements
-                    for (int i = 0; i < settlements.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < settlements.GetLength(1); j++)
-                        {
-                            if (settlements[i, j] != null)
-                            {
-                                settlements[i, j].Draw(this.spriteBatch);
-                            }
-                        }
-                    }
-
-                    break;
-                case GameState.About:
-                    this.spriteBatch.Draw(this.aboutBackground, this.backgroundRect, Color.White);
-                    this.spriteBatch.DrawString(this.menuFont, "About", new Vector2(UIConstants.aboutXOffset, UIConstants.aboutYOffset), Color.White);
-                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessage, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset * 2)), Color.White);
-                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageNote, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset / 2 * 7)), Color.White);
-                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageUI, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset / 2 * 9)), Color.White);
-                    break;
-                case GameState.Exit:
-                    this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
-                    break;
-                case GameState.Win:
-                    this.spriteBatch.Draw(this.winBackground, this.backgroundRect, Color.White);
-                    this.spriteBatch.DrawString(this.winMessageFont, this.winner.UserName + " Wins", new Vector2(UIConstants.windowWidth / 2, 100) - (this.winMessageFont.MeasureString(this.winner.UserName + " WINS") / 2), Color.Crimson);
-                    break;
-                default:
-                    break;
-            }
-
-
-            this.spriteBatch.End();
-
-
-            base.Draw(gameTime);
-        }
-
-        //customMethods
         public IDevelopmentCard GetDevelopmentCard()
         {
             return this.developmentCards.Dequeue();

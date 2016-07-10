@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>IconCustom.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\HexField.cs" />
@@ -146,6 +146,7 @@
     <Content Include="Content\villageplayer4.png" />
     <Content Include="Content\winbackground.png" />
     <Content Include="Icon.ico" />
+    <Content Include="IconCustom.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
