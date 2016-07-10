@@ -11,7 +11,7 @@ namespace Catan.Interfaces
     {
         event EventHandler WinPointsReached;
         Color Color { get; set; }
-        IList<DevelopmentCard> DevCardsPossedsed { get; set; }
+        IList<IDevelopmentCard> DevCardsPossedsed { get; set; }
         IList<Harbour> Harbours { get; set; }
         byte Id { get; }
         int Points { get; }

@@ -1,4 +1,7 @@
-﻿using Catan.GameObjects;
+﻿using Catan.Constants;
+using Catan.DevelopmentCards;
+using Catan.GameObjects;
+using Catan.Interfaces;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
@@ -10,6 +13,11 @@ namespace Catan.Utilities
 {
     public static class ContentLoader
     {
+        private const int NumberOfKnightCard = 14;
+        private const int NumberOfVictoryPointCard = 5;
+        private const int NumberOfRoadBuildCard = 3;
+        private const int NumberOfResourceGetCard = 3;
+
         public static void LoadSettlements(Settlement[,] settlement, ContentManager content)
         {
             settlement[7, 1] = new Settlement(7, 1, 0, content, "transperent", 270, 125, 20, 20);
@@ -158,6 +166,33 @@ namespace Catan.Utilities
             lineObject[11, 13] = new LineObject(11, 5, 12, 5, 0, content, "transperent", 450, 460, 20, 30);
             lineObject[12, 13] = new LineObject(12, 5, 13, 5, 0, content, "transperent", 490, 460, 20, 30);
 
+        }
+
+        public static ICollection<IDevelopmentCard> GenerateDevelopmentCards()
+        {
+            int[] developmentCardsTypesCount = new int[] { NumberOfKnightCard, NumberOfVictoryPointCard, NumberOfRoadBuildCard, NumberOfResourceGetCard };
+            IDevelopmentCard[] developmentCards = new IDevelopmentCard[CommonConstants.DevelopmentCardsNumber];
+            Random rand = new Random();
+            for (int i = 0; i < CommonConstants.DevelopmentCardsNumber; i++)
+            {
+                int cardType = rand.Next(developmentCardsTypesCount.Length);
+                while (developmentCardsTypesCount[cardType] <= 0)
+                {
+                    cardType = (cardType + 1) % developmentCardsTypesCount.Length;
+                }
+                developmentCardsTypesCount[cardType]--;
+                IDevelopmentCard card = null;
+                switch (cardType)
+                {
+                    case 0: card = new KnightCard(); break;
+                    case 1: card = new VictoryPointCard(); break;
+                    case 2: card = new RoadBuildCard(); break;
+                    case 3: card = new ResourceGetCard(); break;
+                    default: throw new ArgumentOutOfRangeException("Such development card type does not exist");
+                }
+                developmentCards[i] = card;
+            }
+            return developmentCards;
         }
     }
 }

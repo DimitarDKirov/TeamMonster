@@ -23,7 +23,7 @@ namespace Catan.Common
         private IList<Village> villages;
         private IList<Town> towns;
         private IList<Harbour> harbours;
-        private IList<DevelopmentCard> devCardsPossesed;
+        private IList<IDevelopmentCard> devCardsPossesed;
         private int points;
         private uint[] resources;
         private static byte serialNumber;
@@ -48,7 +48,7 @@ namespace Catan.Common
             this.Villages = new List<Village>();
             this.Towns = new List<Town>();
             this.Harbours = new List<Harbour>();
-            this.DevCardsPossedsed = new List<DevelopmentCard>(3);
+            this.DevCardsPossedsed = new List<IDevelopmentCard>(3);
             this.points = 0;
             this.resources = new uint[CommonConstants.ResourceTypesNumber];
             serialNumber++;
@@ -98,7 +98,7 @@ namespace Catan.Common
             set { this.harbours = value; }
         }
 
-        public IList<DevelopmentCard> DevCardsPossedsed
+        public IList<IDevelopmentCard> DevCardsPossedsed
         {
             get { return this.devCardsPossesed; }
             set { this.devCardsPossesed = value; }

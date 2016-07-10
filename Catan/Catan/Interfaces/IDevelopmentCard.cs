@@ -1,6 +1,6 @@
 ﻿using Catan.Common;
 
-namespace Catan.DevelopmentCards
+namespace Catan.Interfaces
 {
     public interface IDevelopmentCard
     {

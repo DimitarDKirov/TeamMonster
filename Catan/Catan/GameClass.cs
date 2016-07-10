@@ -86,7 +86,7 @@ namespace Catan
         private Settlement[,] settlements;
         private LineObject[,] roadsAndBoats;
 
-        private Queue<DevelopmentCard> developmentCards;
+        private Queue<IDevelopmentCard> developmentCards;
 
 
         //other
@@ -191,7 +191,7 @@ namespace Catan
             };
 
             //Load Developemnt cards
-            this.developmentCards = new Queue<DevelopmentCard>(CommonConstants.DevelopmentCardsNumber);
+            this.developmentCards = new Queue<IDevelopmentCard>(CommonConstants.DevelopmentCardsNumber);
             this.LoadDevelopmentCardRepository();
 
             //subscribe to Player wins event
@@ -317,9 +317,11 @@ namespace Catan
                         //Buttons for actions
                         if (this.develpomentCardRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                         {
-
-                            //Add functionality
+                            //TODO: conditions to draw Development card
                             this.statusMessage = "Buy cards";
+                            var developmentCardDrawed = this.GetDevelopmentCard();
+                            this.PlayerOnTurn.DevCardsPossedsed.Add(developmentCardDrawed);
+
                         }
                         if (this.villageRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                         {
@@ -567,7 +569,7 @@ namespace Catan
                     break;
                 case GameState.Win:
                     this.spriteBatch.Draw(this.winBackground, this.backgroundRect, Color.White);
-                    this.spriteBatch.DrawString(this.winMessageFont, this.winner.UserName + " Wins", new Vector2(UIConstants.windowWidth / 2, 100) - (this.winMessageFont.MeasureString(this.winner.UserName + " WINS")/2), Color.Crimson);
+                    this.spriteBatch.DrawString(this.winMessageFont, this.winner.UserName + " Wins", new Vector2(UIConstants.windowWidth / 2, 100) - (this.winMessageFont.MeasureString(this.winner.UserName + " WINS") / 2), Color.Crimson);
                     break;
                 default:
                     break;
@@ -588,12 +590,12 @@ namespace Catan
 
 
 
-        public DevelopmentCard GetDevelopmentCard()
+        public IDevelopmentCard GetDevelopmentCard()
         {
             return this.developmentCards.Dequeue();
         }
 
-        public void PushDevelopmentCard(DevelopmentCard card)
+        public void PushDevelopmentCard(IDevelopmentCard card)
         {
             this.developmentCards.Enqueue(card);
         }
@@ -607,26 +609,9 @@ namespace Catan
 
         private void LoadDevelopmentCardRepository()
         {
-            int[] developmentCardsTypesCount = new int[] { 14, 5, 3, 3 };
-            Random rand = new Random();
-            for (int i = 0; i < CommonConstants.DevelopmentCardsNumber; i++)
+            foreach (var developmentCard in ContentLoader.GenerateDevelopmentCards())
             {
-                int cardType = rand.Next(developmentCardsTypesCount.Length);
-                while (developmentCardsTypesCount[cardType] <= 0)
-                {
-                    cardType = (cardType + 1) % developmentCardsTypesCount.Length;
-                }
-                developmentCardsTypesCount[cardType]--;
-                DevelopmentCard card = null;
-                switch (cardType)
-                {
-                    case 0: card = new KnightCard(); break;
-                    case 1: card = new VictoryPointCard(); break;
-                    case 2: card = new RoadBuildCard(); break;
-                    case 3: card = new ResourceGetCard(); break;
-                    default: throw new ArgumentOutOfRangeException("Such development card type does not exist");
-                }
-                this.developmentCards.Enqueue(card);
+                this.PushDevelopmentCard(developmentCard);
             }
         }
     }
