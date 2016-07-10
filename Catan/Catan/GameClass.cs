@@ -116,8 +116,11 @@ namespace Catan
             set { this.players = value; }
         }
 
-        public Player PlayerOnTurn { get; set; }
-
+        public Player PlayerOnTurn
+        {
+            get { return this.playerOnTurn; }
+            set { this.playerOnTurn = value; }
+        }
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -216,7 +219,7 @@ namespace Catan
             ContentLoader.LoadHexFields(this.hexFields, this.roadsAndBoats, this.settlements, this.Content);
 
             this.playerOnTurn = this.players[0];
-            this.statusMessage = "Build 2 villages";
+            this.statusMessage = "Build village 1";
             this.menuOptions = new List<MenuItem>
             {
               new MenuItem("New game", new Vector2(UIConstants.windowWidth / 2, 270), Color.Crimson, this.Content),
@@ -282,27 +285,25 @@ namespace Catan
 
                     if (this.isStartRound && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                     {
-                        var player = this.Players.FirstOrDefault(pl => pl.Villages.Count < 2 || pl.LineObjects.Count < 2);
-                        if (player == null)
+                        var playerVillages = this.PlayerOnTurn.Villages.Count;
+                        var playerRoads = this.PlayerOnTurn.LineObjects.Count;
+                        if (playerVillages == playerRoads)
                         {
-                            this.isStartRound = false;
+                            //player must build a village
+                            this.BuildStartVillage(this.PlayerOnTurn, true);
                         }
-                        else
+                        else if (playerVillages > playerRoads)
                         {
-                            this.PlayerOnTurn = player;
-                            if (player.Villages.Count < 2)
-                            {
-                                this.BuildStartVillage(player, true);
-                            }
-                            else
-                            {
-                                this.BuildStartRoad(player, true);
-                            }
+                            //player must build a road
+                            this.BuildStartRoad(this.PlayerOnTurn, true);
                         }
+
                         //check which is the next move and which player to do it
-                        if (player.LineObjects.Count >= 2)
+                        playerVillages = this.PlayerOnTurn.Villages.Count;
+                        playerRoads = this.PlayerOnTurn.LineObjects.Count;
+                        if (playerRoads >= 2 && playerVillages >= 2)
                         {
-                            int currentPLayerIndex = this.Players.IndexOf(player);
+                            int currentPLayerIndex = this.Players.IndexOf(this.PlayerOnTurn);
                             int nextPlayerIndex = (currentPLayerIndex + 1) % this.Players.Count;
                             this.playerOnTurn = this.Players[nextPlayerIndex];
                             if (currentPLayerIndex == this.Players.Count - 1)
@@ -310,9 +311,14 @@ namespace Catan
                                 this.statusMessage = "Roll dices";
                                 this.isStartRound = false;
                             }
-                            else this.statusMessage = "Build 2 villages";
+                            else
+                            {
+                                this.statusMessage = "Build village 1";
+                            }
                         }
-                        else if (player.Villages.Count >= 2) this.statusMessage = "Build 2 roads";
+                        else if (playerVillages == 1 && playerRoads == 0) this.statusMessage = "Build road 1";
+                        else if (playerVillages == 1 && playerRoads == 1) this.statusMessage = "Build village 2";
+                        else if (playerVillages == 2 && playerRoads == 1) this.statusMessage = "Build road 2";
                     }
                     else
                     {
