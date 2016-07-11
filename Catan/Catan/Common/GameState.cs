@@ -12,6 +12,10 @@ namespace Catan.Menu
         NewGame = 1,
         About = 2,
         Exit = 3,
-        Win = 4
+        Win = 4,
+        BuildRoad,
+        BuildBoat,
+        BuildVillage,
+        BuildTown
     }
 }

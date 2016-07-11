@@ -35,8 +35,8 @@ namespace Catan.Common
             //get a random number object we can the use to determine the die face
             Random rand = new Random();
             int diceNumber;
-            this.FirstDice = rand.Next(1, 6);
-            this.SecondDice = rand.Next(1, 6);
+            this.FirstDice = rand.Next(1, 7);
+            this.SecondDice = rand.Next(1, 7);
             diceNumber = this.FirstDice + this.SecondDice;
             if (diceNumber != 7)
             {
