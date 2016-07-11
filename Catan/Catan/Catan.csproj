@@ -152,6 +152,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Content\Arial.spritefont" />
     <None Include="Content\ArialMedium.spritefont" />
     <None Include="Content\ArialMenu.spritefont" />

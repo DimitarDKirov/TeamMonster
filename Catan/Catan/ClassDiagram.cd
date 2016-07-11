@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Catan.Common.Dice" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAgAAAAAAAgAAACAAAAAAAAAiAAAFAQIAAAAAAAA=</HashCode>
+      <FileName>Common\Dice.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Catan.Common.HexField" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIhAAAAYAAAQkEAIAIEACACBAggAgoAAEIEAABAAAY=</HashCode>
+      <FileName>Common\HexField.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Catan.Common.Player" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAgCIBAEQgiEACAgBAAgIAAg0AACYEQYAgAEAAgg=</HashCode>
+      <FileName>Common\Player.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Catan.Menu.MenuItem" Collapsed="true">
+    <Position X="18.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAQAAAAgAAAAAAAAAAAAAAQICAAAAAgAAAAAA=</HashCode>
+      <FileName>Menu\MenuItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.Menu.ScoreBoard" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAgAAAAAAAAAAAAAgAABAAAIAQAAAAAA=</HashCode>
+      <FileName>Menu\ScoreBoard.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Catan.Constants.CommonConstants" Collapsed="true">
+    <Position X="16.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAIAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Constants\CommonConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.Constants.UIConstants" Collapsed="true">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAgAAAAgAAAAAQAAAAAEAAAAAAIQ=</HashCode>
+      <FileName>Constants\UIConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.DevelopmentCards.DevelopmentCard" Collapsed="true">
+    <Position X="4.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEACAAAAAgABAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>DevelopmentCards\DevelopmentCard.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Catan.DevelopmentCards.KnightCard" Collapsed="true">
+    <Position X="7.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DevelopmentCards\KnightCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.DevelopmentCards.ProgressCard" Collapsed="true">
+    <Position X="2" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DevelopmentCards\ProgressCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.DevelopmentCards.ResourceGetCard" Collapsed="true">
+    <Position X="1" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DevelopmentCards\ResourceGetCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.DevelopmentCards.RoadBuildCard" Collapsed="true">
+    <Position X="3.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DevelopmentCards\RoadBuildCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.DevelopmentCards.VictoryPointCard" Collapsed="true">
+    <Position X="5.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DevelopmentCards\VictoryPointCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.Exceptions.AgentActionException" Collapsed="true">
+    <Position X="8.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\AgentActionException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.Exceptions.IllegalActionException" Collapsed="true">
+    <Position X="8.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\IllegalActionException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.Exceptions.IllegalBuildPositionException" Collapsed="true">
+    <Position X="10.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\IllegalBuildPositionException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.Exceptions.NoMoreCardsException" Collapsed="true">
+    <Position X="6" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\NoMoreCardsException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.GameClass" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABwKEEESAgAAm8FICECAAcgAAQ4iEAsIo0goIQAICEQ=</HashCode>
+      <FileName>GameClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.GameObjects.Boat" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAABAoAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\Boat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.GameObjects.Harbour" Collapsed="true">
+    <Position X="10" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAIAAAAIAAAACAA=</HashCode>
+      <FileName>GameObjects\Harbour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.GameObjects.LineObject" Collapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAAAAEAQQAACEAAAAgAAABAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\LineObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.GameObjects.MapObject" Collapsed="true">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAkAAAIQwAAEBAACDAgAABgggggAAIkAAAAAAY=</HashCode>
+      <FileName>GameObjects\MapObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Catan.GameObjects.NodeObject" Collapsed="true">
+    <Position X="2" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>GameObjects\NodeObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.GameObjects.Road" Collapsed="true">
+    <Position X="5.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAABAoAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\Road.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.GameObjects.Settlement" Collapsed="true">
+    <Position X="2" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAQAAAAAAAAQAAAAAAAAACAABAggAAgAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\Settlement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.GameObjects.Town" Collapsed="true">
+    <Position X="1" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAABAAABAgAAAgAAAAAAAAIA=</HashCode>
+      <FileName>GameObjects\Town.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.GameObjects.Unit" Collapsed="true">
+    <Position X="10" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\Unit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.GameObjects.Village" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAAAAAAAAAAAAAAAAAAAABAAABAgAAAgAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\Village.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.Utilities.ContentLoader" Collapsed="true">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAACAgAAACAAAAAAgCAAAgQAA=</HashCode>
+      <FileName>Utilities\ContentLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catan.Utilities.DataGenerator" Collapsed="true">
+    <Position X="14.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAIAAAAAAEAAAAQAAAAAAAAAAAAAAAQAAAACAAA=</HashCode>
+      <FileName>Utilities\DataGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Catan.Interfaces.IBuildable" Collapsed="true">
+    <Position X="13" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IBuildable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Catan.Interfaces.IClickable" Collapsed="true">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAgAAAAEAAAAAAY=</HashCode>
+      <FileName>Interfaces\IClickable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Catan.Interfaces.IDevelopmentCard" Collapsed="true">
+    <Position X="16.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Interfaces\IDevelopmentCard.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Catan.Interfaces.IDrawableCustom" Collapsed="true">
+    <Position X="18.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAgAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IDrawableCustom.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Catan.Interfaces.IPlayer" Collapsed="true">
+    <Position X="13" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgAIBAAQggAAAAgBAAgAAAgAAAAAEQQAgAAAAAg=</HashCode>
+      <FileName>Interfaces\IPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Catan.Common.LandType" Collapsed="true">
+    <Position X="14.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQABAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\LandType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Catan.Common.MapObjectType" Collapsed="true">
+    <Position X="16.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\MapObjectType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Catan.Common.ResourceType" Collapsed="true">
+    <Position X="18.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAQAAAAAAAAAAABAAAAAAAAAAAAAAAgAAEBAAA=</HashCode>
+      <FileName>Common\ResourceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Catan.Common.TerrainType" Collapsed="true">
+    <Position X="13" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAASAAAAAAAAAAAAAEAAAAACAAAAAAAAgAA=</HashCode>
+      <FileName>Common\TerrainType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Catan.Menu.GameState" Collapsed="true">
+    <Position X="13" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAEAAAAAABAAIAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Common\GameState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
