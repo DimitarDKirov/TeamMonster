@@ -11,9 +11,7 @@ using Catan.Interfaces;
 
 namespace Catan.GameObjects
 {
-    public abstract class MapObject : Catan.Interfaces.IDrawableCustom,
-                                      Catan.Interfaces.IClickable,
-                                      Catan.Interfaces.IBuildable
+    public abstract class MapObject : IMapObject
 
     {
         //constants

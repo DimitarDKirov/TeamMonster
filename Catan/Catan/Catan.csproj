@@ -43,6 +43,7 @@
     <Compile Include="DevelopmentCards\ResourceGetCard.cs" />
     <Compile Include="DevelopmentCards\RoadBuildCard.cs" />
     <Compile Include="Interfaces\IBuildable.cs" />
+    <Compile Include="Interfaces\IMapObject.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Common\LandType.cs" />
     <Compile Include="Common\MapObjectType.cs" />

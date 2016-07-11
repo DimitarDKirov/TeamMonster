@@ -11,5 +11,6 @@ namespace Catan.Interfaces
         void Build(IPlayer playerOnTurn, bool buildWithDevCard);
 
         void Destroy(IPlayer playerOnTurn);
+        bool CheckNeighbours(IPlayer playerOnTurn);
     }
 }
