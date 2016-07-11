@@ -24,11 +24,11 @@ The user may open the menu at any time by pressing key M. Selection is changed b
 The villages and roads of each player are colored like player's color: red, blue, green, yellow.
 Once the last player builds his initial roads and villages, the active state f the game begins. Each player roll the dices by clicking on them. Depending on their sum the player can get resources from the fields his villages are located on or if he has enough points to build additional settlement.
 
-[GamePLayState](./images/GamePLayState.png)
+![GamePlayState](./images/GamePLayState.png)
 
 The first player who gathers 10 points wins the game. This is implements with event, raised by the player and received by the game engine.
 Further options are available by the usage of development cards. Their hierarchy exists in the class structure, but this functionality is not implemented yet.
 
 ##Class diagram
 
-[ClassDiagramLast](./images/ClassDiagramLast.png)
+![ClassDiagramLast](./images/ClassDiagramLast.png)
