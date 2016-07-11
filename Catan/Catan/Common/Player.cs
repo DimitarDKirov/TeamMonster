@@ -19,15 +19,15 @@ namespace Catan.Common
         private readonly byte id;
         private string userName;
         private Color color;
-        private IList<Unit> units;
-        private IList<Village> villages;
-        private IList<Town> towns;
-        private IList<Harbour> harbours;
-        private IList<IDevelopmentCard> devCardsPossesed;
+        private ICollection<Unit> units;
+        private ICollection<Village> villages;
+        private ICollection<Town> towns;
+        private IEnumerable<Harbour> harbours;
+        private ICollection<IDevelopmentCard> devCardsPossesed;
         private int points;
         private uint[] resources;
         private static byte serialNumber;
-        private IList<Settlement> settlements;
+        private IEnumerable<Settlement> settlements;
         private IList<LineObject> lineObjects;
 
         private readonly SpriteFont font;
@@ -44,11 +44,11 @@ namespace Catan.Common
         {
             this.UserName = userName;
             this.Color = color;
-            this.Units = new List<Unit>();
-            this.Villages = new List<Village>();
-            this.Towns = new List<Town>();
-            this.Harbours = new List<Harbour>();
-            this.DevCardsPossedsed = new List<IDevelopmentCard>(3);
+            this.units = new List<Unit>();
+            this.villages = new List<Village>();
+            this.towns = new List<Town>();
+            this.harbours = new List<Harbour>();
+            this.devCardsPossesed = new List<IDevelopmentCard>(3);
             this.points = 0;
             this.resources = new uint[CommonConstants.ResourceTypesNumber];
             serialNumber++;
@@ -56,8 +56,8 @@ namespace Catan.Common
             //For visualization
             this.Texture = content.Load<Texture2D>("screenplayer" + this.id);
             this.Rectangle = new Rectangle(x, y, width, height);
-            this.Settlements = new List<Settlement>();
-            this.LineObjects = new List<LineObject>();
+            this.settlements = new List<Settlement>();
+            this.lineObjects = new List<LineObject>();
             this.font = content.Load<SpriteFont>("Arial");
         }
 
@@ -74,34 +74,34 @@ namespace Catan.Common
             set { this.color = value; }
         }
 
-        public IList<Unit> Units
+        public IEnumerable<Unit> Units
         {
             get { return this.units; }
-            set { this.units = value; }
+            //set { this.units = value; }
         }
 
-        public IList<Village> Villages
+        public ICollection<Village> Villages
         {
             get { return this.villages; }
-            set { this.villages = value; }
+            //set { this.villages = value; }
         }
 
-        public IList<Town> Towns
+        public ICollection<Town> Towns
         {
             get { return this.towns; }
-            set { this.towns = value; }
+            // set { this.towns = value; }
         }
 
-        public IList<Harbour> Harbours
+        public IEnumerable<Harbour> Harbours
         {
             get { return this.harbours; }
-            set { this.harbours = value; }
+            // set { this.harbours = value; }
         }
 
-        public IList<IDevelopmentCard> DevCardsPossedsed
+        public ICollection<IDevelopmentCard> DevCardsPossedsed
         {
             get { return this.devCardsPossesed; }
-            set { this.devCardsPossesed = value; }
+            //set { this.devCardsPossesed = value; }
         }
 
         public int Points
@@ -119,16 +119,14 @@ namespace Catan.Common
 
         public Texture2D Texture { get; private set; }
 
-        public IList<LineObject> LineObjects
+        public ICollection<LineObject> LineObjects
         {
             get { return this.lineObjects; }
-            set { this.lineObjects = value; }
         }
 
-        public IList<Settlement> Settlements
+        public IEnumerable<Settlement> Settlements
         {
             get { return this.settlements; }
-            set { this.settlements = value; }
         }
 
         //Methods

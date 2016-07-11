@@ -11,16 +11,16 @@ namespace Catan.Interfaces
     {
         event EventHandler WinPointsReached;
         Color Color { get; set; }
-        IList<IDevelopmentCard> DevCardsPossedsed { get; set; }
-        IList<Harbour> Harbours { get; set; }
+        ICollection<IDevelopmentCard> DevCardsPossedsed { get; }
+        IEnumerable<Harbour> Harbours { get; }
         byte Id { get; }
         int Points { get; }
-        IList<Town> Towns { get; set; }
-        IList<Unit> Units { get; set; }
+        ICollection<Town> Towns { get; }
+        IEnumerable<Unit> Units { get; }
         string UserName { get; set; }
-        IList<Village> Villages { get; set; }
-        IList<LineObject> LineObjects { get; set; }
-        IList<Settlement> Settlements { get; set; }
+        ICollection<Village> Villages { get; }
+        ICollection<LineObject> LineObjects { get; }
+        IEnumerable<Settlement> Settlements { get; }
 
         void AddPoints(int points);
         uint GetResourceValue(ResourceType resource);
