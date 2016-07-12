@@ -12,7 +12,7 @@ namespace Catan.DevelopmentCards
     {
         private bool isPlayed;
 
-        private Player owner;
+        private IPlayer owner;
 
         public DevelopmentCard()
         {
@@ -25,7 +25,7 @@ namespace Catan.DevelopmentCards
             set { this.isPlayed = value; }
         }
 
-        public Player Owner
+        public IPlayer Owner
         {
             get { return owner; }
             set { owner = value; }
