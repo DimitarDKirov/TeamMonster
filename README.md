@@ -1,5 +1,4 @@
-# Team Monster 
-##Teamwork for Telerik Academy Object-oriented Programming course 2016
+# Team Monster teamwork part of Object-oriented Programming 2016 course in Telerik Academy
 ----------------------------------
 
 ##Team members:
@@ -11,6 +10,9 @@
 
 ##GitHub repository
 https://github.com/DimitarDKirov/TeamMonster
+
+##Telerik Academy Showcase System place
+http://best.telerikacademy.com/projects/279/Catan-OOP-Team-project-of-team-Monster
 
 ##Project description
 This project is a simple implementation of the board game "The Settlers of Catan". The GUI is based on MonoGame. In this case 4 players share the same mouse/keyboard/screen The initial menu consists of 3 options: New Game, About and Exit. 
