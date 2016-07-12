@@ -29,10 +29,11 @@ namespace Catan.Common
         private IList<NodeObject> nodeObject;
         private IList<LineObject> lineObject;
         private static Texture2D robberTexture;
+        private static int[] usedProduceNumbers = { 0,0,1,2,2,2,2,0,2,2,2,2,1};
 
         public HexField(TerrainType terrain, ContentManager content, int x, int y, int width, int height,              
                         IList<NodeObject> nodeObject, IList<LineObject> lineObject)
-        {
+        {            
             this.Terrain = terrain;
             this.Resource = DataGenerator.GenerateHexResource(this.Terrain);
             this.ProduceAtNumber = (uint)DataGenerator.GenerateHexProducingNumber(this.Terrain);
@@ -52,6 +53,7 @@ namespace Catan.Common
             this.DY = (uint)height;
         }
 
+        public static int[] UsedProduceNumbers { get{return HexField.usedProduceNumbers;} set{HexField.usedProduceNumbers=value;} }
         public TerrainType Terrain
         {
             get { return this.terrain; }

@@ -13,6 +13,7 @@ namespace Catan.Menu
         About = 2,
         Exit = 3,
         Win = 4,
+        PlayerOnTurn,
         BuildRoad,
         BuildBoat,
         BuildVillage,

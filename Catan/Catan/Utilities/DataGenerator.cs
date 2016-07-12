@@ -146,12 +146,13 @@ namespace Catan.Utilities
             {
                 return 7;
             }
-            var tempValue = 7;
+            int tempValue;
             while (true)
             {
-                tempValue = random.Next(1, 13);
-                if (tempValue != 7)
+                tempValue = random.Next(2, 13);
+                if (HexField.UsedProduceNumbers[tempValue]>0)
                 {
+                    HexField.UsedProduceNumbers[tempValue]--;
                     return tempValue;
                 }
             }
