@@ -15,8 +15,8 @@ namespace Catan.GameObjects
 
     {
         //constants
-        protected const uint TOP = 2;
-        protected const uint BOTTOM = 7;
+        protected const uint TOP = 1;
+        protected const uint BOTTOM = 6;
         protected const uint LEFT = 5;
         protected const uint RIGHT = 15;
 

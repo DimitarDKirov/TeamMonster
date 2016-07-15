@@ -157,17 +157,17 @@ namespace Catan.Utilities
             lineObject[12, 11] = new LineObject(12, 5, 13, 5, 0, content, "transperent", 490, 390, 20, 30);
             lineObject[13, 11] = new LineObject(13, 5, 14, 5, 0, content, "transperent", 530, 390, 20, 30);
 
-            lineObject[7, 12] = new LineObject(7, 5, 9, 6, 0, content, "transperent", 270, 425, 20, 30);
-            lineObject[9, 12] = new LineObject(9, 5, 7, 6, 0, content, "transperent", 350, 425, 20, 30);
+            lineObject[7, 12] = new LineObject(7, 5, 7, 6, 0, content, "transperent", 270, 425, 20, 30);
+            lineObject[9, 12] = new LineObject(9, 5, 9, 6, 0, content, "transperent", 350, 425, 20, 30);
             lineObject[11, 12] = new LineObject(11, 5, 11, 6, 0, content, "transperent", 430, 425, 20, 30);
             lineObject[13, 12] = new LineObject(13, 5, 13, 6, 0, content, "transperent", 510, 425, 20, 30);
 
-            lineObject[7, 13] = new LineObject(7, 5, 8, 5, 0, content, "transperent", 290, 460, 20, 30);
-            lineObject[8, 13] = new LineObject(8, 5, 9, 5, 0, content, "transperent", 330, 460, 20, 30);
-            lineObject[9, 13] = new LineObject(9, 5, 10, 5, 0, content, "transperent", 370, 460, 20, 30);
-            lineObject[10, 13] = new LineObject(10, 5, 11, 5, 0, content, "transperent", 410, 460, 20, 30);
-            lineObject[11, 13] = new LineObject(11, 5, 12, 5, 0, content, "transperent", 450, 460, 20, 30);
-            lineObject[12, 13] = new LineObject(12, 5, 13, 5, 0, content, "transperent", 490, 460, 20, 30);
+            lineObject[7, 13] = new LineObject(7, 6, 8, 6, 0, content, "transperent", 290, 460, 20, 30);
+            lineObject[8, 13] = new LineObject(8, 6, 9, 6, 0, content, "transperent", 330, 460, 20, 30);
+            lineObject[9, 13] = new LineObject(9, 6, 10, 6, 0, content, "transperent", 370, 460, 20, 30);
+            lineObject[10, 13] = new LineObject(10, 6, 11, 6, 0, content, "transperent", 410, 460, 20, 30);
+            lineObject[11, 13] = new LineObject(11, 6, 12, 6, 0, content, "transperent", 450, 460, 20, 30);
+            lineObject[12, 13] = new LineObject(12, 6, 13, 6, 0, content, "transperent", 490, 460, 20, 30);
 
         }
 

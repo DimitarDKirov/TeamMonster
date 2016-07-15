@@ -289,6 +289,7 @@
                             {
                                 this.statusMessage = "Roll dices";
                                 this.isStartRound = false;
+                                this.gameState = GameState.PlayerOnTurn;
                             }
                             else
                             {
@@ -299,45 +300,77 @@
                         else if (playerVillages == 1 && playerRoads == 1) this.statusMessage = "Build village 2";
                         else if (playerVillages == 2 && playerRoads == 1) this.statusMessage = "Build road 2";
                     }
-                    else
+                    break;
+                case GameState.PlayerOnTurn:
+                    //Buttons for actions
+                    if (this.develpomentCardRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
                     {
-                        //Buttons for actions
-                        if (this.develpomentCardRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
-                        {
-                            //TODO: conditions to draw Development card
-                            this.statusMessage = "Buy cards";
-                            var developmentCardDrawed = this.GetDevelopmentCard();
-                            this.PlayerOnTurn.DevCardsPossedsed.Add(developmentCardDrawed);
-                        }
-                        if (this.villageRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
-                        {
-                            this.BuildStartVillage(this.playerOnTurn, false);
-                            this.statusMessage = "Build village";
-                        }
-                        if (this.townRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
-                        {
-                            //TODO: Add functionality
-                            this.statusMessage = "Build town";
-                        }
-                        if (this.roadRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
-                        {
-                            this.BuildStartRoad(this.playerOnTurn, false);
-                            this.statusMessage = "Build road";
-                        }
-                        if (this.boatRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
-                        {
-                            //TODO: Add functionality
-                            this.statusMessage = "Build boat";
-                        }
-                        if (this.dices.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
-                        {
-                            this.dices.Roll();
-                            //TODO: Loop over and collect resources
-                            this.playerOnTurn = this.players[this.playerOnTurn.Id % 4];
-                            this.playerOnTurn.AddPoints(2);//For testing purposes
-                            this.scoreBoard.Update(this.players);
-                        }
+                        //TODO: conditions to draw Development card
+                        this.statusMessage = "Buy cards";
+                        var developmentCardDrawed = this.GetDevelopmentCard();
+                        this.PlayerOnTurn.DevCardsPossedsed.Add(developmentCardDrawed);
                     }
+                    if (this.villageRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                    {
+                        this.gameState = GameState.BuildVillage;
+                        this.statusMessage = "Build village";
+                    }
+                    if (this.townRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                    {
+                        //TODO: Add functionality
+                        this.statusMessage = "Build town";
+                    }
+                    if (this.roadRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                    {
+                        this.gameState = GameState.BuildRoad;
+                        this.statusMessage = "Build road";
+                    }
+                    if (this.boatRect.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                    {
+                        //TODO: Add functionality
+                        this.statusMessage = "Build boat";
+                    }
+                    if (this.dices.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && this.newMouseState.LeftButton == ButtonState.Pressed && this.oldMouseState.LeftButton == ButtonState.Released)
+                    {
+                        this.dices.Roll();
+                        //TODO: Loop over and collect resources
+                        this.playerOnTurn = this.players[this.playerOnTurn.Id % 4];
+                        //this.playerOnTurn.AddPoints(2);//For testing purposes
+                        this.scoreBoard.Update(this.players);
+                    }
+                    break;
+                case GameState.BuildRoad:
+                    if (this.newMouseState.LeftButton == ButtonState.Pressed &&
+                        this.oldMouseState.LeftButton == ButtonState.Released &&
+                        this.BuildStartRoad(this.playerOnTurn, false))
+                    {
+                        this.statusMessage = "Roll dices";
+                        this.gameState = GameState.PlayerOnTurn;
+                    }
+                    break;
+                case GameState.BuildBoat:
+                    this.gameState = GameState.PlayerOnTurn;
+                    //TODO: Add functionality
+                    /*if (this.BuildStartRoad(this.playerOnTurn, false);
+                    {
+                        this.statusMessage = "Roll dices";
+                    }      */
+                    break;
+                case GameState.BuildVillage:
+
+                    if (this.BuildStartVillage(this.playerOnTurn, false))
+                    {
+                        this.statusMessage = "Roll dices";
+                        this.gameState = GameState.PlayerOnTurn;
+                    }
+                    break;
+                case GameState.BuildTown:
+                    this.gameState = GameState.PlayerOnTurn;
+                    //TODO: Add functionality
+                    /*if (this.newKBState.IsKeyDown(Keys.M) && this.oldKBState.IsKeyUp(Keys.M))
+                    {
+                       this.statusMessage = "Roll dices";
+                    }*/
                     break;
                 case GameState.About:
 
@@ -377,7 +410,21 @@
                         this.menuOptions[i].Draw(this.spriteBatch);
                     }
                     break;
-                case GameState.NewGame:
+                case GameState.About:
+                    this.spriteBatch.Draw(this.aboutBackground, this.backgroundRect, Color.White);
+                    this.spriteBatch.DrawString(this.menuFont, "About", new Vector2(UIConstants.aboutXOffset, UIConstants.aboutYOffset), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessage, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset * 2)), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageNote, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset / 2 * 7)), Color.White);
+                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageUI, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset / 2 * 9)), Color.White);
+                    break;
+                case GameState.Exit:
+                    this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
+                    break;
+                case GameState.Win:
+                    this.spriteBatch.Draw(this.winBackground, this.backgroundRect, Color.White);
+                    this.spriteBatch.DrawString(this.winMessageFont, this.winner.UserName + " Wins", new Vector2(UIConstants.windowWidth / 2, 100) - (this.winMessageFont.MeasureString(this.winner.UserName + " WINS") / 2), Color.Crimson);
+                    break;
+                default:
                     this.spriteBatch.Draw(this.gameBackground, this.backgroundRect, Color.White);
                     this.dices.Draw(this.spriteBatch);
                     this.scoreBoard.Draw(this.spriteBatch);
@@ -426,22 +473,6 @@
                         }
                     }
                     break;
-                case GameState.About:
-                    this.spriteBatch.Draw(this.aboutBackground, this.backgroundRect, Color.White);
-                    this.spriteBatch.DrawString(this.menuFont, "About", new Vector2(UIConstants.aboutXOffset, UIConstants.aboutYOffset), Color.White);
-                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessage, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset * 2)), Color.White);
-                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageNote, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset / 2 * 7)), Color.White);
-                    this.spriteBatch.DrawString(this.gameFont, UIConstants.aboutMessageUI, new Vector2(UIConstants.aboutXOffset, (UIConstants.aboutXOffset + UIConstants.aboutTextYOffset / 2 * 9)), Color.White);
-                    break;
-                case GameState.Exit:
-                    this.spriteBatch.Draw(this.menuBackground, this.backgroundRect, Color.White);
-                    break;
-                case GameState.Win:
-                    this.spriteBatch.Draw(this.winBackground, this.backgroundRect, Color.White);
-                    this.spriteBatch.DrawString(this.winMessageFont, this.winner.UserName + " Wins", new Vector2(UIConstants.windowWidth / 2, 100) - (this.winMessageFont.MeasureString(this.winner.UserName + " WINS") / 2), Color.Crimson);
-                    break;
-                default:
-                    break;
             }
 
             this.spriteBatch.End();
@@ -473,7 +504,7 @@
                         if (settlements[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
                         {
                             try
-                            {                               
+                            {
                                 var tempX = settlements[x, y].ScreenX;
                                 var tempY = settlements[x, y].ScreenY;
                                 var imageString = string.Format("villageplayer" + player.Id);
