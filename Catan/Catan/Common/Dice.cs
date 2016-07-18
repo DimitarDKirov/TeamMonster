@@ -57,7 +57,7 @@ namespace Catan.Common
                         {
                             foreach (var settlement in GameClass.Game.Settlements)
                             {
-                                if (settlement != null && settlement.PlayerID != 0 &&
+                                if (node != null && settlement != null && settlement.PlayerID != 0 &&
                                     settlement.NodeX == node.NodeX && settlement.NodeY == node.NodeY)
                                 {
                                     settlement.Produce(hexField.Resource);

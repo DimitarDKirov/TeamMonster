@@ -128,8 +128,8 @@ namespace Catan.GameObjects
                  x2 = this.EndPointX,
                  y2 = this.EndPointY;
 
-            if ((GameClass.Game.Settlements[x1,y1]!=null && GameClass.Game.Settlements[x1,y1].PlayerID==playerOnTurn.Id)||
-                (GameClass.Game.Settlements[x2,y2]!=null && GameClass.Game.Settlements[x2,y2].PlayerID==playerOnTurn.Id))
+            if ((GameClass.GetSettlementByPosition(x1,y1)!=null && GameClass.GetSettlementByPosition(x1,y1).PlayerID==playerOnTurn.Id)||
+                (GameClass.GetSettlementByPosition(x2,y2)!=null && GameClass.GetSettlementByPosition(x2,y2).PlayerID==playerOnTurn.Id))
             {
                 return true;
             }

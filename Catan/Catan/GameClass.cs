@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
-
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
@@ -78,8 +78,8 @@
         private string errorMessage = string.Empty;
         private string statusMessage = string.Empty;
 
-        private Settlement[,] settlements;
-        private LineObject[,] roadsAndBoats;
+        private ICollection<Settlement> settlements;
+        private ICollection<LineObject> roadsAndBoats;
         private HexField[,] hexFields;
 
         private Queue<IDevelopmentCard> developmentCards;
@@ -114,11 +114,11 @@
             set { this.playerOnTurn = value; }
         }
 
-        public Settlement[,] Settlements
+        public ICollection<Settlement> Settlements
         {
             get { return this.settlements; }
         }
-        public LineObject[,] RoadsAndBoats
+        public ICollection<LineObject> RoadsAndBoats
         {
             get { return this.roadsAndBoats; }
         }
@@ -128,6 +128,17 @@
         }
 
         // methods
+        public static Settlement GetSettlementByPosition(uint nX, uint nY)
+        {
+            return GameClass.Game.Settlements.FirstOrDefault(s => s.NodeX == nX && s.NodeY == nY);
+        }
+        public static LineObject GetRoadByBothEnds(uint startX, uint startY, uint endX, uint endY)
+        {
+            return GameClass.Game.RoadsAndBoats.FirstOrDefault(r => r.StartPointX == startX &&
+                                                                    r.StartPointY == startY &&
+                                                                    r.EndPointX == endX &&
+                                                                    r.EndPointY == endY);
+        }
         protected override void Initialize()
         {
             this.Services.AddService(typeof(GraphicsDeviceManager), this.graphics);
@@ -202,8 +213,8 @@
             this.scoreBoard = new ScoreBoard(this.players, this.Content, "scoreboard", 0, 0, 105, 103);
 
             //Content to be Loaded
-            this.settlements = new Settlement[20, 9];
-            this.roadsAndBoats = new LineObject[20, 17];
+            this.settlements = new Collection<Settlement>();
+            this.roadsAndBoats = new Collection<LineObject>();
             this.hexFields = new HexField[10, 7];
 
             //Load Content
@@ -451,25 +462,20 @@
                         }
                     }
                     //Draw Roads
-                    for (int i = 0; i < roadsAndBoats.GetLength(0); i++)
+                    foreach (LineObject roadOrBoat in roadsAndBoats)
                     {
-                        for (int j = 0; j < roadsAndBoats.GetLength(1); j++)
+                        if (roadOrBoat != null)
                         {
-                            if (roadsAndBoats[i, j] != null)
-                            {
-                                roadsAndBoats[i, j].Draw(this.spriteBatch);
-                            }
+                            roadOrBoat.Draw(this.spriteBatch);
                         }
                     }
+
                     //Draw Settlements
-                    for (int i = 0; i < settlements.GetLength(0); i++)
+                    foreach (Settlement settlement in this.settlements)
                     {
-                        for (int j = 0; j < settlements.GetLength(1); j++)
+                        if (settlement != null)
                         {
-                            if (settlements[i, j] != null)
-                            {
-                                settlements[i, j].Draw(this.spriteBatch);
-                            }
+                            settlement.Draw(this.spriteBatch);
                         }
                     }
                     break;
@@ -492,36 +498,34 @@
                 this.errorMessage = string.Empty;
                 mouseCoorX = Mouse.GetState().X;
                 mouseCoorY = Mouse.GetState().Y;
-
-                for (uint x = 0; x < 20; x++)
+                foreach (Settlement settlement in this.settlements)
                 {
-                    for (uint y = 0; y < 9; y++)
+                    if (settlement == null)
                     {
-                        if (settlements[x, y] == null)
+                        continue;
+                    }
+                    if (settlement.Rectangle.Contains(mouseCoorX, mouseCoorY))
+                    {
+                        try
                         {
-                            continue;
+                            var tempX = settlement.ScreenX;
+                            var tempY = settlement.ScreenY;
+                            var imageString = string.Format("villageplayer" + player.Id);
+                            Village newVillage = new Village(settlement.NodeX, settlement.NodeY, 0, Content, imageString, tempX, tempY, 20, 20);
+                            newVillage.Build(player, buildWithDevCard);
+                            Settlement oldSettlement = this.settlements.FirstOrDefault(s => s.NodeX == settlement.NodeX && s.NodeY == settlement.NodeY);
+                            this.settlements.Remove(oldSettlement); // remove the default settlement with same NodeX, NodeY from the collection on Game
+                            this.settlements.Add(newVillage); // add the new village to the collection on Game
+                            player.Villages.Add(newVillage);
+                            return true;
                         }
-                        if (settlements[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
+                        catch (Exceptions.IllegalBuildPositionException ib)
                         {
-                            try
-                            {
-                                var tempX = settlements[x, y].ScreenX;
-                                var tempY = settlements[x, y].ScreenY;
-                                var imageString = string.Format("villageplayer" + player.Id);
-                                Village tempVillage = new Village(x, y, 0, Content, imageString, tempX, tempY, 20, 20);
-                                tempVillage.Build(player, buildWithDevCard);
-                                settlements[x, y] = tempVillage;
-                                player.Villages.Add(tempVillage);
-                                return true;
-                            }
-                            catch (Exceptions.IllegalBuildPositionException ib)
-                            {
-                                this.errorMessage = ib.Message;
-                            }
-                            catch (Exception e)
-                            {
-                                this.errorMessage = e.Message;
-                            }
+                            this.errorMessage = ib.Message;
+                        }
+                        catch (Exception e)
+                        {
+                            this.errorMessage = e.Message;
                         }
                     }
                 }
@@ -540,45 +544,38 @@
                 mouseCoorX = Mouse.GetState().X;
                 mouseCoorY = Mouse.GetState().Y;
             }
-            for (uint x = 0; x < 20; x++)
+            LineObject roadOrBoat = GameClass.Game.RoadsAndBoats.FirstOrDefault(r => r.Rectangle.Contains(mouseCoorX, mouseCoorY));
+            if (roadOrBoat != null)
             {
-                for (uint y = 0; y < 17; y++)
+                try
                 {
-                    if (roadsAndBoats[x, y] == null)
-                    {
-                        continue;
-                    }
+                    var startTempX = roadOrBoat.StartPointX;
+                    var startTempY = roadOrBoat.StartPointY;
+                    var endTempX = roadOrBoat.EndPointX;
+                    var endTempY = roadOrBoat.EndPointY;
+                    var tempX = roadOrBoat.ScreenX;
+                    var tempY = roadOrBoat.ScreenY;
 
-                    if (roadsAndBoats[x, y].Rectangle.Contains(mouseCoorX, mouseCoorY))
-                    {
-                        try
-                        {
-                            var startTempX = roadsAndBoats[x, y].StartPointX;
-                            var startTempY = roadsAndBoats[x, y].StartPointY;
-                            var endTempX = roadsAndBoats[x, y].EndPointX;
-                            var endTempY = roadsAndBoats[x, y].EndPointY;
-                            var tempX = roadsAndBoats[x, y].ScreenX;
-                            var tempY = roadsAndBoats[x, y].ScreenY;
-
-                            var imageString = DataGenerator.GenerateRoadName(x, y) + player.Id;
-
-                            Road tempRoad = new Road(startTempX, startTempY, endTempX, endTempY, 0,
-                                                        Content, imageString, tempX, tempY, 20, 30);
-                            tempRoad.Build(player, buildWithDevCard);
-                            roadsAndBoats[x, y] = tempRoad;
-
-                            player.LineObjects.Add(tempRoad);
-                            return true;
-                        }
-                        catch (Exceptions.IllegalBuildPositionException ib)
-                        {
-                            this.errorMessage = ib.Message;
-                        }
-                        catch (Exception e)
-                        {
-                            this.errorMessage = e.Message;
-                        }
-                    }
+                    var imageString = DataGenerator.GenerateRoadImageType(roadOrBoat.StartPointX,
+                                                                          roadOrBoat.StartPointY,
+                                                                          roadOrBoat.EndPointX,
+                                                                          roadOrBoat.EndPointY) + player.Id;
+                    Road newRoad = new Road(startTempX, startTempY, endTempX, endTempY, 0,
+                                                Content, imageString, tempX, tempY, 20, 30);
+                    newRoad.Build(player, buildWithDevCard);
+                    LineObject oldRoad = GameClass.GetRoadByBothEnds(startTempX, startTempY, endTempX, endTempY);
+                    GameClass.Game.RoadsAndBoats.Remove(oldRoad);
+                    GameClass.Game.RoadsAndBoats.Add(newRoad);
+                    player.LineObjects.Add(newRoad);
+                    return true;
+                }
+                catch (Exceptions.IllegalBuildPositionException ib)
+                {
+                    this.errorMessage = ib.Message;
+                }
+                catch (Exception e)
+                {
+                    this.errorMessage = e.Message;
                 }
             }
             return true;

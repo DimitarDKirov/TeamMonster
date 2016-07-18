@@ -15,74 +15,19 @@ namespace Catan.Utilities
         {
             random = new Random();
         }
-        public static string GenerateRoadName(uint x, uint y)
+        public static string GenerateRoadImageType(uint x1, uint y1, uint x2, uint y2)
         {
-            switch (y)
+            if (x1 < x2)
             {
-                case 3:
-                    if (x % 2 == 0)
-                    {
-                        return "roaddiagonalright";
-                    }
-                    else
-                    {
-                        return "roaddiagonalleft";
-                    }
-                case 4: return "roadvertical";
-                case 5:
-                    if (x % 2 == 0)
-                    {
-                        return "roaddiagonalleft";
-                    }
-                    else
-                    {
-                        return "roaddiagonalright";
-                    }
-                case 6: return "roadvertical";
-                case 7:
-                    if (x % 2 == 0)
-                    {
-                        return "roaddiagonalright";
-                    }
-                    else
-                    {
-                        return "roaddiagonalleft";
-                    }
-                case 8: return "roadvertical";
-                case 9:
-                    if (x % 2 == 0)
-                    {
-                        return "roaddiagonalleft";
-                    }
-                    else
-                    {
-                        return "roaddiagonalright";
-                    }
-                case 10: return "roadvertical";
-                case 11:
-                    if (x % 2 == 0)
-                    {
-                        return "roaddiagonalright";
-                    }
-                    else
-                    {
-                        return "roaddiagonalleft";
-                    }
-                case 12: return "roadvertical";
-                case 13:
-                    if (x % 2 == 0)
-                    {
-                        return "roaddiagonalleft";
-                    }
-                    else
-                    {
-                        return "roaddiagonalright";
-                    }
-                default:
-                    break;
+                if ((x1 + y1) % 2 == 0)
+                    return "roaddiagonalleft";
+                else
+                    return "roaddiagonalright";
             }
-
-            return "transperent";
+            else
+            {
+                return "roadvertical";
+            }
         }
 
         public static ResourceType GenerateHexResource(TerrainType terrain)
@@ -150,7 +95,7 @@ namespace Catan.Utilities
             while (true)
             {
                 tempValue = random.Next(2, 13);
-                if (HexField.UsedProduceNumbers[tempValue]>0)
+                if (HexField.UsedProduceNumbers[tempValue] > 0)
                 {
                     HexField.UsedProduceNumbers[tempValue]--;
                     return tempValue;

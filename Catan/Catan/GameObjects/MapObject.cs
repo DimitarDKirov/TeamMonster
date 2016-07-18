@@ -133,7 +133,7 @@ namespace Catan.GameObjects
         protected static LandType CheckLandType(uint x, uint y)
         {
             if (x > LEFT && x < RIGHT && y > TOP && y < BOTTOM &&
-                x + y > (TOP + BOTTOM + 1) && x + y < (LEFT + RIGHT) && x - y < (LEFT + RIGHT) / 2 && x - y > 2)
+                x + y > (TOP + BOTTOM + 1) && x + y < (LEFT + RIGHT) && x - y <= (LEFT + RIGHT) / 2 && x - y > 2)
                 return LandType.Mainland;
             else if (((x == LEFT || x == RIGHT) && y >= (TOP + BOTTOM) / 2 && y <= (TOP + BOTTOM + 1) / 2) ||
                      ((y == TOP || y == BOTTOM) && x >= LEFT + 2 && x <= RIGHT - 2) ||

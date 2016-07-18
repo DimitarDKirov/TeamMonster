@@ -35,6 +35,7 @@ namespace Catan.GameObjects
         protected virtual int Productivity { get { return 0; } }
 
         // methods
+        
         public virtual void Produce(ResourceType resource)
         {
             IPlayer owner = GameClass.Game.players[this.playerID-1];
@@ -63,18 +64,18 @@ namespace Catan.GameObjects
             uint x = this.NodeX,
                  y = this.NodeY;
 
-            if (GameClass.Game.Settlements[x - 1, y] != null && GameClass.Game.Settlements[x - 1, y].PlayerID != 0)
+            if (GameClass.GetSettlementByPosition(x - 1, y) != null && GameClass.GetSettlementByPosition(x - 1, y).PlayerID != 0)
             { return true; }
-            if (GameClass.Game.Settlements[x + 1, y] != null && GameClass.Game.Settlements[x + 1, y].PlayerID != 0)
+            if (GameClass.GetSettlementByPosition(x + 1, y) != null && GameClass.GetSettlementByPosition(x + 1, y).PlayerID != 0)
             { return true; }
             if ((x + y) % 2 == 0)
             {
-                if (GameClass.Game.Settlements[x, y + 1] != null && GameClass.Game.Settlements[x, y + 1].PlayerID != 0)
+                if (GameClass.GetSettlementByPosition(x, y + 1) != null && GameClass.GetSettlementByPosition(x, y + 1).PlayerID != 0)
                 { return true; }
             }
             else
             {
-                if (GameClass.Game.Settlements[x, y - 1] != null && GameClass.Game.Settlements[x, y - 1].PlayerID != 0)
+                if (GameClass.GetSettlementByPosition(x, y - 1) != null && GameClass.GetSettlementByPosition(x, y - 1).PlayerID != 0)
                 { return true; }
             }
             return false;
